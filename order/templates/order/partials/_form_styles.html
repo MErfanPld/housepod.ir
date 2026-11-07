@@ -1,0 +1,42 @@
+{% comment %}استایل یکدست برای ویجت‌های فرم جنگو (input / select / textarea / file){% endcomment %}
+<style>
+    .vf input:not([type=checkbox]):not([type=radio]):not([type=file]),
+    .vf select,
+    .vf textarea {
+        width: 100%;
+        background: #fff;
+        border: 1px solid #E7DEFB;
+        border-radius: 0.9rem;
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
+        color: inherit;
+        transition: border-color .15s, box-shadow .15s;
+    }
+    .vf textarea { min-height: 110px; resize: vertical; }
+    .vf input:focus, .vf select:focus, .vf textarea:focus {
+        outline: none;
+        border-color: #6A1FE9;
+        box-shadow: 0 0 0 4px rgba(106, 31, 233, .12);
+    }
+    .vf .has-error input, .vf .has-error select, .vf .has-error textarea { border-color: #ef4444; }
+    .vf input[type=file] {
+        width: 100%;
+        font-size: 0.8rem;
+        border: 2px dashed #E7DEFB;
+        border-radius: 1rem;
+        padding: 1.25rem;
+        background: #FAF7FF;
+        cursor: pointer;
+    }
+    .vf input[type=file]::file-selector-button {
+        margin-left: 0.75rem;
+        border: 0;
+        border-radius: 9999px;
+        padding: 0.5rem 1rem;
+        background: #17151F;
+        color: #C9F45B;
+        font-weight: 700;
+        cursor: pointer;
+    }
+    .vf input[type=checkbox] { border-radius: 0.35rem; color: #6A1FE9; }
+</style>

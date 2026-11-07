@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+{% block title %}پروفایل من | واریان تک{% endblock %}
+
+{% block content %}
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Breadcrumb -->
+    <nav class="flex items-center gap-2 text-sm text-gray-500 mb-6">
+        <a href="{% url 'core:home' %}" class="hover:text-gray-900 transition-colors">خانه</a>
+        <span class="material-symbols-outlined text-base">chevron_left</span>
+        <span class="text-gray-900 font-medium">حساب کاربری من</span>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 mb-8 border-b border-gray-200">
+        <div>
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">حساب کاربری من</h1>
+            <p class="text-sm text-gray-500 mt-1">اطلاعات حساب، شماره تماس و آدرس‌های تحویل خود را مدیریت کنید.</p>
+        </div>
+        <a href="{% url 'accounts:logout' %}"
+           class="inline-flex items-center gap-1.5 text-sm text-red-600 hover:text-red-700 font-medium transition-colors">
+            <span class="material-symbols-outlined text-lg">logout</span>
+            خروج از حساب
+        </a>
+    </div>
+
+    {% if messages %}
+    <div class="mb-6 space-y-3">
+        {% for message in messages %}
+        <div class="flex items-center justify-between gap-3 bg-white border border-gray-200 border-r-4 border-r-[#C8F169] rounded-xl p-4 shadow-sm">
+            <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-base bg-[#C8F169] text-gray-900 rounded-full p-1">check</span>
+                <div>
+                    <p class="text-sm font-semibold text-gray-900">عملیات موفق</p>
+                    <p class="text-sm text-gray-600">{{ message }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if needs_complete %}
+    <div class="mb-8 bg-amber-50 border border-amber-200 rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+            <p class="font-semibold text-amber-900 mb-1">پروفایل ناقص است</p>
+            <p class="text-sm text-amber-800">برای ثبت سفارش، نام و آدرس ارسال را تکمیل کنید.</p>
+        </div>
+        <a href="{% url 'accounts:profile_complete' %}"
+           class="inline-flex items-center justify-center gap-2 bg-gray-900 text-[#C8F169] text-sm font-bold px-5 py-2.5 rounded-full hover:bg-black transition-colors whitespace-nowrap">
+            تکمیل اطلاعات
+            <span class="material-symbols-outlined text-base">arrow_back</span>
+        </a>
+    </div>
+    {% endif %}
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- Sidebar -->
+        <aside class="lg:col-span-4 space-y-6">
+            <!-- User Card -->
+            <section class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
+                <div class="flex items-center gap-4">
+                    <div class="relative">
+                        <div class="w-16 h-16 rounded-full bg-gray-900 text-white flex items-center justify-center text-xl font-bold border-2 border-[#C8F169]">
+                            {{ profile_user.first_name|slice:":1"|default:"و" }}{{ profile_user.last_name|slice:":1"|default:"" }}
+                        </div>
+                        <span class="material-symbols-outlined text-[#C8F169] bg-gray-900 rounded-full absolute -bottom-1 -left-1 text-base p-0.5">check_circle</span>
+                    </div>
+                    <div class="space-y-1">
+                        <h2 class="text-lg font-bold text-gray-900">{{ profile_user.get_full_name|default:"کاربر واریان" }}</h2>
+                        <p class="text-sm text-gray-500 font-mono" dir="ltr">{{ profile_user.phone }}</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Nav -->
+            <nav class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm divide-y divide-gray-100">
+                <a href="{% url 'accounts:profile' %}" class="flex items-center justify-between p-4 text-sm font-semibold text-gray-900 bg-gray-50 border-r-4 border-[#C8F169]">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-xl">person</span>
+                        <span>اطلاعات پروفایل</span>
+                    </div>
+                    <span class="w-2 h-2 rounded-full bg-[#C8F169]"></span>
+                </a>
+                <a href="{% url 'accounts:profile_complete' %}" class="flex items-center justify-between p-4 text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-xl">edit</span>
+                        <span>ویرایش اطلاعات و آدرس</span>
+                    </div>
+                    <span class="material-symbols-outlined text-sm">chevron_left</span>
+                </a>
+                <a href="{% url 'accounts:logout' %}" class="flex items-center justify-between p-4 text-sm text-red-600 hover:bg-red-50 transition-colors">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-xl">logout</span>
+                        <span class="font-medium">خروج از حساب کاربری</span>
+                    </div>
+                    <span class="material-symbols-outlined text-sm">chevron_left</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <section class="lg:col-span-8 space-y-6">
+            <!-- Personal Info Card -->
+            <article class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+                <div class="flex items-center justify-between pb-5 border-b border-gray-100 mb-6">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-2xl text-gray-900">badge</span>
+                        <h2 class="text-lg font-bold text-gray-900">اطلاعات شخصی</h2>
+                    </div>
+                    {% if profile_user.first_name and profile_user.last_name %}
+                    <span class="inline-flex items-center gap-1.5 text-xs text-gray-600 bg-gray-50 px-2.5 py-1 rounded-full border border-gray-200">
+                        <span class="w-1.5 h-1.5 rounded-full bg-[#C8F169]"></span>
+                        وضعیت: تکمیل شده
+                    </span>
+                    {% else %}
+                    <span class="inline-flex items-center gap-1.5 text-xs text-amber-700 bg-amber-50 px-2.5 py-1 rounded-full border border-amber-200">
+                        ناقص
+                    </span>
+                    {% endif %}
+                </div>
+
+                <dl class="grid grid-cols-1 sm:grid-cols-2 gap-5 text-sm">
+                    <div>
+                        <dt class="text-xs text-gray-500 mb-1">نام کامل</dt>
+                        <dd class="font-medium text-gray-900">{{ profile_user.get_full_name|default:"—" }}</dd>
+                    </div>
+                    <div>
+                        <dt class="text-xs text-gray-500 mb-1">شماره موبایل</dt>
+                        <dd class="font-medium font-mono text-gray-900" dir="ltr">{{ profile_user.phone }}</dd>
+                    </div>
+                    <div>
+                        <dt class="text-xs text-gray-500 mb-1">ایمیل</dt>
+                        <dd class="font-medium text-gray-900">{{ profile_user.email|default:"—" }}</dd>
+                    </div>
+                    <div>
+                        <dt class="text-xs text-gray-500 mb-1">کد ملی</dt>
+                        <dd class="font-medium text-gray-900">{{ profile_user.national_code|default:"—" }}</dd>
+                    </div>
+                </dl>
+            </article>
+
+            <!-- Address Card -->
+            <article class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+                <div class="flex items-center justify-between pb-5 border-b border-gray-100 mb-6">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-2xl text-gray-900">location_on</span>
+                        <h2 class="text-lg font-bold text-gray-900">آدرس ارسال پیش‌فرض</h2>
+                    </div>
+                </div>
+
+                {% if profile_user.address %}
+                <div class="space-y-3 text-sm">
+                    <p class="text-gray-900 leading-relaxed">
+                        {{ profile_user.province }} — {{ profile_user.city }}
+                    </p>
+                    <p class="text-gray-700 leading-relaxed">{{ profile_user.address }}</p>
+                    <div class="flex flex-wrap gap-x-6 gap-y-2 pt-2 text-xs text-gray-500">
+                        <div class="flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-sm">markunread_mailbox</span>
+                            <span>کد پستی: <strong class="text-gray-900 font-medium">{{ profile_user.postal_code }}</strong></span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-sm">person</span>
+                            <span>گیرنده: <strong class="text-gray-900 font-medium">{{ profile_user.get_shipping_receiver }}</strong></span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-sm">call</span>
+                            <span>موبایل: <strong class="text-gray-900 font-medium font-mono" dir="ltr">{{ profile_user.get_shipping_phone }}</strong></span>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <p class="text-sm text-gray-500 py-2">آدرسی ثبت نشده است.</p>
+                {% endif %}
+
+                <div class="pt-5 mt-5 border-t border-gray-100">
+                    <a href="{% url 'accounts:profile_complete' %}"
+                       class="inline-flex items-center gap-2 text-sm font-semibold text-gray-900 hover:text-black transition-colors">
+                        <span class="material-symbols-outlined text-lg">edit</span>
+                        ویرایش اطلاعات و آدرس
+                    </a>
+                </div>
+            </article>
+        </section>
+    </div>
+</main>
+{% endblock %}

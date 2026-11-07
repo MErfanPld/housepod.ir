@@ -1,0 +1,308 @@
+{% extends "base.html" %}
+{% load core_tags order_tags %}
+
+{% block title %}وضعیت سفارش {{ order.order_number }} | واریان{% endblock %}
+
+{% block content %}
+{% order_timeline order as timeline %}
+{% with st=order.status tone=order.status|status_tone %}
+
+<div class="max-w-7xl mx-auto w-full px-4 md:px-8 py-6 space-y-6">
+
+    <nav aria-label="موقعیت فعلی" class="flex items-center gap-1.5 text-xs text-text-muted">
+        <a href="/" class="hover:text-electric-purple transition-colors">خانه</a>
+        <span class="material-symbols-outlined text-[14px]">chevron_left</span>
+        <a href="{% url 'order:order_list' %}" class="hover:text-electric-purple transition-colors">سفارش‌های من</a>
+        <span class="material-symbols-outlined text-[14px]">chevron_left</span>
+        <span class="text-text-primary font-bold">وضعیت سفارش</span>
+    </nav>
+
+    <!-- ================= HERO STATUS ================= -->
+    <div class="relative bg-white border border-lavender-subtle rounded-3xl p-6 md:p-8 shadow-sm overflow-hidden">
+        <div class="absolute -top-24 -left-24 w-80 h-80 rounded-full blur-3xl pointer-events-none
+            {% if tone == 'success' %}bg-emerald-500/10{% elif tone == 'danger' %}bg-red-500/10{% else %}bg-amber-500/10{% endif %}"></div>
+
+        <div class="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div class="flex items-start md:items-center gap-5">
+                <div class="relative shrink-0">
+                    {% if tone == 'warning' %}<div class="absolute -inset-2 rounded-full bg-amber-500/20 animate-ping [animation-duration:2.5s]"></div>{% endif %}
+                    <div class="relative w-16 h-16 rounded-2xl border flex items-center justify-center
+                        {% if tone == 'success' %}bg-emerald-50 border-emerald-200 text-emerald-600
+                        {% elif tone == 'danger' %}bg-red-50 border-red-200 text-red-600
+                        {% else %}bg-amber-50 border-amber-200 text-amber-600{% endif %}">
+                        <span class="material-symbols-outlined text-[34px]">{{ st|status_icon }}</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex flex-wrap items-center gap-3 mb-2">
+                        <h1 class="text-xl sm:text-2xl font-black text-text-primary">
+                            {% if st == 'pending_payment' %}سفارش ثبت شد؛ منتظر پرداخت
+                            {% elif st == 'awaiting_verify' %}فیش دریافت شد؛ در حال بررسی
+                            {% elif st == 'confirmed' %}پرداخت شما تأیید شد
+                            {% elif st == 'processing' %}سفارش در حال آماده‌سازی است
+                            {% elif st == 'shipped' %}سفارش ارسال شد
+                            {% elif st == 'delivered' %}سفارش تحویل داده شد
+                            {% elif st == 'rejected' %}فیش نیاز به ارسال مجدد دارد
+                            {% elif st == 'cancelled' %}سفارش لغو شد
+                            {% else %}وضعیت سفارش{% endif %}
+                        </h1>
+                        {% include "order/partials/_status_badge.html" with status=st label=order.get_status_display %}
+                    </div>
+                    <p class="text-sm text-text-muted max-w-2xl leading-relaxed">
+                        {% if st == 'pending_payment' %}مبلغ سفارش را کارت‌به‌کارت کنید و تصویر فیش را بارگذاری کنید.
+                        {% elif st == 'awaiting_verify' %}فیش شما در صف بررسی مالی است (معمولاً ۳۰ تا ۴۵ دقیقه در ساعات اداری).
+                        {% elif st == 'confirmed' or st == 'processing' %}پرداخت تأیید شد و سفارش در حال آماده‌سازی و بسته‌بندی است.
+                        {% elif st == 'shipped' %}مرسوله تحویل پست / پیک شده و به‌زودی به دستتان می‌رسد.
+                        {% elif st == 'delivered' %}امیدواریم از خریدتان راضی باشید. در صورت هر مشکل، تا ۷ روز فرصت تعویض دارید.
+                        {% elif st == 'rejected' %}فیش ارسالی تأیید نشد. لطفاً فیش معتبر را دوباره بارگذاری کنید یا با پشتیبانی تماس بگیرید.
+                        {% elif st == 'cancelled' %}این سفارش لغو شده است. برای پیگیری با پشتیبانی در تماس باشید.
+                        {% endif %}
+                    </p>
+                    <button type="button" data-copy="{{ order.order_number }}" class="mt-2 inline-flex items-center gap-1 text-xs text-text-muted hover:text-electric-purple font-mono" dir="ltr">
+                        #{{ order.order_number }}
+                        <span class="material-symbols-outlined text-[14px]">content_copy</span>
+                    </button>
+                </div>
+            </div>
+            <div class="flex md:flex-col items-center md:items-end justify-between gap-1 border-t md:border-t-0 md:border-r border-lavender-subtle pt-4 md:pt-0 md:pr-8 shrink-0">
+                <span class="text-xs text-text-muted">مبلغ کل</span>
+                <span class="text-2xl font-black text-text-primary font-num">{{ order.total|toman }} <span class="text-xs font-normal text-text-muted">تومان</span></span>
+            </div>
+        </div>
+
+        {% if order.can_upload_receipt %}
+        <div class="relative mt-6 pt-5 border-t border-lavender-subtle flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <p class="text-sm text-text-primary font-bold flex items-center gap-2">
+                <span class="material-symbols-outlined text-[20px] text-amber-600">upload_file</span>
+                {% if st == 'rejected' %}فیش جدید را بارگذاری کنید.{% else %}هنوز فیش پرداخت را ارسال نکرده‌اید.{% endif %}
+            </p>
+            <a href="{% url 'order:payment' order.order_number %}"
+               class="inline-flex items-center justify-center gap-2 bg-acid-lime text-dark-base font-black px-6 py-2.5 rounded-full text-sm glow-lime hover:scale-105 active:scale-95 transition-all">
+                <span class="material-symbols-outlined text-[18px]">payments</span>
+                پرداخت / بارگذاری فیش
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+        <!-- ================= MAIN ================= -->
+        <div class="lg:col-span-7 space-y-6">
+
+            <!-- Order meta -->
+            <section class="bg-white border border-lavender-subtle rounded-3xl p-6 shadow-sm">
+                <h2 class="font-black text-text-primary pb-4 mb-5 border-b border-lavender-subtle flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[22px] text-electric-purple">receipt_long</span>
+                    مشخصات سفارش
+                </h2>
+                <dl class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                    <div class="p-4 rounded-2xl bg-lavender-card border border-lavender-subtle">
+                        <dt class="text-xs text-text-muted mb-1">تاریخ ثبت</dt>
+                        <dd class="font-bold text-text-primary font-num">{{ order.created_at|jalali }} — {{ order.created_at|time:"H:i"|fa_num }}</dd>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-lavender-card border border-lavender-subtle">
+                        <dt class="text-xs text-text-muted mb-1">روش پرداخت</dt>
+                        <dd class="font-bold text-text-primary flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-[18px] text-text-muted">credit_card</span>
+                            {{ order.get_payment_method_display }}
+                        </dd>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-lavender-card border border-lavender-subtle sm:col-span-2">
+                        <dt class="text-xs text-text-muted mb-1">گیرنده و آدرس ارسال</dt>
+                        <dd>
+                            <p class="font-bold text-text-primary">{{ order.receiver_name }} <span class="font-normal text-text-muted font-num" dir="ltr">· {{ order.receiver_phone|fa_num }}</span></p>
+                            <p class="text-text-muted mt-1 leading-relaxed">
+                                {{ order.province }}، {{ order.city }}، {{ order.address }}
+                                {% if order.postal_code %}<span class="font-num">— کدپستی {{ order.postal_code|fa_num }}</span>{% endif %}
+                            </p>
+                        </dd>
+                    </div>
+                </dl>
+            </section>
+
+            <!-- Receipts -->
+            {% with receipts=order.receipts.all %}
+            {% if receipts %}
+            <section class="bg-white border border-lavender-subtle rounded-3xl p-6 shadow-sm">
+                <h2 class="font-black text-text-primary pb-4 mb-5 border-b border-lavender-subtle flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[22px] text-electric-purple">attachment</span>
+                    فیش‌های ارسال‌شده
+                </h2>
+                <ul class="space-y-3">
+                    {% for r in receipts %}
+                    {% with rtone=r.status|status_tone %}
+                    <li class="border border-lavender-subtle rounded-2xl p-4 bg-lavender-card/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div class="flex items-center gap-4">
+                            {% if r.image and r.image|is_pdf %}
+                            <a href="{{ r.image.url }}" target="_blank" rel="noopener" aria-label="باز کردن PDF فیش"
+                               class="w-16 h-20 rounded-xl border border-lavender-subtle bg-white flex flex-col items-center justify-center shrink-0 text-red-600 hover:border-red-300 transition-colors">
+                                <span class="material-symbols-outlined text-[28px]">picture_as_pdf</span>
+                                <span class="text-[9px] font-black">PDF</span>
+                            </a>
+                            {% elif r.image %}
+                            <button type="button" data-lightbox="{{ r.image.url }}" aria-label="بزرگ‌نمایی فیش"
+                                    class="relative w-16 h-20 rounded-xl overflow-hidden border border-lavender-subtle bg-white shrink-0 group">
+                                <img src="{{ r.image.url }}" alt="فیش واریزی" loading="lazy" class="w-full h-full object-cover">
+                                <span class="absolute inset-0 bg-dark-base/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                                    <span class="material-symbols-outlined text-white text-[20px]">zoom_in</span>
+                                </span>
+                            </button>
+                            {% else %}
+                            <span class="w-16 h-20 rounded-xl border border-lavender-subtle bg-white flex items-center justify-center shrink-0">
+                                <span class="material-symbols-outlined text-text-muted">image</span>
+                            </span>
+                            {% endif %}
+                            <div class="text-xs text-text-muted space-y-1">
+                                <p class="font-num">زمان ارسال: <span class="text-text-primary font-bold">{{ r.uploaded_at|jalali }} — {{ r.uploaded_at|time:"H:i"|fa_num }}</span></p>
+                                {% if r.tracking_code %}
+                                <p>کد پیگیری: <strong class="text-text-primary font-mono" dir="ltr">{{ r.tracking_code }}</strong></p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <span class="self-start sm:self-center px-3 py-1 rounded-full text-xs font-bold border
+                            {% if rtone == 'success' %}bg-emerald-50 text-emerald-700 border-emerald-200
+                            {% elif rtone == 'danger' %}bg-red-50 text-red-700 border-red-200
+                            {% else %}bg-amber-50 text-amber-800 border-amber-200{% endif %}">
+                            {{ r.get_status_display }}
+                        </span>
+                    </li>
+                    {% endwith %}
+                    {% endfor %}
+                </ul>
+                <p class="mt-4 text-[11px] text-text-muted flex items-start gap-1.5">
+                    <span class="material-symbols-outlined text-[16px]">shield_lock</span>
+                    فیش‌ها فقط توسط کارشناس مالی قابل مشاهده هستند.
+                </p>
+            </section>
+            {% endif %}
+            {% endwith %}
+
+            <!-- What's next -->
+            {% if st == 'pending_payment' or st == 'awaiting_verify' %}
+            <section class="bg-white border border-lavender-subtle rounded-3xl p-6 shadow-sm">
+                <h2 class="font-black text-text-primary mb-4 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[22px] text-electric-purple">alt_route</span>
+                    مراحل بعدی
+                </h2>
+                <ol class="space-y-4 text-xs text-text-muted leading-relaxed">
+                    <li class="flex gap-3">
+                        <span class="w-6 h-6 rounded-full bg-lavender-subtle text-electric-purple font-black flex items-center justify-center shrink-0">۱</span>
+                        <p><strong class="text-text-primary">تطبیق پرداخت:</strong> کارشناس مالی، کد پیگیری و تصویر فیش را با گردش حساب مقایسه می‌کند.</p>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="w-6 h-6 rounded-full bg-lavender-subtle text-electric-purple font-black flex items-center justify-center shrink-0">۲</span>
+                        <p><strong class="text-text-primary">تأیید سفارش:</strong> پس از تأیید، وضعیت سفارش در همین صفحه به «در حال آماده‌سازی» تغییر می‌کند.</p>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="w-6 h-6 rounded-full bg-lavender-subtle text-electric-purple font-black flex items-center justify-center shrink-0">۳</span>
+                        <p><strong class="text-text-primary">ارسال:</strong> بسته‌بندی و تحویل به پست یا پیک انجام می‌شود.</p>
+                    </li>
+                </ol>
+            </section>
+            {% endif %}
+        </div>
+
+        <!-- ================= SIDEBAR ================= -->
+        <aside class="lg:col-span-5 space-y-6 lg:sticky lg:top-24">
+
+            <!-- Timeline -->
+            <section class="bg-white border border-lavender-subtle rounded-3xl p-6 shadow-sm">
+                <h3 class="font-black text-text-primary pb-3 mb-5 border-b border-lavender-subtle flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[20px]">timeline</span>
+                    مراحل پیگیری سفارش
+                </h3>
+                <ol class="relative pr-7 space-y-6 before:content-[''] before:absolute before:top-2 before:bottom-2 before:right-[9px] before:w-0.5 before:bg-lavender-subtle">
+                    {% for step in timeline %}
+                    <li class="relative {% if step.state == 'upcoming' %}opacity-50{% endif %}">
+                        <span class="absolute -right-7 top-0.5 w-5 h-5 rounded-full flex items-center justify-center
+                            {% if step.state == 'done' %}bg-dark-base text-acid-lime
+                            {% elif step.state == 'current' %}bg-amber-500 text-white ring-4 ring-amber-100
+                            {% elif step.state == 'failed' %}bg-red-600 text-white ring-4 ring-red-100
+                            {% else %}bg-lavender-subtle text-text-muted{% endif %}">
+                            <span class="material-symbols-outlined text-[13px]">{% if step.state == 'done' %}check{% else %}{{ step.icon }}{% endif %}</span>
+                        </span>
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="text-xs font-bold {% if step.state == 'current' %}text-amber-700{% elif step.state == 'failed' %}text-red-700{% else %}text-text-primary{% endif %}">{{ step.title }}</span>
+                            {% if step.state == 'current' %}<span class="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full">مرحلهٔ جاری</span>
+                            {% elif step.state == 'failed' %}<span class="text-[10px] font-bold text-red-700 bg-red-50 px-2 py-0.5 rounded-full">متوقف</span>{% endif %}
+                        </div>
+                        <p class="text-[11px] text-text-muted mt-0.5">{{ step.desc }}</p>
+                    </li>
+                    {% endfor %}
+                </ol>
+            </section>
+
+            <!-- Items -->
+            {% with items=order.items.all %}
+            <section class="bg-white border border-lavender-subtle rounded-3xl p-6 shadow-sm">
+                <h3 class="font-black text-text-primary pb-3 mb-4 border-b border-lavender-subtle flex items-center justify-between">
+                    <span class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[20px]">shopping_basket</span>
+                        اقلام سفارش
+                    </span>
+                    <span class="text-xs bg-lavender-subtle text-electric-purple px-2.5 py-1 rounded-full font-bold font-num">{{ items|length|fa_num }} قلم</span>
+                </h3>
+                <ul class="space-y-3 text-sm divide-y divide-lavender-subtle">
+                    {% for item in items %}
+                    <li class="flex justify-between gap-3 pt-3 first:pt-0">
+                        <div class="min-w-0">
+                            <p class="font-bold text-text-primary text-xs leading-relaxed">{{ item.product_name }}</p>
+                            <p class="text-[11px] text-text-muted font-num">{{ item.quantity|fa_num }} عدد × {{ item.unit_price|toman }}</p>
+                        </div>
+                        <span class="text-xs font-black whitespace-nowrap font-num">{{ item.line_total|toman }} <span class="font-normal text-text-muted">تومان</span></span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <div class="mt-4 pt-4 border-t border-lavender-subtle flex justify-between items-baseline">
+                    <span class="font-black">مبلغ نهایی</span>
+                    <span class="text-xl font-black text-electric-purple font-num">{{ order.total|toman }} <span class="text-xs font-normal text-text-muted">تومان</span></span>
+                </div>
+            </section>
+            {% endwith %}
+
+            <div class="space-y-3">
+                <a href="{% url 'order:order_list' %}"
+                   class="w-full py-3 rounded-full bg-white border border-lavender-subtle text-sm font-bold text-text-primary hover:border-electric-purple hover:text-electric-purple transition-colors flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]">list_alt</span>
+                    همهٔ سفارش‌ها
+                </a>
+                <a href="{% url 'products:product_list' %}"
+                   class="w-full py-3 rounded-full text-sm font-bold text-text-muted hover:text-electric-purple transition-colors flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]">storefront</span>
+                    بازگشت به فروشگاه
+                </a>
+                <div class="p-4 rounded-2xl bg-white border border-lavender-subtle text-xs flex items-center justify-between">
+                    <span class="flex items-center gap-2 text-text-muted">
+                        <span class="material-symbols-outlined text-[20px] text-electric-purple">support_agent</span>
+                        سؤالی دربارهٔ سفارش دارید؟
+                    </span>
+                    <a href="tel:02188223344" class="font-bold text-text-primary hover:text-electric-purple font-num" dir="ltr">۰۲۱-۸۸۲۲۳۳۴۴</a>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+{% endwith %}
+
+<!-- Lightbox -->
+<div id="lightbox" class="fixed inset-0 z-[100] bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="پیش‌نمایش فیش">
+    <button type="button" data-lightbox-close aria-label="بستن" class="absolute top-4 left-4 w-10 h-10 rounded-full bg-white/10 text-white hover:bg-white/20 flex items-center justify-center">
+        <span class="material-symbols-outlined">close</span>
+    </button>
+    <img id="lightbox-img" src="" alt="فیش واریزی" class="max-h-[85vh] max-w-full rounded-2xl shadow-2xl">
+</div>
+
+{% include "order/partials/_copy_script.html" %}
+<script>
+(function () {
+    const box = document.getElementById("lightbox");
+    const img = document.getElementById("lightbox-img");
+    function open(src) { img.src = src; box.classList.remove("hidden"); box.classList.add("flex"); }
+    function close() { box.classList.add("hidden"); box.classList.remove("flex"); img.src = ""; }
+    document.querySelectorAll("[data-lightbox]").forEach(b => b.addEventListener("click", () => open(b.dataset.lightbox)));
+    box.addEventListener("click", e => { if (e.target === box || e.target.closest("[data-lightbox-close]")) close(); });
+    document.addEventListener("keydown", e => { if (e.key === "Escape") close(); });
+})();
+</script>
+{% endblock %}

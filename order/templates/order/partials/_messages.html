@@ -1,0 +1,33 @@
+{% comment %}
+  نمایش پیام‌های django.contrib.messages به‌صورت toast.
+  در base.html درست بعد از <body> قرار بده:  {% include "partials/_messages.html" %}
+{% endcomment %}
+{% if messages %}
+<div id="flash-messages" class="fixed top-4 inset-x-4 sm:inset-x-auto sm:left-6 sm:w-[380px] z-[200] space-y-3" aria-live="polite">
+    {% for message in messages %}
+    <div role="alert" data-flash
+         class="flex items-start gap-3 rounded-2xl border p-4 shadow-xl backdrop-blur-md transition-all duration-300
+         {% if message.tags == 'success' %}bg-emerald-50/95 border-emerald-200 text-emerald-900
+         {% elif message.tags == 'error' %}bg-red-50/95 border-red-200 text-red-900
+         {% elif message.tags == 'warning' %}bg-amber-50/95 border-amber-200 text-amber-900
+         {% else %}bg-white/95 border-lavender-subtle text-text-primary{% endif %}">
+        <span class="material-symbols-outlined text-[22px] shrink-0
+            {% if message.tags == 'success' %}text-emerald-600{% elif message.tags == 'error' %}text-red-600{% elif message.tags == 'warning' %}text-amber-600{% else %}text-electric-purple{% endif %}">
+            {% if message.tags == 'success' %}check_circle{% elif message.tags == 'error' %}error{% elif message.tags == 'warning' %}warning{% else %}info{% endif %}
+        </span>
+        <p class="flex-1 text-sm font-bold leading-relaxed">{{ message }}</p>
+        <button type="button" data-flash-close aria-label="بستن" class="shrink-0 opacity-50 hover:opacity-100">
+            <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+    </div>
+    {% endfor %}
+</div>
+<script>
+document.querySelectorAll("[data-flash]").forEach(function (el, i) {
+    function hide() { el.style.opacity = "0"; el.style.transform = "translateY(-8px)"; setTimeout(() => el.remove(), 300); }
+    el.querySelector("[data-flash-close]").addEventListener("click", hide);
+    // خطاها تا بستن دستی می‌مانند؛ بقیه بعد از ۵ ثانیه
+    if (!el.className.includes("bg-red-50")) setTimeout(hide, 5000 + i * 600);
+});
+</script>
+{% endif %}

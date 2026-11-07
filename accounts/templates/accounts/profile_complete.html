@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% block title %}تکمیل اطلاعات | واریان تک{% endblock %}
+
+{% block content %}
+<main class="max-w-3xl mx-auto px-4 sm:px-6 py-10">
+    <!-- Header -->
+    <div class="mb-8">
+        <nav class="flex items-center gap-2 text-sm text-gray-500 mb-4">
+            <a href="{% url 'accounts:profile' %}" class="hover:text-gray-900 transition-colors">حساب کاربری</a>
+            <span class="material-symbols-outlined text-base">chevron_left</span>
+            <span class="text-gray-900 font-medium">تکمیل اطلاعات</span>
+        </nav>
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">تکمیل اطلاعات ارسال</h1>
+        <p class="text-sm text-gray-500 mt-1.5">این اطلاعات برای ثبت و ارسال سفارش‌ها استفاده می‌شود.</p>
+    </div>
+
+    <form method="post" class="bg-white border border-gray-200 rounded-2xl p-6 md:p-8 shadow-sm space-y-6">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+        <div class="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3">
+            {{ form.non_field_errors }}
+        </div>
+        {% endif %}
+
+        <!-- Personal Info -->
+        <div>
+            <div class="flex items-center gap-2 mb-4">
+                <span class="material-symbols-outlined text-xl text-gray-900">badge</span>
+                <h2 class="text-base font-bold text-gray-900">اطلاعات شخصی</h2>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="space-y-1.5">
+                    <label class="block text-sm font-medium text-gray-700">نام <span class="text-red-500">*</span></label>
+                    {{ form.first_name }}
+                    {% if form.first_name.errors %}
+                    <p class="text-xs text-red-500">{{ form.first_name.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                <div class="space-y-1.5">
+                    <label class="block text-sm font-medium text-gray-700">نام خانوادگی <span class="text-red-500">*</span></label>
+                    {{ form.last_name }}
+                    {% if form.last_name.errors %}
+                    <p class="text-xs text-red-500">{{ form.last_name.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                <div class="space-y-1.5">
+                    <label class="block text-sm font-medium text-gray-700">ایمیل</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                    <p class="text-xs text-red-500">{{ form.email.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                <div class="space-y-1.5">
+                    <label class="block text-sm font-medium text-gray-700">کد ملی</label>
+                    {{ form.national_code }}
+                    {% if form.national_code.errors %}
+                    <p class="text-xs text-red-500">{{ form.national_code.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <hr class="border-gray-100">
+
+        <!-- Address Info -->
+        <div>
+            <div class="flex items-center gap-2 mb-4">
+                <span class="material-symbols-outlined text-xl text-gray-900">location_on</span>
+                <h2 class="text-base font-bold text-gray-900">آدرس ارسال</h2>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="space-y-1.5">
+                    <label class="block text-sm font-medium text-gray-700">استان <span class="text-red-500">*</span></label>
+                    {{ form.province }}
+                    {% if form.province.errors %}
+                    <p class="text-xs text-red-500">{{ form.province.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                <div class="space-y-1.5">
+                    <label class="block text-sm font-medium text-gray-700">شهر <span class="text-red-500">*</span></label>
+                    {{ form.city }}
+                    {% if form.city.errors %}
+                    <p class="text-xs text-red-500">{{ form.city.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="mt-4 space-y-1.5">
+                <label class="block text-sm font-medium text-gray-700">کد پستی <span class="text-red-500">*</span></label>
+                {{ form.postal_code }}
+                {% if form.postal_code.errors %}
+                <p class="text-xs text-red-500">{{ form.postal_code.errors.0 }}</p>
+                {% endif %}
+            </div>
+            <div class="mt-4 space-y-1.5">
+                <label class="block text-sm font-medium text-gray-700">آدرس کامل <span class="text-red-500">*</span></label>
+                {{ form.address }}
+                {% if form.address.errors %}
+                <p class="text-xs text-red-500">{{ form.address.errors.0 }}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <hr class="border-gray-100">
+
+        <!-- Receiver Info -->
+        <div>
+            <div class="flex items-center gap-2 mb-4">
+                <span class="material-symbols-outlined text-xl text-gray-900">person</span>
+                <h2 class="text-base font-bold text-gray-900">اطلاعات گیرنده</h2>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="space-y-1.5">
+                    <label class="block text-sm font-medium text-gray-700">نام گیرنده</label>
+                    {{ form.receiver_name }}
+                    <p class="text-[11px] text-gray-400 mt-1">اگر خالی باشد همان نام خودتان در نظر گرفته می‌شود</p>
+                    {% if form.receiver_name.errors %}
+                    <p class="text-xs text-red-500">{{ form.receiver_name.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                <div class="space-y-1.5">
+                    <label class="block text-sm font-medium text-gray-700">موبایل گیرنده</label>
+                    {{ form.receiver_phone }}
+                    {% if form.receiver_phone.errors %}
+                    <p class="text-xs text-red-500">{{ form.receiver_phone.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="pt-4 flex flex-col-reverse sm:flex-row items-center justify-end gap-3">
+            <a href="{% url 'accounts:profile' %}"
+               class="w-full sm:w-auto text-center px-6 py-2.5 rounded-full border border-gray-300 text-gray-600 text-sm font-medium hover:bg-gray-50 transition-colors">
+                انصراف
+            </a>
+            <button type="submit"
+                    class="w-full sm:w-auto bg-gray-900 text-[#C8F169] font-bold px-8 py-2.5 rounded-full text-sm hover:bg-black active:scale-[0.98] transition-all shadow-sm">
+                ذخیره اطلاعات
+            </button>
+        </div>
+    </form>
+</main>
+{% endblock %}

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" dir="rtl" lang="fa">
+
+{% include './_header.html' %}
+
+<body class="bg-lavender-bg text-text-primary antialiased selection:bg-electric-purple selection:text-white">
+    {% include "order/partials/_messages.html" %}
+
+    <!-- ================= 1. ANNOUNCEMENT BAR ================= -->
+    <div class="w-full bg-gradient-to-r from-dark-base via-[#2A1245] to-[#17151F] text-white border-b border-electric-purple/30 text-xs py-2.5 px-4 md:px-8 relative z-50">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2.5">
+            <div class="flex items-center gap-3">
+                <span class="inline-flex items-center justify-center bg-acid-lime text-dark-base px-2 py-0.5 rounded font-black text-[11px] shadow-sm">+۱۸</span>
+                <p class="font-medium text-[12px] md:text-xs text-white/95">ارسال سریع و مطمئن به سراسر کشور | تضمین سلامت فیزیکی ۱۰۰٪ قطعات</p>
+            </div>
+            <div class="hidden md:flex items-center gap-4 text-white/80 text-xs">
+                <span class="flex items-center gap-1.5 text-white/90">
+                    <span class="material-symbols-outlined text-[16px] text-acid-lime">verified</span>
+                    ضمانت اصالت سخت‌افزار
+                </span>
+                <span class="text-white/30">|</span>
+                <span class="text-vibrant-magenta font-semibold flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[16px]">do_not_disturb_on</span>
+                    فروش تنها برای افراد بالای ۱۸ سال
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= 2. MAIN HEADER & NAVIGATION ================= -->
+    <header class="bg-white/95 backdrop-blur-md sticky top-0 z-40 border-b border-lavender-subtle shadow-sm">
+        <nav aria-label="منوی اصلی" class="w-full px-4 md:px-8 py-3 max-w-7xl mx-auto flex items-center justify-between gap-3 lg:gap-6">
+
+            <!-- Right: hamburger + logo + desktop links -->
+            <div class="flex items-center gap-2 sm:gap-3 lg:gap-8 min-w-0">
+
+                <!-- Hamburger (mobile / tablet) -->
+                <button type="button" id="mobile-menu-open"
+                        aria-label="باز کردن منو" aria-controls="mobile-menu" aria-expanded="false"
+                        class="lg:hidden w-10 h-10 rounded-full bg-lavender-bg border border-lavender-subtle flex items-center justify-center text-text-primary hover:text-electric-purple transition-colors shrink-0">
+                    <span class="material-symbols-outlined text-[24px]">menu</span>
+                </button>
+
+                <a class="flex items-center gap-2.5 group min-w-0" href="{% url 'core:home' %}">
+                    <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-electric-purple via-vibrant-magenta to-bright-orange flex items-center justify-center text-white font-black text-lg sm:text-xl shadow-md shrink-0">V</div>
+                    <span class="text-base sm:text-xl font-black tracking-tight bg-gradient-to-r from-electric-purple via-vibrant-magenta to-bright-orange bg-clip-text text-transparent truncate">
+                        واریان<span class="hidden sm:inline"> | VARIAN TECH</span>
+                    </span>
+                </a>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden lg:flex items-center gap-7 text-sm font-semibold">
+                    {% for category in nav_categories %}
+                    <div class="relative group">
+                        <a href="{{ category.get_absolute_url }}"
+                           class="text-text-muted hover:text-electric-purple transition-colors whitespace-nowrap flex items-center gap-0.5 py-2">
+                            {{ category.name }}
+                            {% if category.active_children %}<span class="material-symbols-outlined text-[18px] transition-transform group-hover:rotate-180">expand_more</span>{% endif %}
+                        </a>
+                        {% if category.active_children %}
+                        <div class="absolute right-0 top-full pt-2 hidden group-hover:block group-focus-within:block z-50">
+                            <div class="bg-white rounded-xl shadow-xl border border-lavender-subtle min-w-52 py-2">
+                                {% for child in category.active_children %}
+                                <a href="{{ child.get_absolute_url }}"
+                                   class="block px-4 py-3 text-sm text-text-muted hover:text-electric-purple hover:bg-lavender-bg transition-colors">
+                                    {{ child.name }}
+                                </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+
+                    <a href="{% url 'blog:post_list' %}"
+                       class="text-xs px-2.5 py-1 rounded-full bg-lavender-subtle text-electric-purple font-black border border-electric-purple/20 flex items-center gap-1 whitespace-nowrap">
+                        <span class="material-symbols-outlined text-[14px]">menu_book</span>
+                        راهنمای خرید
+                    </a>
+                </div>
+            </div>
+
+            <!-- Search (tablet & desktop) -->
+            <div class="flex-1 max-w-md hidden md:block">
+                <form method="GET" action="{% url 'products:product_list' %}" class="relative w-full" role="search">
+                    <input name="q" type="search" value="{{ request.GET.q|default:'' }}"
+                           class="w-full bg-lavender-bg border border-lavender-subtle rounded-full py-2.5 pl-11 pr-5 text-sm font-medium focus:outline-none focus:border-electric-purple focus:ring-0"
+                           placeholder="جستجوی مدل، کویل، پاد یا آیکاس..." aria-label="جستجو">
+                    <button type="submit" aria-label="جستجو" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-electric-purple">
+                        <span class="material-symbols-outlined text-xl">search</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Left: actions -->
+            <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+                <a href="{% url 'order:cart' %}" aria-label="سبد خرید"
+                   class="relative w-10 h-10 rounded-full bg-lavender-bg border border-lavender-subtle flex items-center justify-center hover:text-electric-purple transition-colors">
+                    <span class="material-symbols-outlined text-[22px]">shopping_bag</span>
+                    {% if cart_count %}
+                    <span class="absolute -top-1 -left-1 min-w-5 h-5 px-1 rounded-full bg-vibrant-magenta text-white text-[10px] font-black flex items-center justify-center border-2 border-white">{{ cart_count }}</span>
+                    {% endif %}
+                </a>
+
+                {% if user.is_authenticated %}
+                <a href="{% url 'accounts:profile' %}" aria-label="حساب کاربری"
+                   class="flex items-center gap-2 bg-gradient-to-r from-electric-purple to-[#5E1CD1] text-white w-10 h-10 sm:w-auto sm:h-auto justify-center sm:px-4 sm:py-2.5 rounded-full font-bold text-xs">
+                    <span class="material-symbols-outlined text-[18px]">person</span>
+                    <span class="hidden sm:inline">حساب کاربری</span>
+                </a>
+                <form method="POST" action="{% url 'accounts:logout' %}" class="hidden lg:block">
+                    {% csrf_token %}
+                    <button type="submit" class="text-xs font-bold text-text-muted hover:text-vibrant-magenta transition-colors">خروج</button>
+                </form>
+                {% else %}
+                <a href="{% url 'accounts:login' %}" aria-label="ورود یا ثبت‌نام"
+                   class="flex items-center gap-2 bg-gradient-to-r from-electric-purple to-[#5E1CD1] text-white w-10 h-10 sm:w-auto sm:h-auto justify-center sm:px-4 sm:py-2.5 rounded-full font-bold text-xs">
+                    <span class="material-symbols-outlined text-[18px]">person</span>
+                    <span class="hidden sm:inline">ورود / ثبت‌نام</span>
+                </a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <!-- ================= MOBILE DRAWER ================= -->
+    <div id="mobile-menu" class="lg:hidden fixed inset-0 z-[60] invisible" aria-hidden="true">
+        <!-- Overlay -->
+        <div data-menu-close class="absolute inset-0 bg-dark-base/50 backdrop-blur-sm opacity-0 transition-opacity duration-300"></div>
+
+        <!-- Panel -->
+        <aside role="dialog" aria-modal="true" aria-label="منو"
+               class="absolute top-0 right-0 h-full w-[85%] max-w-sm bg-white shadow-2xl flex flex-col translate-x-full transition-transform duration-300 ease-out">
+
+            <div class="flex items-center justify-between px-5 py-4 border-b border-lavender-subtle">
+                <a href="{% url 'core:home' %}" class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-electric-purple via-vibrant-magenta to-bright-orange flex items-center justify-center text-white font-black">V</div>
+                    <span class="font-black bg-gradient-to-r from-electric-purple to-vibrant-magenta bg-clip-text text-transparent">واریان</span>
+                </a>
+                <button type="button" data-menu-close aria-label="بستن منو"
+                        class="w-10 h-10 rounded-full bg-lavender-bg flex items-center justify-center text-text-muted hover:text-vibrant-magenta transition-colors">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto px-5 py-5 space-y-6">
+                <!-- Search -->
+                <form method="GET" action="{% url 'products:product_list' %}" class="relative" role="search">
+                    <input name="q" type="search" value="{{ request.GET.q|default:'' }}"
+                           class="w-full bg-lavender-bg border border-lavender-subtle rounded-full py-3 pl-11 pr-5 text-sm focus:outline-none focus:border-electric-purple focus:ring-0"
+                           placeholder="جستجوی محصولات..." aria-label="جستجو">
+                    <button type="submit" aria-label="جستجو" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-electric-purple">
+                        <span class="material-symbols-outlined">search</span>
+                    </button>
+                </form>
+
+                <!-- Categories -->
+                <div>
+                    <p class="text-[11px] font-black text-text-muted mb-2 px-1">دسته‌بندی‌ها</p>
+                    <ul class="space-y-1">
+                        {% for category in nav_categories %}
+                        <li>
+                            {% if category.active_children %}
+                            <details class="group">
+                                <summary class="list-none flex items-center justify-between px-3 py-3 rounded-xl text-sm font-bold text-text-primary hover:bg-lavender-bg cursor-pointer select-none">
+                                    {{ category.name }}
+                                    <span class="material-symbols-outlined text-[20px] text-text-muted transition-transform group-open:rotate-180">expand_more</span>
+                                </summary>
+                                <div class="mr-3 pr-3 border-r-2 border-lavender-subtle space-y-0.5 mt-1 mb-2">
+                                    <a href="{{ category.get_absolute_url }}" class="block px-3 py-2.5 rounded-lg text-sm text-electric-purple font-bold hover:bg-lavender-bg">همهٔ {{ category.name }}</a>
+                                    {% for child in category.active_children %}
+                                    <a href="{{ child.get_absolute_url }}" class="block px-3 py-2.5 rounded-lg text-sm text-text-muted hover:text-electric-purple hover:bg-lavender-bg">{{ child.name }}</a>
+                                    {% endfor %}
+                                </div>
+                            </details>
+                            {% else %}
+                            <a href="{{ category.get_absolute_url }}" class="flex items-center justify-between px-3 py-3 rounded-xl text-sm font-bold text-text-primary hover:bg-lavender-bg">
+                                {{ category.name }}
+                                <span class="material-symbols-outlined text-[18px] text-text-muted">chevron_left</span>
+                            </a>
+                            {% endif %}
+                        </li>
+                        {% endfor %}
+                        <li>
+                            <a href="{% url 'blog:post_list' %}" class="flex items-center gap-2 px-3 py-3 rounded-xl text-sm font-black text-electric-purple bg-lavender-subtle">
+                                <span class="material-symbols-outlined text-[18px]">menu_book</span>
+                                راهنمای خرید و مقالات
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Account -->
+                <div>
+                    <p class="text-[11px] font-black text-text-muted mb-2 px-1">حساب کاربری</p>
+                    <ul class="space-y-1 text-sm">
+                        <li>
+                            <a href="{% url 'order:cart' %}" class="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-lavender-bg font-bold">
+                                <span class="material-symbols-outlined text-[20px] text-electric-purple">shopping_bag</span>
+                                سبد خرید
+                                {% if cart_count %}<span class="mr-auto bg-vibrant-magenta text-white text-[10px] font-black px-2 py-0.5 rounded-full">{{ cart_count }}</span>{% endif %}
+                            </a>
+                        </li>
+                        {% if user.is_authenticated %}
+                        <li>
+                            <a href="{% url 'order:order_list' %}" class="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-lavender-bg font-bold">
+                                <span class="material-symbols-outlined text-[20px] text-electric-purple">receipt_long</span>
+                                سفارش‌های من
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'accounts:profile' %}" class="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-lavender-bg font-bold">
+                                <span class="material-symbols-outlined text-[20px] text-electric-purple">person</span>
+                                حساب کاربری
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="px-5 py-4 border-t border-lavender-subtle">
+                {% if user.is_authenticated %}
+                <form method="POST" action="{% url 'accounts:logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="w-full py-3 rounded-full border border-lavender-subtle text-sm font-bold text-text-muted hover:text-vibrant-magenta hover:border-vibrant-magenta/40 transition-colors flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-[18px]">logout</span>
+                        خروج از حساب
+                    </button>
+                </form>
+                {% else %}
+                <a href="{% url 'accounts:login' %}" class="w-full py-3 rounded-full bg-gradient-to-r from-electric-purple to-vibrant-magenta text-white text-sm font-black flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]">login</span>
+                    ورود / ثبت‌نام
+                </a>
+                {% endif %}
+            </div>
+        </aside>
+    </div>
+
+    {% block content %}
+    {% endblock content %}
+
+    {% include "./_footer.html" %}
+
+    <script>
+    (function () {
+        const menu = document.getElementById("mobile-menu");
+        const openBtn = document.getElementById("mobile-menu-open");
+        if (!menu || !openBtn) return;
+        const overlay = menu.querySelector("[data-menu-close].absolute");
+        const panel = menu.querySelector("aside");
+
+        function open() {
+            menu.classList.remove("invisible");
+            menu.setAttribute("aria-hidden", "false");
+            openBtn.setAttribute("aria-expanded", "true");
+            document.documentElement.style.overflow = "hidden";
+            requestAnimationFrame(() => {
+                overlay.classList.remove("opacity-0");
+                panel.classList.remove("translate-x-full");
+            });
+            setTimeout(() => panel.querySelector("input, a, button")?.focus(), 300);
+        }
+        function close() {
+            overlay.classList.add("opacity-0");
+            panel.classList.add("translate-x-full");
+            openBtn.setAttribute("aria-expanded", "false");
+            menu.setAttribute("aria-hidden", "true");
+            document.documentElement.style.overflow = "";
+            setTimeout(() => menu.classList.add("invisible"), 300);
+            openBtn.focus();
+        }
+
+        openBtn.addEventListener("click", open);
+        menu.querySelectorAll("[data-menu-close]").forEach(el => el.addEventListener("click", close));
+        document.addEventListener("keydown", e => { if (e.key === "Escape" && openBtn.getAttribute("aria-expanded") === "true") close(); });
+        // اگر صفحه به دسکتاپ بزرگ شد، منو بسته شود
+        window.matchMedia("(min-width: 1024px)").addEventListener("change", e => { if (e.matches && openBtn.getAttribute("aria-expanded") === "true") close(); });
+    })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% block title %}ورود و ثبتنام | واریان تک{% endblock %}
+{% block content %}
+<div class="max-w-md mx-auto pt-10 sm:pt-14">
+    {% if messages %}
+    <div class="mb-6 space-y-2">
+        {% for message in messages %}
+        <div
+            class="px-4 py-3 rounded-xl text-sm {% if message.tags == 'error' %}bg-red-50 text-red-700{% else %}bg-green-50 text-green-700{% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Tabs -->
+    <div class="bg-purple-50 p-1.5 rounded-2xl flex mb-8 border border-purple-100">
+        <a href="{% url 'accounts:login' %}"
+            class="flex-1 py-2.5 rounded-xl text-sm font-semibold text-center transition
+           {% if active_tab != 'register' %}bg-[#7628F5] text-white shadow{% else %}text-gray-500 hover:text-gray-900{% endif %}">
+            ورود
+        </a>
+        <a href="{% url 'accounts:register' %}"
+            class="flex-1 py-2.5 rounded-xl text-sm font-semibold text-center transition
+           {% if active_tab == 'register' %}bg-[#7628F5] text-white shadow{% else %}text-gray-500 hover:text-gray-900{% endif %}">
+            ثبت نام
+        </a>
+    </div>
+
+    {% if active_tab == 'register' %}
+    <!-- REGISTER -->
+    <h1 class="text-2xl font-bold mb-1">ساخت حساب کاربری</h1>
+    <p class="text-sm text-gray-500 mb-6">اطلاعات خود را وارد کنید تا حساب کاربری خود را بسازید.</p>
+    <form method="post" action="{% url 'accounts:register' %}" class="space-y-4">
+        {% csrf_token %}
+        {% if register_form.non_field_errors %}
+        <div class="text-sm text-red-600">{{ register_form.non_field_errors }}</div>
+        {% endif %}
+        <div>
+            <label class="block text-sm font-medium mb-1">نام<span class="text-red-500">*</span></label>
+            {{ register_form.first_name }}
+            {% if register_form.first_name.errors %}<p class="text-xs text-red-500 mt-1">{{
+                register_form.first_name.errors.0 }}</p>{% endif %}
+        </div>
+        <div>
+            <label class="block text-sm font-medium mb-1">نام خانوادگی <span class="text-red-500">*</span></label>
+            {{ register_form.last_name }}
+            {% if register_form.last_name.errors %}<p class="text-xs text-red-500 mt-1">{{
+                register_form.last_name.errors.0 }}</p>{% endif %}
+        </div>
+        <div>
+            <label class="block text-sm font-medium mb-1">شماره موبایل <span class="text-red-500">*</span></label>
+            {{ register_form.phone }}
+            {% if register_form.phone.errors %}<p class="text-xs text-red-500 mt-1">{{ register_form.phone.errors.0 }}
+            </p>{% endif %}
+        </div>
+        <div>
+            <label class="block text-sm font-medium mb-1">رمز عبور <span class="text-red-500">*</span></label>
+            {{ register_form.password1 }}
+            {% if register_form.password1.errors %}<p class="text-xs text-red-500 mt-1">{{
+                register_form.password1.errors.0 }}</p>{% endif %}
+        </div>
+        <div>
+            <label class="block text-sm font-medium mb-1">تکرار رمز عبور<span class="text-red-500">*</span></label>
+            {{ register_form.password2 }}
+            {% if register_form.password2.errors %}<p class="text-xs text-red-500 mt-1">{{
+                register_form.password2.errors.0 }}</p>{% endif %}
+        </div>
+        <label class="flex items-start gap-2 text-xs text-gray-600">
+            {{ register_form.accept_terms }}
+            <span>با قوانین و مقررات واریان موافقم و تأیید میکنم بیش از ۱۸ سال سن دارم.</span>
+        </label>
+        {% if register_form.accept_terms.errors %}<p class="text-xs text-red-500">{{ register_form.accept_terms.errors.0
+            }}</p>{% endif %}
+        <button type="submit"
+            class="w-full py-3.5 rounded-xl bg-[#7628F5] text-white font-bold hover:opacity-95 transition">
+            ایجاد حساب کاربری
+        </button>
+    </form>
+<br>
+<br>
+<br>
+    {% else %}
+    <!-- LOGIN -->
+    <h1 class="text-2xl font-bold mb-1">ورود به حساب کاربری</h1>
+    <p class="text-sm text-gray-500 mb-6">برای ادامه، اطلاعات حساب کاربری خود را وارد کنید.</p>
+    <form method="post" action="{% url 'accounts:login' %}" class="space-y-4">
+        {% csrf_token %}
+        {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+        {% if login_form.non_field_errors %}
+        <div class="text-sm text-red-600">{{ login_form.non_field_errors }}</div>
+        {% endif %}
+        <div>
+            <label class="block text-sm font-medium mb-1">شماره موبایل <span class="text-red-500">*</span></label>
+            {{ login_form.username }}
+            {% if login_form.username.errors %}<p class="text-xs text-red-500 mt-1">{{ login_form.username.errors.0 }}
+            </p>{% endif %}
+            <p class="text-[11px] text-gray-500 mt-1">با شماره موبایل وارد میشوید.</p>
+        </div>
+        <div>
+            <label class="block text-sm font-medium mb-1">رمز عبور <span class="text-red-500">*</span></label>
+            {{ login_form.password }}
+            {% if login_form.password.errors %}<p class="text-xs text-red-500 mt-1">{{ login_form.password.errors.0 }}
+            </p>{% endif %}
+        </div>
+        <button type="submit"
+            class="w-full py-3.5 rounded-xl bg-[#7628F5] text-white font-bold hover:opacity-95 transition">
+            ورود به حساب کاربری
+        </button>
+    </form>
+    <br>
+    <br>
+    <br>
+    {% endif %}
+</div>
+{% endblock %}

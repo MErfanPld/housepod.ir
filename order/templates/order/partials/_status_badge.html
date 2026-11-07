@@ -1,0 +1,10 @@
+{% load order_tags %}{% with tone=status|status_tone %}
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border whitespace-nowrap
+    {% if tone == 'success' %}bg-emerald-50 text-emerald-700 border-emerald-200
+    {% elif tone == 'danger' %}bg-red-50 text-red-700 border-red-200
+    {% else %}bg-amber-50 text-amber-800 border-amber-200{% endif %}">
+    <span class="w-2 h-2 rounded-full
+        {% if tone == 'success' %}bg-emerald-500{% elif tone == 'danger' %}bg-red-500{% else %}bg-amber-500 animate-pulse{% endif %}"></span>
+    {{ label }}
+</span>
+{% endwith %}

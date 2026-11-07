@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+{% load core_tags order_tags %}
+
+{% block title %}پرداخت سفارش {{ order.order_number }} | واریان{% endblock %}
+
+{% block content %}
+{% include "order/partials/_form_styles.html" %}
+
+<div class="max-w-7xl mx-auto w-full px-4 md:px-8 py-6 space-y-6">
+
+    <nav aria-label="موقعیت فعلی" class="flex items-center gap-1.5 text-xs text-text-muted">
+        <a href="/" class="hover:text-electric-purple transition-colors">خانه</a>
+        <span class="material-symbols-outlined text-[14px]">chevron_left</span>
+        <a href="{% url 'order:order_list' %}" class="hover:text-electric-purple transition-colors">سفارش‌ها</a>
+        <span class="material-symbols-outlined text-[14px]">chevron_left</span>
+        <span class="text-text-primary font-bold">پرداخت و فیش</span>
+    </nav>
+
+    {% include "order/partials/_steps.html" with step=3 %}
+
+    <!-- Header -->
+    <div class="relative bg-white border border-lavender-subtle rounded-3xl p-6 md:p-8 shadow-sm overflow-hidden">
+        <div class="absolute -top-24 -left-24 w-80 h-80 rounded-full bg-electric-purple/10 blur-3xl pointer-events-none"></div>
+        <div class="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div class="flex items-start md:items-center gap-5">
+                <div class="w-16 h-16 rounded-2xl bg-lavender-subtle text-electric-purple flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-[34px]">account_balance</span>
+                </div>
+                <div>
+                    <div class="flex flex-wrap items-center gap-3 mb-2">
+                        <h1 class="text-2xl font-black text-text-primary">پرداخت کارت‌به‌کارت</h1>
+                        {% include "order/partials/_status_badge.html" with status=order.status label=order.get_status_display %}
+                    </div>
+                    <p class="text-sm text-text-muted max-w-xl leading-relaxed">مبلغ را به یکی از کارت‌های زیر واریز کنید، سپس تصویر فیش را بارگذاری کنید تا سفارش بررسی شود.</p>
+                    <button type="button" data-copy="{{ order.order_number }}" class="mt-2 inline-flex items-center gap-1 text-xs text-text-muted hover:text-electric-purple font-mono" dir="ltr">
+                        #{{ order.order_number }}
+                        <span class="material-symbols-outlined text-[14px]">content_copy</span>
+                    </button>
+                </div>
+            </div>
+            <div class="md:text-left border-t md:border-t-0 md:border-r border-lavender-subtle pt-4 md:pt-0 md:pr-8 shrink-0">
+                <span class="text-xs text-text-muted">مبلغ قابل واریز</span>
+                <div class="text-3xl font-black text-electric-purple font-num">{{ order.total|toman }} <span class="text-xs font-normal text-text-muted">تومان</span></div>
+                <span class="text-[11px] text-text-muted font-num">معادل {{ order.total|to_rial }} ریال</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div class="lg:col-span-7 space-y-6">
+
+            <!-- Bank cards -->
+            <section class="bg-white border border-lavender-subtle rounded-3xl p-6 shadow-sm">
+                <h2 class="font-black text-text-primary mb-1 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[22px] text-electric-purple">credit_card</span>
+                    ۱. واریز به یکی از کارت‌ها
+                </h2>
+                <p class="text-xs text-text-muted mb-5">روی شماره کارت یا مبلغ بزنید تا کپی شود.</p>
+
+                {% if bank_accounts %}
+                <div class="space-y-4">
+                    {% for bank in bank_accounts %}
+                    <div class="relative rounded-2xl p-5 sm:p-6 text-white overflow-hidden aspect-[1.7/1] sm:aspect-auto sm:min-h-[200px] flex flex-col justify-between
+                        {% cycle 'bg-gradient-to-br from-[#17151F] via-[#2D164B] to-[#6A1FE9]' 'bg-gradient-to-br from-[#17151F] via-[#3A1230] to-[#D92A8E]' 'bg-gradient-to-br from-[#17151F] via-[#0E3346] to-[#0FAFCF]' %}">
+                        <div class="absolute -left-10 -bottom-10 w-48 h-48 rounded-full bg-white/10 blur-2xl pointer-events-none"></div>
+                        <div class="relative flex items-start justify-between">
+                            <div>
+                                <p class="text-xs text-white/60">بانک</p>
+                                <p class="font-black">{{ bank.bank_name|default:bank.title }}</p>
+                            </div>
+                            <div class="w-11 h-8 rounded-md bg-gradient-to-br from-amber-200 to-amber-400 opacity-90"></div>
+                        </div>
+                        <button type="button" data-copy="{{ bank.formatted_card }}" data-copy-digits
+                                class="relative group flex items-center justify-between gap-3 w-full text-right my-4" aria-label="کپی شماره کارت">
+                            <span class="text-xl sm:text-2xl font-mono tracking-[0.18em] select-all" dir="ltr">{{ bank.formatted_card }}</span>
+                            <span class="material-symbols-outlined text-[20px] text-white/60 group-hover:text-acid-lime transition-colors">content_copy</span>
+                        </button>
+                        <div class="relative flex items-end justify-between text-sm">
+                            <div>
+                                <p class="text-[11px] text-white/60">به نام</p>
+                                <p class="font-bold">{{ bank.owner_name }}</p>
+                            </div>
+                            <span class="text-[10px] font-mono text-white/40 tracking-widest">VARIAN</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-sm text-amber-900 flex items-start gap-2">
+                    <span class="material-symbols-outlined text-[20px]">info</span>
+                    اطلاعات کارت هنوز ثبت نشده است. لطفاً برای دریافت شماره کارت با پشتیبانی تماس بگیرید.
+                </div>
+                {% endif %}
+
+                <button type="button" data-copy="{{ order.total|floatformat:0 }}"
+                        class="mt-4 w-full flex items-center justify-between gap-3 p-4 rounded-2xl bg-lavender-card border-2 border-dashed border-electric-purple/30 hover:border-electric-purple transition-colors group">
+                    <span class="text-sm font-bold text-text-primary">مبلغ دقیق واریز</span>
+                    <span class="flex items-center gap-2">
+                        <span class="text-xl font-black text-electric-purple font-num">{{ order.total|toman }} تومان</span>
+                        <span class="material-symbols-outlined text-[18px] text-text-muted group-hover:text-electric-purple">content_copy</span>
+                    </span>
+                </button>
+            </section>
+
+            <!-- Receipt upload -->
+            {% if order.can_upload_receipt %}
+            <section class="vf bg-white border border-lavender-subtle rounded-3xl p-6 shadow-sm">
+                <h2 class="font-black text-text-primary mb-1 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[22px] text-electric-purple">upload_file</span>
+                    ۲. بارگذاری فیش واریز
+                </h2>
+                <p class="text-xs text-text-muted mb-5">پس از واریز، تصویر رسید را ارسال کنید. کد پیگیری بررسی را سریع‌تر می‌کند.</p>
+                <form method="post" action="{% url 'order:upload_receipt' order.order_number %}" enctype="multipart/form-data" class="space-y-4">
+                    {% csrf_token %}
+                    {% if receipt_form.non_field_errors %}
+                    <div class="bg-red-50 border border-red-200 text-red-700 rounded-xl p-3 text-xs">{{ receipt_form.non_field_errors }}</div>
+                    {% endif %}
+                    {% for field in receipt_form %}
+                    <div class="{% if field.errors %}has-error{% endif %}">
+                        <label for="{{ field.id_for_label }}" class="block text-sm font-bold text-text-primary mb-2">
+                            {{ field.label }}{% if field.field.required %} <span class="text-vibrant-magenta">*</span>{% endif %}
+                        </label>
+                        {{ field }}
+                        {% if field.help_text %}<p class="text-[11px] text-text-muted mt-1">{{ field.help_text }}</p>{% endif %}
+                        {% for error in field.errors %}<p class="text-xs text-red-600 mt-1">{{ error }}</p>{% endfor %}
+                    </div>
+                    {% endfor %}
+                    <img id="receipt-preview" alt="پیش‌نمایش فیش" class="hidden max-h-60 rounded-xl border border-lavender-subtle mx-auto">
+                    <button type="submit"
+                            class="w-full py-3.5 rounded-full bg-gradient-to-r from-electric-purple to-vibrant-magenta text-white font-black shadow-lg shadow-electric-purple/25 hover:brightness-110 active:scale-[0.99] transition-all flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-[20px]">send</span>
+                        ارسال فیش و ثبت برای بررسی
+                    </button>
+                </form>
+            </section>
+            {% endif %}
+
+            <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200 flex items-start gap-3 text-xs text-amber-900 leading-relaxed">
+                <span class="material-symbols-outlined text-[22px] text-amber-700 shrink-0">warning</span>
+                <p><strong class="block mb-0.5">نکتهٔ مهم:</strong>تا زمان اعلام نتیجهٔ بررسی، از واریز مجدد یا ارسال فیش تکراری خودداری کنید. در صورت مغایرت، پشتیبانی با شما تماس می‌گیرد.</p>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="lg:col-span-5 space-y-4 lg:sticky lg:top-24">
+            <div class="bg-white border border-lavender-subtle rounded-3xl p-6 shadow-sm">
+                <h3 class="font-black text-text-primary mb-4 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[20px]">shopping_basket</span>
+                    اقلام سفارش
+                </h3>
+                <ul class="space-y-3 text-sm divide-y divide-lavender-subtle">
+                    {% for item in order.items.all %}
+                    <li class="flex justify-between gap-3 pt-3 first:pt-0">
+                        <span class="text-text-primary">{{ item.product_name }} <span class="text-text-muted font-num">× {{ item.quantity|fa_num }}</span></span>
+                        <span class="font-bold whitespace-nowrap font-num">{{ item.line_total|toman }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <div class="mt-4 pt-4 border-t border-lavender-subtle flex justify-between items-baseline">
+                    <span class="font-black">جمع کل</span>
+                    <span class="text-xl font-black text-electric-purple font-num">{{ order.total|toman }} <span class="text-xs font-normal text-text-muted">تومان</span></span>
+                </div>
+            </div>
+
+            {% if latest_receipt %}
+            {% with tone=latest_receipt.status|status_tone %}
+            <div class="bg-white border border-lavender-subtle rounded-3xl p-5 shadow-sm flex items-center gap-4">
+                <span class="w-12 h-12 rounded-xl flex items-center justify-center shrink-0
+                    {% if tone == 'success' %}bg-emerald-50 text-emerald-600{% elif tone == 'danger' %}bg-red-50 text-red-600{% else %}bg-amber-50 text-amber-600{% endif %}">
+                    <span class="material-symbols-outlined">receipt</span>
+                </span>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-bold text-text-primary">آخرین فیش: {{ latest_receipt.get_status_display }}</p>
+                    <p class="text-[11px] text-text-muted font-num">{{ latest_receipt.uploaded_at|jalali }} · {{ latest_receipt.uploaded_at|time:"H:i"|fa_num }}</p>
+                </div>
+                {% if latest_receipt.image %}
+                <a href="{{ latest_receipt.image.url }}" target="_blank" rel="noopener" class="text-xs font-bold text-electric-purple hover:text-vibrant-magenta shrink-0">مشاهده</a>
+                {% endif %}
+            </div>
+            {% endwith %}
+            {% endif %}
+
+            <a href="{% url 'order:order_detail' order.order_number %}"
+               class="w-full py-3 rounded-full border border-lavender-subtle bg-white text-sm font-bold text-text-primary hover:border-electric-purple hover:text-electric-purple transition-colors flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">timeline</span>
+                جزئیات و وضعیت سفارش
+            </a>
+        </aside>
+    </div>
+</div>
+
+{% include "order/partials/_copy_script.html" %}
+<script>
+// پیش‌نمایش تصویر فیش قبل از ارسال
+document.querySelectorAll('.vf input[type=file]').forEach(function (input) {
+    input.addEventListener("change", function () {
+        const preview = document.getElementById("receipt-preview");
+        const file = input.files && input.files[0];
+        if (!preview || !file || !file.type.startsWith("image/")) return;
+        preview.src = URL.createObjectURL(file);
+        preview.classList.remove("hidden");
+    });
+});
+</script>
+{% endblock %}

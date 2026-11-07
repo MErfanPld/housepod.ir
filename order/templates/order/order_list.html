@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% load core_tags order_tags %}
+
+{% block title %}سفارش‌های من | واریان{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto w-full px-4 md:px-8 py-6 space-y-6">
+
+    <nav aria-label="موقعیت فعلی" class="flex items-center gap-1.5 text-xs text-text-muted">
+        <a href="/" class="hover:text-electric-purple transition-colors">خانه</a>
+        <span class="material-symbols-outlined text-[14px]">chevron_left</span>
+        <span class="text-text-primary font-bold">سفارش‌های من</span>
+    </nav>
+
+    <div class="bg-white border border-lavender-subtle rounded-3xl p-6 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="flex items-center gap-4">
+            <div class="w-14 h-14 rounded-2xl bg-lavender-subtle text-electric-purple flex items-center justify-center">
+                <span class="material-symbols-outlined text-[30px]">receipt_long</span>
+            </div>
+            <div>
+                <h1 class="text-2xl font-black text-text-primary">سفارش‌های من</h1>
+                <p class="text-sm text-text-muted mt-1">وضعیت پرداخت و ارسال سفارش‌هایتان را اینجا پیگیری کنید.</p>
+            </div>
+        </div>
+        {% if orders %}
+        <span class="self-start sm:self-center bg-dark-base text-acid-lime text-xs font-black px-3 py-1 rounded-full font-num">
+            {% if paginator %}{{ paginator.count|fa_num }}{% else %}{{ orders|length|fa_num }}{% endif %} سفارش
+        </span>
+        {% endif %}
+    </div>
+
+    {% if not orders %}
+    <div class="bg-white border border-dashed border-lavender-subtle rounded-3xl py-16 px-6 text-center">
+        <div class="w-20 h-20 rounded-full bg-lavender-card flex items-center justify-center text-electric-purple/50 mx-auto mb-4">
+            <span class="material-symbols-outlined text-[40px]">inventory_2</span>
+        </div>
+        <h2 class="font-black text-lg text-text-primary">هنوز سفارشی ثبت نکرده‌اید</h2>
+        <p class="text-sm text-text-muted mt-1 mb-6">اولین خریدتان را با ضمانت اصالت انجام دهید.</p>
+        <a href="{% url 'products:product_list' %}"
+           class="inline-flex items-center gap-2 bg-dark-base text-acid-lime text-sm font-black py-3 px-6 rounded-full hover:bg-electric-purple hover:text-white transition-colors">
+            <span class="material-symbols-outlined text-[18px]">storefront</span>
+            مشاهدهٔ فروشگاه
+        </a>
+    </div>
+    {% else %}
+
+    <ul class="space-y-4">
+        {% for order in orders %}
+        {% with tone=order.status|status_tone %}
+        <li class="group bg-white border border-lavender-subtle rounded-3xl shadow-sm hover:shadow-lg hover:shadow-electric-purple/5 hover:border-electric-purple/30 transition-all">
+            <a href="{{ order.get_absolute_url }}" class="block p-5 sm:p-6">
+                <div class="flex items-start justify-between gap-4">
+                    <div class="flex items-start gap-4 min-w-0">
+                        <span class="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0
+                            {% if tone == 'success' %}bg-emerald-50 text-emerald-600{% elif tone == 'danger' %}bg-red-50 text-red-600{% else %}bg-amber-50 text-amber-600{% endif %}">
+                            <span class="material-symbols-outlined">{{ order.status|status_icon }}</span>
+                        </span>
+                        <div class="min-w-0">
+                            <p class="font-mono font-bold text-sm text-text-primary group-hover:text-electric-purple transition-colors" dir="ltr">#{{ order.order_number }}</p>
+                            <p class="text-xs text-text-muted mt-1 font-num flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[14px]">calendar_today</span>
+                                {{ order.created_at|jalali }} · {{ order.created_at|time:"H:i"|fa_num }}
+                            </p>
+                        </div>
+                    </div>
+                    {% include "order/partials/_status_badge.html" with status=order.status label=order.get_status_display %}
+                </div>
+
+                <div class="mt-5 pt-4 border-t border-lavender-subtle flex items-center justify-between gap-3">
+                    <div>
+                        <span class="text-[11px] text-text-muted">مبلغ کل</span>
+                        <p class="font-black text-text-primary font-num">{{ order.total|toman }} <span class="text-xs font-normal text-text-muted">تومان</span></p>
+                    </div>
+                    <span class="inline-flex items-center gap-1 text-xs font-bold text-electric-purple">
+                        جزئیات سفارش
+                        <span class="material-symbols-outlined text-[16px] group-hover:-translate-x-1 transition-transform">arrow_back</span>
+                    </span>
+                </div>
+            </a>
+            {% if order.can_upload_receipt %}
+            <div class="px-5 sm:px-6 pb-5 -mt-1">
+                <a href="{% url 'order:payment' order.order_number %}"
+                   class="flex items-center justify-between gap-3 p-3 rounded-2xl bg-amber-50 border border-amber-200 text-xs text-amber-900 hover:bg-amber-100 transition-colors">
+                    <span class="flex items-center gap-2 font-bold">
+                        <span class="material-symbols-outlined text-[18px]">upload_file</span>
+                        {% if order.status == 'rejected' %}فیش رد شد؛ فیش جدید ارسال کنید{% else %}منتظر پرداخت و ارسال فیش{% endif %}
+                    </span>
+                    <span class="font-black">پرداخت</span>
+                </a>
+            </div>
+            {% endif %}
+        </li>
+        {% endwith %}
+        {% endfor %}
+    </ul>
+
+    {% if is_paginated %}
+    <nav aria-label="صفحه‌بندی" class="flex items-center justify-center gap-2 text-sm font-num">
+        {% if page_obj.has_previous %}
+        <a href="?{% query_replace page=page_obj.previous_page_number %}" aria-label="صفحهٔ قبل"
+           class="w-10 h-10 rounded-full bg-white border border-lavender-subtle flex items-center justify-center hover:border-electric-purple hover:text-electric-purple transition-colors">
+            <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+        </a>
+        {% endif %}
+        <span class="px-4 h-10 rounded-full bg-white border border-lavender-subtle flex items-center text-text-muted">
+            صفحهٔ {{ page_obj.number|fa_num }} از {{ paginator.num_pages|fa_num }}
+        </span>
+        {% if page_obj.has_next %}
+        <a href="?{% query_replace page=page_obj.next_page_number %}" aria-label="صفحهٔ بعد"
+           class="w-10 h-10 rounded-full bg-white border border-lavender-subtle flex items-center justify-center hover:border-electric-purple hover:text-electric-purple transition-colors">
+            <span class="material-symbols-outlined text-[20px]">chevron_left</span>
+        </a>
+        {% endif %}
+    </nav>
+    {% endif %}
+    {% endif %}
+</div>
+{% endblock %}

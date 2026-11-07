@@ -1,0 +1,120 @@
+{% load core_tags %}
+{% comment %}
+  کارت محصول
+  پارامترها: product (Product) ، accent: purple | orange | cyan | lime
+{% endcomment %}
+<article class="group bg-white rounded-2xl border border-lavender-subtle overflow-hidden flex flex-col justify-between hover:shadow-xl transition-all duration-300
+    {% if accent == 'orange' %}hover:border-bright-orange/40 hover:shadow-bright-orange/10
+    {% elif accent == 'cyan' %}hover:border-electric-cyan/40 hover:shadow-electric-cyan/10
+    {% elif accent == 'lime' %}hover:border-acid-lime/40 hover:shadow-acid-lime/10
+    {% else %}hover:border-electric-purple/40 hover:shadow-electric-purple/10{% endif %}">
+
+    <div class="relative p-5 bg-gradient-to-b from-lavender-card to-white flex flex-col items-center">
+        <!-- Top Badges & Actions -->
+        <div class="w-full flex items-center justify-between z-10">
+            {% if product.has_discount %}
+            <span class="bg-vibrant-magenta text-white px-2.5 py-0.5 rounded-full text-[11px] font-black shadow-sm font-num">
+                {{ product.discount_percent|fa_num }}٪ تخفیف
+            </span>
+            {% elif product.is_featured %}
+            <span class="text-white px-2.5 py-0.5 rounded-full text-[11px] font-black shadow-sm
+                {% if accent == 'orange' %}bg-bright-orange
+                {% elif accent == 'cyan' %}bg-gradient-to-r from-electric-cyan to-blue-600
+                {% elif accent == 'lime' %}bg-dark-base !text-acid-lime
+                {% else %}bg-electric-purple{% endif %}">
+                پیشنهاد ویژه
+            </span>
+            {% else %}
+            <span></span>
+            {% endif %}
+            <button type="button" aria-label="افزودن به علاقه‌مندی" data-product-id="{{ product.pk }}"
+                class="w-8 h-8 rounded-full bg-white shadow-sm border border-lavender-subtle flex items-center justify-center text-text-muted hover:text-vibrant-magenta transition-colors">
+                <span class="material-symbols-outlined text-[18px]">favorite</span>
+            </button>
+        </div>
+
+        <!-- Product Image -->
+        <a href="{{ product.get_absolute_url }}" class="w-full h-48 py-2 flex items-center justify-center relative">
+            <div class="absolute w-32 h-32 rounded-full blur-lg transition-all
+                {% if accent == 'orange' %}bg-bright-orange/5 group-hover:bg-bright-orange/15
+                {% elif accent == 'cyan' %}bg-electric-cyan/5 group-hover:bg-electric-cyan/15
+                {% elif accent == 'lime' %}bg-dark-base/5 group-hover:bg-acid-lime/10
+                {% else %}bg-electric-purple/5 group-hover:bg-electric-purple/15{% endif %}"></div>
+            {% with gallery=product.images.all %}
+            {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy"
+                 class="max-h-full object-contain group-hover:scale-105 transition-transform duration-300 relative z-10">
+            {% elif gallery %}
+            <img src="{{ gallery.0.image.url }}" alt="{{ gallery.0.alt|default:product.name }}" loading="lazy"
+                 class="max-h-full object-contain group-hover:scale-105 transition-transform duration-300 relative z-10">
+            {% else %}
+            <span class="material-symbols-outlined text-6xl text-text-muted/30 relative z-10">image</span>
+            {% endif %}
+            {% endwith %}
+        </a>
+
+        <!-- Quick Spec Pills -->
+        {% if product.badge_1 or product.badge_2 %}
+        <div class="w-full flex flex-wrap items-center justify-center gap-2 mt-2">
+            {% if product.badge_1 %}
+            <span class="text-[10px] font-bold bg-white px-2.5 py-0.5 rounded-full border border-lavender-subtle text-text-muted">{{ product.badge_1 }}</span>
+            {% endif %}
+            {% if product.badge_2 %}
+            <span class="text-[10px] font-bold bg-white px-2.5 py-0.5 rounded-full border border-lavender-subtle
+                {% if accent == 'orange' %}text-bright-orange{% elif accent == 'cyan' %}text-electric-cyan{% elif accent == 'lime' %}text-text-primary{% else %}text-electric-purple{% endif %}">{{ product.badge_2 }}</span>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="p-5 flex flex-col flex-1 justify-between gap-4">
+        <div>
+            <div class="flex items-center justify-between text-xs text-text-muted mb-1">
+                <span class="font-mono uppercase font-black
+                    {% if accent == 'orange' %}text-bright-orange{% elif accent == 'cyan' %}text-blue-600{% elif accent == 'lime' %}text-text-primary{% else %}text-electric-purple{% endif %}">
+                    {{ product.brand|default:product.category.name }}
+                </span>
+                {% if product.stock <= 3 %}
+                <span class="text-amber-600 font-bold flex items-center gap-1 text-[11px]">
+                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                    موجودی محدود
+                </span>
+                {% else %}
+                <span class="text-emerald-600 font-bold flex items-center gap-1 text-[11px]">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    موجود در انبار
+                </span>
+                {% endif %}
+            </div>
+            <h3 class="font-bold text-text-primary text-base leading-snug transition-colors
+                {% if accent == 'orange' %}group-hover:text-bright-orange{% elif accent == 'cyan' %}group-hover:text-blue-600{% else %}group-hover:text-electric-purple{% endif %}">
+                <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+            </h3>
+            {% if product.name_en %}
+            <p class="text-xs text-text-muted font-mono mt-0.5 line-clamp-1" dir="ltr">{{ product.name_en }}</p>
+            {% endif %}
+        </div>
+
+        <div class="pt-3 border-t border-lavender-subtle flex items-center justify-between">
+            <div>
+                {% if product.has_discount %}
+                <div class="text-[11px] text-text-muted line-through font-num">{{ product.price|toman }}</div>
+                {% else %}
+                <div class="text-[11px] font-num invisible" aria-hidden="true">۰</div>
+                {% endif %}
+                <div class="text-base font-black text-text-primary font-num">
+                    {{ product.final_price|toman }} <span class="text-xs font-normal text-text-muted">تومان</span>
+                </div>
+            </div>
+            <a href="{{ product.get_absolute_url }}"
+               class="text-white px-4 py-2.5 rounded-full font-bold text-xs shadow-md active:scale-95 transition-all flex items-center gap-1
+                {% if accent == 'orange' %}bg-gradient-to-r from-bright-orange to-red-600 shadow-bright-orange/20 hover:brightness-110
+                {% elif accent == 'cyan' %}bg-gradient-to-r from-electric-cyan to-blue-600 shadow-electric-cyan/20 hover:brightness-110
+                {% elif accent == 'lime' %}bg-dark-base hover:bg-electric-purple
+                {% else %}bg-gradient-to-r from-electric-purple to-indigo-600 shadow-electric-purple/20 hover:from-vibrant-magenta hover:to-electric-purple{% endif %}">
+                <span class="material-symbols-outlined text-[16px]">shopping_bag</span>
+                <span>خرید</span>
+            </a>
+        </div>
+    </div>
+</article>

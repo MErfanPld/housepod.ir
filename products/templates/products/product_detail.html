@@ -1,0 +1,466 @@
+{% extends "base.html" %}
+{% load core_tags %}
+
+{% block title %}{{ product.name }} | واریان تک{% endblock %}
+
+{% block content %}
+{% with gallery=product.images.all %}
+
+<!-- ================= BREADCRUMBS ================= -->
+<nav aria-label="موقعیت فعلی" class="max-w-7xl mx-auto w-full px-4 md:px-8 py-5">
+    <ol class="flex items-center gap-1.5 text-xs text-text-muted flex-wrap">
+        <li>
+            <a href="/" class="hover:text-electric-purple transition-colors flex items-center gap-1">
+                <span class="material-symbols-outlined text-[16px]">home</span>
+                صفحه اصلی
+            </a>
+        </li>
+        <li><span class="material-symbols-outlined text-[14px]">chevron_left</span></li>
+        <li><a href="{% url 'products:product_list' %}" class="hover:text-electric-purple transition-colors">محصولات</a></li>
+        {% if product.category.parent %}
+        <li><span class="material-symbols-outlined text-[14px]">chevron_left</span></li>
+        <li><a href="{{ product.category.parent.get_absolute_url }}" class="hover:text-electric-purple transition-colors">{{ product.category.parent.name }}</a></li>
+        {% endif %}
+        <li><span class="material-symbols-outlined text-[14px]">chevron_left</span></li>
+        <li><a href="{{ product.category.get_absolute_url }}" class="hover:text-electric-purple transition-colors">{{ product.category.name }}</a></li>
+        <li><span class="material-symbols-outlined text-[14px]">chevron_left</span></li>
+        <li aria-current="page" class="text-text-primary font-bold line-clamp-1">{{ product.name }}</li>
+    </ol>
+</nav>
+
+<!-- ================= MAIN SHOWCASE ================= -->
+<main class="max-w-7xl mx-auto w-full px-4 md:px-8 pb-12">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+        <!-- Gallery -->
+        <section aria-label="گالری تصاویر کالا" class="lg:col-span-6 lg:sticky lg:top-24 bg-white rounded-3xl p-5 sm:p-6 border border-lavender-subtle shadow-sm relative">
+
+            <!-- Actions -->
+            <div class="absolute top-5 left-5 z-10 flex flex-col gap-2">
+                <button type="button" id="wishlist-btn" data-product-id="{{ product.pk }}" aria-pressed="false" title="افزودن به علاقه‌مندی‌ها"
+                        class="w-10 h-10 rounded-full bg-white/90 backdrop-blur-md border border-lavender-subtle text-text-muted hover:text-vibrant-magenta shadow-sm flex items-center justify-center transition-all hover:scale-105 active:scale-95">
+                    <span class="material-symbols-outlined text-xl">favorite</span>
+                </button>
+                <button type="button" id="share-btn" title="اشتراک‌گذاری"
+                        class="w-10 h-10 rounded-full bg-white/90 backdrop-blur-md border border-lavender-subtle text-text-muted hover:text-electric-purple shadow-sm flex items-center justify-center transition-all hover:scale-105 active:scale-95">
+                    <span class="material-symbols-outlined text-xl">share</span>
+                </button>
+            </div>
+
+            <!-- Spec badges -->
+            {% if product.badge_1 or product.badge_2 or product.badge_3 %}
+            <div class="absolute top-5 right-5 z-10 flex flex-col items-start gap-1.5 pointer-events-none">
+                {% if product.badge_1 %}
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-dark-base text-acid-lime shadow-sm">
+                    <span class="w-1.5 h-1.5 rounded-full bg-acid-lime"></span>{{ product.badge_1 }}
+                </span>
+                {% endif %}
+                {% if product.badge_2 %}
+                <span class="px-3 py-1 rounded-full text-xs font-bold bg-white border border-lavender-subtle text-electric-purple shadow-sm">{{ product.badge_2 }}</span>
+                {% endif %}
+                {% if product.badge_3 %}
+                <span class="px-3 py-1 rounded-full text-xs font-bold bg-white border border-lavender-subtle text-text-primary shadow-sm">{{ product.badge_3 }}</span>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <!-- Main image -->
+            <div class="relative w-full aspect-square rounded-2xl bg-gradient-to-b from-lavender-card to-white flex items-center justify-center overflow-hidden my-2">
+                <div class="absolute w-2/3 h-2/3 rounded-full bg-electric-purple/10 blur-3xl"></div>
+                {% if product.image %}
+                <img id="main-product-image" src="{{ product.image.url }}" alt="{{ product.name }}"
+                     class="relative z-10 object-contain w-4/5 h-4/5 drop-shadow-2xl transition-opacity duration-200">
+                {% elif gallery %}
+                <img id="main-product-image" src="{{ gallery.0.image.url }}" alt="{{ gallery.0.alt|default:product.name }}"
+                     class="relative z-10 object-contain w-4/5 h-4/5 drop-shadow-2xl transition-opacity duration-200">
+                {% else %}
+                <div class="relative z-10 flex flex-col items-center gap-2 text-text-muted/40">
+                    <span class="material-symbols-outlined text-7xl">image</span>
+                    <span class="text-xs">بدون تصویر</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Thumbnails -->
+            {% if gallery and product.image or gallery|length > 1 %}
+            <div class="mt-4 flex items-center justify-center gap-3 overflow-x-auto py-2" role="list">
+                {% if product.image %}
+                <button type="button" role="listitem" data-thumb data-src="{{ product.image.url }}" data-alt="{{ product.name }}" aria-current="true"
+                        class="thumb w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-lavender-card border-2 border-electric-purple p-1.5 flex items-center justify-center transition-all shrink-0">
+                    <img src="{{ product.image.url }}" alt="" class="w-full h-full object-contain">
+                </button>
+                {% endif %}
+                {% for img in gallery %}
+                <button type="button" role="listitem" data-thumb data-src="{{ img.image.url }}" data-alt="{{ img.alt|default:product.name }}"
+                        {% if not product.image and forloop.first %}aria-current="true"{% endif %}
+                        class="thumb w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-lavender-card border-2 p-1.5 flex items-center justify-center transition-all shrink-0
+                        {% if not product.image and forloop.first %}border-electric-purple{% else %}border-transparent hover:border-lavender-subtle{% endif %}">
+                    <img src="{{ img.image.url }}" alt="" loading="lazy" class="w-full h-full object-contain">
+                </button>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </section>
+
+        <!-- Details & Purchase -->
+        <section aria-label="مشخصات و خرید محصول" class="lg:col-span-6">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-lavender-subtle shadow-sm flex flex-col gap-6">
+
+                <!-- Brand / SKU -->
+                <div class="flex items-center justify-between flex-wrap gap-2 pb-4 border-b border-lavender-subtle">
+                    <div class="flex items-center gap-2 flex-wrap">
+                        {% if product.brand %}
+                        <span class="px-3 py-1 rounded-full text-xs font-black bg-lavender-subtle text-electric-purple font-mono uppercase">{{ product.brand }}</span>
+                        {% endif %}
+                        <a href="{{ product.category.get_absolute_url }}" class="px-3 py-1 rounded-full text-xs font-bold bg-lavender-card text-text-muted hover:text-electric-purple transition-colors">{{ product.category.name }}</a>
+                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200">
+                            <span class="material-symbols-outlined text-[15px]">verified</span>
+                            تضمین اصالت کالا
+                        </span>
+                    </div>
+                    <span class="text-xs text-text-muted font-mono" dir="ltr">SKU: {{ product.sku }}</span>
+                </div>
+
+                <!-- Title -->
+                <div class="flex flex-col gap-1.5">
+                    <h1 class="text-2xl md:text-3xl font-black text-text-primary leading-snug">{{ product.name }}</h1>
+                    {% if product.name_en %}
+                    <p class="text-sm font-medium text-text-muted font-mono" dir="ltr">{{ product.name_en }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Rating & stock -->
+                <div class="flex items-center gap-x-4 gap-y-2 text-xs flex-wrap">
+                    {% if product.reviews_count %}
+                    <div class="flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[18px] text-amber-500" style="font-variation-settings:'FILL' 1">star</span>
+                        <span class="font-black text-text-primary text-sm font-num">{{ product.rating|fa_num }}</span>
+                        <span class="text-text-muted">از ۵ · <span class="font-num">{{ product.reviews_count|fa_num }}</span> نظر</span>
+                    </div>
+                    <span class="w-px h-4 bg-lavender-subtle"></span>
+                    {% endif %}
+                    {% if product.is_in_stock %}
+                        {% if product.stock <= 3 %}
+                        <span class="text-amber-600 font-bold flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                            فقط <span class="font-num">{{ product.stock|fa_num }}</span> عدد باقی مانده
+                        </span>
+                        {% else %}
+                        <span class="text-emerald-600 font-bold flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                            موجود در انبار · آمادهٔ ارسال
+                        </span>
+                        {% endif %}
+                    {% else %}
+                    <span class="text-red-500 font-bold flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                        ناموجود
+                    </span>
+                    {% endif %}
+                </div>
+
+                <!-- Price -->
+                <div class="bg-lavender-card p-5 rounded-2xl border border-lavender-subtle flex items-center justify-between gap-4">
+                    <div>
+                        <span class="text-xs text-text-muted block mb-1">قیمت نهایی</span>
+                        <div class="flex items-baseline gap-2">
+                            <span class="text-3xl font-black text-electric-purple font-num tracking-tight">{{ product.final_price|toman }}</span>
+                            <span class="text-sm font-bold text-text-primary">تومان</span>
+                        </div>
+                    </div>
+                    {% if product.has_discount %}
+                    <div class="flex flex-col items-end gap-1">
+                        <span class="bg-vibrant-magenta text-white text-xs font-black px-2.5 py-0.5 rounded-full shadow-sm font-num">{{ product.discount_percent|fa_num }}٪ تخفیف</span>
+                        <span class="text-xs text-text-muted line-through font-num">{{ product.price|toman }} تومان</span>
+                    </div>
+                    {% endif %}
+                </div>
+
+                {% if product.short_description %}
+                <p class="text-sm text-text-muted leading-relaxed">{{ product.short_description }}</p>
+                {% endif %}
+
+                <!-- Quick facts -->
+                {% if product.flavor or product.compatibility %}
+                <div class="flex flex-wrap gap-2">
+                    {% if product.flavor %}
+                    <span class="inline-flex items-center gap-1.5 bg-white border border-lavender-subtle rounded-full px-3 py-1.5 text-xs">
+                        <span class="material-symbols-outlined text-[16px] text-vibrant-magenta">local_florist</span>
+                        <span class="text-text-muted">طعم:</span>
+                        <span class="font-bold text-text-primary">{{ product.flavor }}</span>
+                    </span>
+                    {% endif %}
+                    <span class="inline-flex items-center gap-1.5 bg-white border border-lavender-subtle rounded-full px-3 py-1.5 text-xs">
+                        <span class="material-symbols-outlined text-[16px] text-electric-cyan">devices</span>
+                        <span class="text-text-muted">سازگاری:</span>
+                        <span class="font-bold text-text-primary">{{ product.get_compatibility_display }}</span>
+                    </span>
+                </div>
+                {% endif %}
+
+                <!-- Add to cart -->
+                {% if product.is_in_stock %}
+                <form id="add-to-cart-form" method="post" action="{% url 'order:add_to_cart' slug=product.slug %}"
+                      class="flex flex-col sm:flex-row items-stretch gap-3 pt-1">
+                    {% csrf_token %}
+                    <div class="flex items-center justify-between border border-lavender-subtle rounded-full bg-lavender-card p-1.5 sm:w-36 shrink-0">
+                        <button type="button" data-qty="-1" aria-label="کاهش تعداد"
+                                class="w-9 h-9 rounded-full bg-white hover:bg-lavender-subtle flex items-center justify-center text-text-primary transition-colors active:scale-95 shadow-sm">
+                            <span class="material-symbols-outlined text-[18px]">remove</span>
+                        </button>
+                        <input type="number" name="quantity" id="qty-input" value="1" min="1" max="{{ product.stock }}" inputmode="numeric" aria-label="تعداد"
+                               class="w-12 bg-transparent text-center font-black text-base text-text-primary border-0 focus:ring-0 p-0 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none">
+                        <button type="button" data-qty="1" aria-label="افزایش تعداد"
+                                class="w-9 h-9 rounded-full bg-white hover:bg-lavender-subtle flex items-center justify-center text-text-primary transition-colors active:scale-95 shadow-sm">
+                            <span class="material-symbols-outlined text-[18px]">add</span>
+                        </button>
+                    </div>
+                    <button type="submit"
+                            class="flex-1 bg-gradient-to-r from-electric-purple to-vibrant-magenta text-white font-black py-3.5 px-6 rounded-full flex items-center justify-center gap-2 shadow-lg shadow-electric-purple/25 hover:shadow-electric-purple/40 hover:brightness-110 transition-all active:scale-[0.98]">
+                        <span class="material-symbols-outlined text-xl">shopping_bag</span>
+                        <span>افزودن به سبد خرید</span>
+                    </button>
+                </form>
+                {% else %}
+                <button type="button" disabled
+                        class="w-full bg-lavender-subtle text-text-muted font-bold py-3.5 px-6 rounded-full flex items-center justify-center gap-2 cursor-not-allowed">
+                    <span class="material-symbols-outlined text-xl">notifications</span>
+                    فعلاً موجود نیست
+                </button>
+                {% endif %}
+
+                <!-- Assurance -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-5 border-t border-lavender-subtle">
+                    <div class="flex flex-col items-center text-center p-2.5 rounded-xl bg-lavender-card">
+                        <span class="material-symbols-outlined text-xl text-electric-purple mb-1">local_shipping</span>
+                        <span class="text-[11px] font-bold text-text-primary">ارسال همان روز</span>
+                        <span class="text-[10px] text-text-muted">ویژهٔ تهران</span>
+                    </div>
+                    <div class="flex flex-col items-center text-center p-2.5 rounded-xl bg-lavender-card">
+                        <span class="material-symbols-outlined text-xl text-vibrant-magenta mb-1">verified_user</span>
+                        <span class="text-[11px] font-bold text-text-primary">اصالت ۱۰۰٪</span>
+                        <span class="text-[10px] text-text-muted">کد اصالت‌سنجی</span>
+                    </div>
+                    <div class="flex flex-col items-center text-center p-2.5 rounded-xl bg-lavender-card">
+                        <span class="material-symbols-outlined text-xl text-electric-cyan mb-1">support_agent</span>
+                        <span class="text-[11px] font-bold text-text-primary">مشاورهٔ فنی</span>
+                        <span class="text-[10px] text-text-muted">۷ روز هفته</span>
+                    </div>
+                    <div class="flex flex-col items-center text-center p-2.5 rounded-xl bg-lavender-card">
+                        <span class="material-symbols-outlined text-xl text-emerald-600 mb-1">swap_horiz</span>
+                        <span class="text-[11px] font-bold text-text-primary">ضمانت ۷ روزه</span>
+                        <span class="text-[10px] text-text-muted">تعویض کالا</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<!-- ================= TABS: description / specs / guide ================= -->
+{% with specs=product.get_specs_list %}
+<section class="max-w-7xl mx-auto w-full px-4 md:px-8 pb-16" data-tabs>
+    <div class="bg-white rounded-3xl border border-lavender-subtle shadow-sm overflow-hidden">
+        <div class="flex items-center border-b border-lavender-subtle overflow-x-auto bg-lavender-card/50 px-4 pt-2" role="tablist">
+            {% if product.description %}
+            <button type="button" role="tab" data-tab="review" class="tab-btn py-4 px-5 text-sm border-b-2 transition-all flex items-center gap-2 shrink-0">
+                <span class="material-symbols-outlined text-lg">description</span>
+                <span>بررسی تخصصی</span>
+            </button>
+            {% endif %}
+            <button type="button" role="tab" data-tab="specs" class="tab-btn py-4 px-5 text-sm border-b-2 transition-all flex items-center gap-2 shrink-0">
+                <span class="material-symbols-outlined text-lg">memory</span>
+                <span>مشخصات فنی</span>
+            </button>
+            {% if product.usage_guide %}
+            <button type="button" role="tab" data-tab="guide" class="tab-btn py-4 px-5 text-sm border-b-2 transition-all flex items-center gap-2 shrink-0">
+                <span class="material-symbols-outlined text-lg">school</span>
+                <span>راهنمای استفاده</span>
+            </button>
+            {% endif %}
+        </div>
+
+        <div class="p-6 sm:p-10">
+            {% if product.description %}
+            <div role="tabpanel" data-panel="review" class="max-w-4xl space-y-4">
+                <h2 class="text-xl md:text-2xl font-black text-text-primary">بررسی {{ product.name }}</h2>
+                <div class="text-sm md:text-base text-text-muted leading-loose">{{ product.description|linebreaks }}</div>
+            </div>
+            {% endif %}
+
+            <div role="tabpanel" data-panel="specs" class="max-w-3xl {% if product.description %}hidden{% endif %}">
+                <h2 class="text-xl font-black text-text-primary mb-6">مشخصات فنی</h2>
+                <dl class="border border-lavender-subtle rounded-2xl overflow-hidden divide-y divide-lavender-subtle text-sm">
+                    {% if product.brand %}
+                    <div class="grid grid-cols-3 gap-4 p-4 bg-lavender-card/60">
+                        <dt class="font-bold text-text-muted">برند</dt>
+                        <dd class="col-span-2 font-bold text-text-primary">{{ product.brand }}</dd>
+                    </div>
+                    {% endif %}
+                    <div class="grid grid-cols-3 gap-4 p-4 bg-white">
+                        <dt class="font-bold text-text-muted">دسته‌بندی</dt>
+                        <dd class="col-span-2 text-text-primary">{{ product.category.name }}</dd>
+                    </div>
+                    <div class="grid grid-cols-3 gap-4 p-4 bg-lavender-card/60">
+                        <dt class="font-bold text-text-muted">سازگاری</dt>
+                        <dd class="col-span-2 text-text-primary">{{ product.get_compatibility_display }}</dd>
+                    </div>
+                    {% if product.flavor %}
+                    <div class="grid grid-cols-3 gap-4 p-4 bg-white">
+                        <dt class="font-bold text-text-muted">طعم</dt>
+                        <dd class="col-span-2 text-text-primary">{{ product.flavor }}</dd>
+                    </div>
+                    {% endif %}
+                    {% for row in specs %}
+                    <div class="grid grid-cols-3 gap-4 p-4 {% cycle 'bg-white' 'bg-lavender-card/60' %}">
+                        <dt class="font-bold text-text-muted">{{ row.label|default:"—" }}</dt>
+                        <dd class="col-span-2 text-text-primary">{{ row.value }}</dd>
+                    </div>
+                    {% endfor %}
+                    <div class="grid grid-cols-3 gap-4 p-4 bg-white">
+                        <dt class="font-bold text-text-muted">کد کالا</dt>
+                        <dd class="col-span-2 text-text-primary font-mono" dir="ltr">{{ product.sku }}</dd>
+                    </div>
+                </dl>
+            </div>
+
+            {% if product.usage_guide %}
+            <div role="tabpanel" data-panel="guide" class="max-w-3xl space-y-4 hidden">
+                <h2 class="text-xl font-black text-text-primary">راهنمای استفاده و نگهداری</h2>
+                <div class="p-5 bg-lavender-card rounded-2xl border border-lavender-subtle text-sm text-text-muted leading-loose">
+                    {{ product.usage_guide|linebreaks }}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endwith %}
+
+<!-- ================= RELATED PRODUCTS ================= -->
+{% if related_products %}
+<section class="max-w-7xl mx-auto w-full px-4 md:px-8 pb-20">
+    <div class="flex items-end justify-between mb-8 gap-4">
+        <div>
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-electric-cyan/15 text-blue-700 font-bold text-xs mb-2">
+                <span class="material-symbols-outlined text-[15px]">recommend</span>
+                <span>پیشنهاد ما</span>
+            </div>
+            <h2 class="text-2xl font-black text-text-primary">محصولات مرتبط</h2>
+        </div>
+        <a href="{{ product.category.get_absolute_url }}" class="text-xs font-bold text-electric-purple hover:text-vibrant-magenta inline-flex items-center gap-1">
+            <span>همهٔ {{ product.category.name }}</span>
+            <span class="material-symbols-outlined text-[18px] rotate-180">arrow_forward</span>
+        </a>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {% for item in related_products %}
+        {% cycle 'purple' 'orange' 'cyan' 'lime' as accent silent %}
+        {% include 'core/partials/_product_card.html' with product=item accent=accent %}
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<!-- ================= MOBILE STICKY BUY BAR ================= -->
+{% if product.is_in_stock %}
+<div class="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-lavender-subtle px-4 py-3 flex items-center justify-between gap-3 shadow-[0_-8px_24px_rgba(0,0,0,0.06)]">
+    <div>
+        {% if product.has_discount %}
+        <span class="text-[11px] text-text-muted line-through font-num">{{ product.price|toman }}</span>
+        {% endif %}
+        <div class="font-black text-text-primary font-num">{{ product.final_price|toman }} <span class="text-xs font-normal text-text-muted">تومان</span></div>
+    </div>
+    <button type="submit" form="add-to-cart-form"
+            class="bg-gradient-to-r from-electric-purple to-vibrant-magenta text-white font-black text-sm px-6 py-3 rounded-full flex items-center gap-2 shadow-md active:scale-95">
+        <span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+        افزودن به سبد
+    </button>
+</div>
+<div class="h-20 lg:hidden" aria-hidden="true"></div>
+{% endif %}
+
+{% endwith %}
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // ---------- Gallery ----------
+    const mainImg = document.getElementById("main-product-image");
+    document.querySelectorAll("[data-thumb]").forEach(function (thumb, _, all) {
+        thumb.addEventListener("click", function () {
+            if (!mainImg) return;
+            mainImg.style.opacity = "0";
+            setTimeout(function () {
+                mainImg.src = thumb.dataset.src;
+                mainImg.alt = thumb.dataset.alt;
+                mainImg.style.opacity = "1";
+            }, 150);
+            all.forEach(function (t) {
+                const on = t === thumb;
+                t.toggleAttribute("aria-current", on);
+                t.classList.toggle("border-electric-purple", on);
+                t.classList.toggle("border-transparent", !on);
+            });
+        });
+    });
+
+    // ---------- Quantity ----------
+    const qty = document.getElementById("qty-input");
+    if (qty) {
+        const max = parseInt(qty.max, 10) || 99;
+        const clamp = v => Math.min(max, Math.max(1, v || 1));
+        document.querySelectorAll("[data-qty]").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+                qty.value = clamp(parseInt(qty.value, 10) + parseInt(btn.dataset.qty, 10));
+            });
+        });
+        qty.addEventListener("change", function () { qty.value = clamp(parseInt(qty.value, 10)); });
+    }
+
+    // ---------- Wishlist (UI only) ----------
+    const wish = document.getElementById("wishlist-btn");
+    if (wish) {
+        wish.addEventListener("click", function () {
+            const on = wish.getAttribute("aria-pressed") !== "true";
+            wish.setAttribute("aria-pressed", on);
+            wish.classList.toggle("text-vibrant-magenta", on);
+            wish.querySelector("span").style.fontVariationSettings = on ? "'FILL' 1" : "'FILL' 0";
+        });
+    }
+
+    // ---------- Share ----------
+    const share = document.getElementById("share-btn");
+    if (share) {
+        share.addEventListener("click", async function () {
+            const data = { title: document.title, url: window.location.href };
+            try {
+                if (navigator.share) { await navigator.share(data); }
+                else {
+                    await navigator.clipboard.writeText(data.url);
+                    share.title = "لینک کپی شد";
+                }
+            } catch (e) { /* کاربر لغو کرد */ }
+        });
+    }
+
+    // ---------- Tabs ----------
+    const ACTIVE = ["text-electric-purple", "border-electric-purple", "font-black"];
+    const INACTIVE = ["text-text-muted", "border-transparent", "font-bold", "hover:text-text-primary"];
+    document.querySelectorAll("[data-tabs]").forEach(function (root) {
+        const buttons = root.querySelectorAll("[data-tab]");
+        const panels = root.querySelectorAll("[data-panel]");
+        function activate(name) {
+            buttons.forEach(function (b) {
+                const on = b.dataset.tab === name;
+                b.setAttribute("aria-selected", on);
+                ACTIVE.forEach(c => b.classList.toggle(c, on));
+                INACTIVE.forEach(c => b.classList.toggle(c, !on));
+            });
+            panels.forEach(p => p.classList.toggle("hidden", p.dataset.panel !== name));
+        }
+        buttons.forEach(b => b.addEventListener("click", () => activate(b.dataset.tab)));
+        if (buttons.length) activate(buttons[0].dataset.tab);
+    });
+});
+</script>
+{% endblock %}

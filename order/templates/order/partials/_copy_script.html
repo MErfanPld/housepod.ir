@@ -1,0 +1,30 @@
+<!-- Toast + کپی در کلیپ‌بورد برای دکمه‌های [data-copy] -->
+<div id="copy-toast" role="status" aria-live="polite"
+     class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] bg-dark-base text-acid-lime text-sm font-bold px-5 py-2.5 rounded-full shadow-xl opacity-0 pointer-events-none transition-opacity duration-200">
+    کپی شد
+</div>
+<script>
+(function () {
+    const toast = document.getElementById("copy-toast");
+    let timer;
+    function show(msg) {
+        toast.textContent = msg;
+        toast.style.opacity = "1";
+        clearTimeout(timer);
+        timer = setTimeout(() => { toast.style.opacity = "0"; }, 1600);
+    }
+    // ارقام فارسی/عربی را به لاتین تبدیل می‌کند تا در اپ بانکی قابل پیست باشد
+    function toLatin(s) {
+        return s.replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d))
+                .replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
+    }
+    document.querySelectorAll("[data-copy]").forEach(function (btn) {
+        btn.addEventListener("click", async function () {
+            let text = toLatin(btn.dataset.copy || "");
+            if (btn.hasAttribute("data-copy-digits")) text = text.replace(/\D/g, "");
+            try { await navigator.clipboard.writeText(text); show("کپی شد ✓"); }
+            catch (e) { show("کپی نشد؛ دستی انتخاب کنید"); }
+        });
+    });
+})();
+</script>

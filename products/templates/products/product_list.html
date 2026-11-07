@@ -1,0 +1,441 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+{% if current_category %}{{ current_category.name }} | {% endif %}فروشگاه و آرشیو محصولات | واریان تک
+{% endblock %}
+
+{% block content %}
+    <!-- BREADCRUMB -->
+    <div class="bg-white border-b border-gray-100 py-2.5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav aria-label="Breadcrumb" class="flex items-center gap-2 text-xs text-gray-500 flex-wrap">
+                <a class="hover:text-gray-900 flex items-center gap-1" href="/">
+                    <span class="material-symbols-outlined text-sm">home</span>
+                    <span>صفحه اصلی</span>
+                </a>
+                <span class="material-symbols-outlined text-xs text-gray-400">chevron_left</span>
+                <a class="hover:text-gray-900" href="{% url 'products:product_list' %}">فروشگاه و محصولات</a>
+                {% if current_category %}
+                <span class="material-symbols-outlined text-xs text-gray-400">chevron_left</span>
+                <span class="text-gray-900 font-semibold">{{ current_category.name }}</span>
+                {% else %}
+                <span class="material-symbols-outlined text-xs text-gray-400">chevron_left</span>
+                <span class="text-gray-900 font-semibold">همه محصولات</span>
+                {% endif %}
+            </nav>
+        </div>
+    </div>
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full space-y-6">
+        <!-- HERO BANNER -->
+        <section class="rounded-3xl p-6 sm:p-8 lg:p-10 relative overflow-hidden border border-white/10 text-white shadow-xl"
+            style="background: linear-gradient(135deg, #17151F 0%, #2a1f45 40%, #1a1528 100%);">
+            <div class="absolute -top-16 -right-16 w-64 h-64 bg-[#7628F5]/30 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-20 -left-10 w-72 h-72 bg-[#E83E9B]/25 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-7 space-y-4">
+                    <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 px-3.5 py-1 rounded-full">
+                        <span class="w-2 h-2 rounded-full bg-[#C9F45B] animate-pulse"></span>
+                        <span class="text-xs font-semibold text-[#C9F45B]">کالکشن تخصصی دستگاه‌ها و لوازم جانبی</span>
+                        <span class="text-white/40">|</span>
+                        <span class="text-xs text-[#22C7E8] font-mono">NEW GENERATION</span>
+                    </div>
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
+                        دستگاه موردنظرت رو <br />
+                        <span class="bg-gradient-to-l from-[#C9F45B] via-[#22C7E8] to-[#FFFFFF] bg-clip-text text-transparent">با دقت و ضمانت انتخاب کن!</span>
+                    </h1>
+                    <p class="text-sm sm:text-base text-white/80 max-w-xl leading-relaxed">
+                        بررسی تخصصی مشخصات فنی، توان خروجی، ظرفیت باتری و سازگاری کارتریج‌ها برای خریدی آگاهانه و مطمئن.
+                    </p>
+                    <div class="flex flex-wrap items-center gap-3 pt-2">
+                        <a href="{% url 'products:product_list' %}?sort=newest"
+                            class="bg-[#C9F45B] text-[#151515] font-bold text-sm px-6 py-3 rounded-full hover:bg-[#d8ff78] active:scale-[0.98] transition-all flex items-center gap-2 shadow-lg shadow-[#C9F45B]/20">
+                            <span>مشاهده جدیدترین محصولات</span>
+                            <span class="material-symbols-outlined text-lg">arrow_forward</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="lg:col-span-5 relative flex justify-center items-center hidden lg:flex">
+                    <div class="relative w-full max-w-sm aspect-square flex items-center justify-center">
+                        <div class="absolute inset-4 rounded-3xl bg-gradient-to-tr from-[#7628F5]/40 to-[#E83E9B]/30 border border-white/15 backdrop-blur-sm -rotate-2"></div>
+                        <div class="relative z-10 text-center text-white/60 text-sm p-8">
+                            <span class="material-symbols-outlined text-6xl text-[#C9F45B]/80">devices</span>
+                            <p class="mt-2 font-medium">فروشگاه واریان تک</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TITLE & CATEGORY CHIPS -->
+        <section class="space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-gray-100">
+                <div class="flex items-center gap-3 flex-wrap">
+                    <h2 class="text-2xl font-bold text-gray-900">
+                        {% if current_category %}{{ current_category.name }}{% else %}فروشگاه و آرشیو محصولات{% endif %}
+                    </h2>
+                    <span class="bg-[#F0E9FF] text-[#7628F5] border border-[#7628F5]/20 font-bold text-xs px-2.5 py-1 rounded-full">
+                        نمایش {{ page_obj.paginator.count }} کالا
+                        {% if total_active_products %} از {{ total_active_products }} محصول{% endif %}
+                    </span>
+                </div>
+                <div class="text-xs text-gray-500 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm text-[#C9F45B] bg-[#17151F] rounded-full p-0.5">check_circle</span>
+                    <span>گارانتی ۷ روزه سلامت و اصالت فیزیکی تمامی کالاها</span>
+                </div>
+            </div>
+
+            <!-- Category shortcuts -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-2">
+                <a href="{% url 'products:product_list' %}"
+                    class="whitespace-nowrap px-4 py-2 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-all
+                    {% if not current_category %}bg-[#7628F5] text-white shadow-md shadow-[#7628F5]/25{% else %}bg-white border border-gray-200 text-gray-900 hover:border-[#7628F5] hover:text-[#7628F5]{% endif %}">
+                    <span class="material-symbols-outlined text-sm">grid_view</span>
+                    <span>همه محصولات</span>
+                </a>
+                {% for cat in categories %}
+                <a href="{% url 'products:product_list_by_category' cat.slug %}"
+                    class="whitespace-nowrap px-4 py-2 rounded-full text-xs font-medium flex items-center gap-1.5 transition-all
+                    {% if current_category.slug == cat.slug %}bg-[#7628F5] text-white shadow-md{% else %}bg-white border border-gray-200 text-gray-900 hover:border-[#7628F5] hover:text-[#7628F5]{% endif %}">
+                    <span>{{ cat.name }}</span>
+                    <span class="opacity-70 text-[10px]">({{ cat.product_count }})</span>
+                </a>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- TOOLBAR: active filters + sort -->
+        <div class="bg-white border border-gray-100 rounded-2xl p-3.5 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+            <div class="flex items-center gap-2 flex-wrap text-xs">
+                {% if active_filters %}
+                <span class="text-gray-500 font-medium ml-1">فیلترهای فعال:</span>
+                {% for f in active_filters %}
+                <span class="inline-flex items-center gap-1 bg-[#F0E9FF] text-[#7628F5] px-2.5 py-1 rounded-full font-medium">
+                    <span>{{ f.label }}</span>
+                </span>
+                {% endfor %}
+                <a href="{% if current_category %}{% url 'products:product_list_by_category' current_category.slug %}{% else %}{% url 'products:product_list' %}{% endif %}"
+                    class="text-xs text-[#E83E9B] hover:underline font-medium mr-2">پاک کردن همه فیلترها</a>
+                {% else %}
+                <span class="text-gray-400">بدون فیلتر فعال</span>
+                {% endif %}
+            </div>
+            <div class="flex items-center justify-between md:justify-end gap-3 pt-2 md:pt-0 border-t md:border-t-0 border-gray-100">
+                <form method="get" class="flex items-center gap-2 text-xs" id="sort-form">
+                    {% if search_query %}<input type="hidden" name="q" value="{{ search_query }}">{% endif %}
+                    {% if current_brand %}<input type="hidden" name="brand" value="{{ current_brand }}">{% endif %}
+                    {% if in_stock %}<input type="hidden" name="in_stock" value="{{ in_stock }}">{% endif %}
+                    {% if price_min %}<input type="hidden" name="price_min" value="{{ price_min }}">{% endif %}
+                    {% if price_max %}<input type="hidden" name="price_max" value="{{ price_max }}">{% endif %}
+                    <span class="text-gray-500 hidden sm:inline">مرتب‌سازی:</span>
+                    <select name="sort" onchange="this.form.submit()"
+                        class="bg-gray-50 border border-gray-200 rounded-lg py-1.5 pr-8 pl-3 text-xs font-medium text-gray-900 focus:outline-none focus:ring-1 focus:ring-[#7628F5] cursor-pointer">
+                        <option value="newest" {% if current_sort == "newest" %}selected{% endif %}>جدیدترین‌ها</option>
+                        <option value="featured" {% if current_sort == "featured" %}selected{% endif %}>ویژه / پرفروش</option>
+                        <option value="price_asc" {% if current_sort == "price_asc" %}selected{% endif %}>ارزان‌ترین</option>
+                        <option value="price_desc" {% if current_sort == "price_desc" %}selected{% endif %}>گران‌ترین</option>
+                        <option value="name" {% if current_sort == "name" %}selected{% endif %}>نام</option>
+                    </select>
+                </form>
+            </div>
+        </div>
+
+        <!-- MAIN GRID: sidebar + products -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            <!-- SIDEBAR FILTERS -->
+            <aside class="lg:col-span-3 space-y-4">
+                <form method="get" class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm space-y-6">
+                    {% if current_sort %}<input type="hidden" name="sort" value="{{ current_sort }}">{% endif %}
+
+                    <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[#7628F5] text-xl">filter_list</span>
+                            <h3 class="font-bold text-sm text-gray-900">فیلترهای پیشرفته</h3>
+                        </div>
+                        <a href="{% if current_category %}{% url 'products:product_list_by_category' current_category.slug %}{% else %}{% url 'products:product_list' %}{% endif %}"
+                            class="text-[11px] text-gray-500 hover:text-[#E83E9B] transition-colors">بازنشانی</a>
+                    </div>
+
+                    <!-- Search -->
+                    <div class="space-y-2">
+                        <h4 class="text-xs font-bold text-gray-900">جستجو</h4>
+                        <input type="text" name="q" value="{{ search_query }}" placeholder="نام، برند، کد کالا..."
+                            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-[#7628F5]" />
+                    </div>
+
+                    <!-- Categories -->
+                    <div class="space-y-3">
+                        <h4 class="text-xs font-bold text-gray-900">دسته‌بندی کالاها</h4>
+                        <div class="space-y-2 text-xs">
+                            <a href="{% url 'products:product_list' %}{% if querystring %}?{{ querystring }}{% endif %}"
+                                class="flex items-center justify-between group {% if not current_category %}text-[#7628F5] font-semibold{% else %}text-gray-500 hover:text-gray-900{% endif %}">
+                                <span>همه</span>
+                            </a>
+                            {% for cat in categories %}
+                            <a href="{% url 'products:product_list_by_category' cat.slug %}"
+                                class="flex items-center justify-between group {% if current_category.slug == cat.slug %}text-[#7628F5] font-semibold{% else %}text-gray-500 hover:text-gray-900{% endif %}">
+                                <span>{{ cat.name }}</span>
+                                <span class="text-gray-400 text-[11px]">{{ cat.product_count }}</span>
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Brands -->
+                    {% if brands %}
+                    <div class="pt-4 border-t border-gray-100 space-y-3">
+                        <h4 class="text-xs font-bold text-gray-900">برندهای معتبر</h4>
+                        <div class="space-y-2 text-xs max-h-48 overflow-y-auto">
+                            {% for b in brands %}
+                            <label class="flex items-center justify-between cursor-pointer group">
+                                <div class="flex items-center gap-2">
+                                    <input type="radio" name="brand" value="{{ b.brand }}"
+                                        {% if current_brand == b.brand %}checked{% endif %}
+                                        class="w-4 h-4 border-gray-300 text-[#7628F5] focus:ring-[#7628F5]/30"
+                                        onchange="this.form.submit()" />
+                                    <span class="{% if current_brand == b.brand %}text-[#7628F5] font-semibold{% else %}text-gray-500 group-hover:text-gray-900{% endif %}">{{ b.brand }}</span>
+                                </div>
+                                <span class="text-gray-400 text-[11px]">{{ b.count }}</span>
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Stock -->
+                    <div class="pt-4 border-t border-gray-100 space-y-3">
+                        <label class="flex items-center gap-2 cursor-pointer text-xs">
+                            <input type="checkbox" name="in_stock" value="1"
+                                {% if in_stock == "1" %}checked{% endif %}
+                                class="w-4 h-4 rounded border-gray-300 text-[#7628F5] focus:ring-[#7628F5]/30"
+                                onchange="this.form.submit()" />
+                            <span class="text-gray-900 font-medium">فقط موجود در انبار</span>
+                        </label>
+                    </div>
+
+                    <!-- Price range -->
+                    <div class="pt-4 border-t border-gray-100 space-y-3">
+                        <h4 class="text-xs font-bold text-gray-900">محدوده قیمت (تومان)</h4>
+                        <div class="flex items-center gap-2">
+                            <input type="number" name="price_min" value="{{ price_min }}" placeholder="از"
+                                class="w-full border border-gray-200 rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-[#7628F5]" />
+                            <span class="text-gray-400">–</span>
+                            <input type="number" name="price_max" value="{{ price_max }}" placeholder="تا"
+                                class="w-full border border-gray-200 rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-[#7628F5]" />
+                        </div>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full bg-[#7628F5] text-white text-xs font-bold py-2.5 rounded-full hover:bg-[#601fd1] transition-all">
+                        اعمال فیلترها
+                    </button>
+                </form>
+            </aside>
+
+            <!-- PRODUCT GRID -->
+            <section class="lg:col-span-9 space-y-6">
+                {% if products %}
+                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+                    {% for product in products %}
+                    <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-xl hover:border-[#7628F5]/40 transition-all duration-300 flex flex-col group relative">
+                        <!-- Badges top -->
+                        <div class="absolute top-3 right-3 left-3 flex items-center justify-between z-10">
+                            <div class="flex flex-col gap-1">
+                                {% if product.has_discount %}
+                                <span class="bg-[#FF7138] text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm w-fit">
+                                    {{ product.discount_percent }}٪ تخفیف
+                                </span>
+                                {% endif %}
+                                {% if product.is_featured %}
+                                <span class="bg-[#7628F5] text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm w-fit">ویژه</span>
+                                {% endif %}
+                                {% if not product.is_in_stock %}
+                                <span class="bg-gray-800 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm w-fit">ناموجود</span>
+                                {% endif %}
+                            </div>
+                            <button type="button"
+                                class="w-7 h-7 rounded-full bg-white/90 text-gray-500 hover:text-[#E83E9B] flex items-center justify-center shadow-sm transition-colors">
+                                <span class="material-symbols-outlined text-base">favorite</span>
+                            </button>
+                        </div>
+
+                        <!-- Image -->
+                        <a href="{{ product.get_absolute_url }}"
+                            class="h-48 bg-gradient-to-b from-gray-50 to-white p-4 flex items-center justify-center relative overflow-hidden">
+                            {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}"
+                                class="h-full object-contain filter drop-shadow-md group-hover:scale-105 transition-transform" />
+                            {% else %}
+                            <span class="text-gray-300 text-xs">بدون تصویر</span>
+                            {% endif %}
+                        </a>
+
+                        <!-- Info -->
+                        <div class="p-4 flex flex-col flex-grow justify-between border-t border-gray-100 bg-white space-y-3">
+                            <div>
+                                <div class="flex items-center justify-between text-[11px] text-gray-500 mb-1">
+                                    {% if product.brand %}
+                                    <span class="font-bold text-[#7628F5]">{{ product.brand }}</span>
+                                    {% else %}
+                                    <span class="font-bold text-gray-400">{{ product.category.name }}</span>
+                                    {% endif %}
+                                    {% if product.flavor %}
+                                    <span class="bg-gray-50 px-1.5 py-0.5 rounded font-mono text-[10px]">{{ product.flavor }}</span>
+                                    {% endif %}
+                                </div>
+                                <a href="{{ product.get_absolute_url }}">
+                                    <h3 class="font-bold text-sm text-gray-900 line-clamp-2 group-hover:text-[#7628F5] transition-colors">
+                                        {{ product.name }}
+                                    </h3>
+                                </a>
+                                {% if product.name_en %}
+                                <p class="text-[11px] text-gray-500 font-mono tracking-tight line-clamp-1">{{ product.name_en }}</p>
+                                {% endif %}
+                                {% if product.badge_1 or product.badge_2 %}
+                                <div class="flex items-center gap-2 mt-2 pt-2 border-t border-dashed border-gray-100 text-[11px] text-gray-500 flex-wrap">
+                                    {% if product.badge_1 %}
+                                    <span class="flex items-center gap-0.5">
+                                        <span class="material-symbols-outlined text-xs text-[#22C7E8]">bolt</span>
+                                        {{ product.badge_1 }}
+                                    </span>
+                                    {% endif %}
+                                    {% if product.badge_2 %}
+                                    <span class="text-gray-300">|</span>
+                                    <span class="flex items-center gap-0.5">
+                                        <span class="material-symbols-outlined text-xs text-[#FF7138]">battery_charging_full</span>
+                                        {{ product.badge_2 }}
+                                    </span>
+                                    {% endif %}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="pt-2 border-t border-gray-100 flex items-end justify-between">
+                                <div>
+                                    {% if product.has_discount %}
+                                    <div class="text-xs text-gray-400 line-through">{{ product.price|floatformat:0 }}</div>
+                                    {% else %}
+                                    <div class="text-xs text-transparent select-none">-</div>
+                                    {% endif %}
+                                    <div class="text-sm font-extrabold text-gray-900">
+                                        {{ product.final_price|floatformat:0 }}
+                                        <span class="text-[10px] font-normal text-gray-500">تومان</span>
+                                    </div>
+                                </div>
+                                <a href="{{ product.get_absolute_url }}"
+                                    class="w-8 h-8 rounded-full bg-[#17151F] text-white hover:bg-[#C9F45B] hover:text-[#17151F] flex items-center justify-center transition-all active:scale-95 shadow-sm"
+                                    title="مشاهده محصول">
+                                    <span class="material-symbols-outlined text-lg">arrow_forward</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- PAGINATION -->
+                {% if page_obj.has_other_pages %}
+                <div class="pt-4">
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white border border-gray-100 rounded-2xl p-4">
+                        <div class="flex items-center gap-1.5 text-xs">
+                            {% if page_obj.has_previous %}
+                            <a href="?page={{ page_obj.previous_page_number }}{% if querystring %}&{{ querystring }}{% endif %}"
+                                class="px-3 py-1.5 rounded-lg border border-gray-200 text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-colors flex items-center gap-1">
+                                <span class="material-symbols-outlined text-sm">chevron_right</span>
+                                <span>قبلی</span>
+                            </a>
+                            {% endif %}
+
+                            {% for num in page_obj.paginator.page_range %}
+                                {% if page_obj.number == num %}
+                                <span class="w-8 h-8 rounded-lg bg-[#7628F5] text-white font-bold flex items-center justify-center shadow-sm">{{ num }}</span>
+                                {% elif num > page_obj.number|add:"-3" and num < page_obj.number|add:"3" %}
+                                <a href="?page={{ num }}{% if querystring %}&{{ querystring }}{% endif %}"
+                                    class="w-8 h-8 rounded-lg border border-gray-200 text-gray-900 hover:bg-gray-50 flex items-center justify-center transition-colors">{{ num }}</a>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}{% if querystring %}&{{ querystring }}{% endif %}"
+                                class="px-3 py-1.5 rounded-lg border border-gray-200 text-gray-900 hover:bg-gray-50 transition-colors flex items-center gap-1">
+                                <span>بعدی</span>
+                                <span class="material-symbols-outlined text-sm">chevron_left</span>
+                            </a>
+                            {% endif %}
+                        </div>
+                        <span class="text-xs text-gray-500">
+                            صفحه {{ page_obj.number }} از {{ page_obj.paginator.num_pages }}
+                        </span>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% else %}
+                <!-- EMPTY STATE -->
+                <div class="bg-[#FAF8FF] border border-dashed border-[#7628F5]/30 rounded-2xl p-10 text-center space-y-3 flex flex-col items-center justify-center">
+                    <div class="w-12 h-12 rounded-full bg-[#F0E9FF] text-[#7628F5] flex items-center justify-center">
+                        <span class="material-symbols-outlined text-2xl">search_off</span>
+                    </div>
+                    <h4 class="font-bold text-sm text-gray-900">محصولی با این فیلترها یافت نشد</h4>
+                    <p class="text-xs text-gray-500 max-w-xs leading-relaxed">
+                        فیلترها را تغییر دهید، محدوده قیمت را گسترش دهید یا دسته‌بندی دیگری انتخاب کنید.
+                    </p>
+                    <a href="{% url 'products:product_list' %}"
+                        class="bg-[#7628F5] text-white text-xs font-semibold px-4 py-2 rounded-full hover:bg-[#601fd1] transition-all">
+                        حذف فیلترها و مشاهده همه
+                    </a>
+                </div>
+                {% endif %}
+            </section>
+        </div>
+
+        <!-- CONFIDENCE STRIP -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-6">
+            <div class="bg-white border border-gray-100 rounded-2xl p-5 flex items-start gap-3.5 shadow-sm hover:border-[#7628F5]/30 transition-colors">
+                <div class="w-10 h-10 rounded-xl bg-[#FAF8FF] border border-[#7628F5]/20 text-[#7628F5] flex items-center justify-center flex-shrink-0">
+                    <span class="material-symbols-outlined text-2xl">psychology</span>
+                </div>
+                <div>
+                    <h4 class="font-bold text-xs text-gray-900 mb-1">راهنمای انتخاب محصول</h4>
+                    <p class="text-[11px] text-gray-500 leading-relaxed">مشاوره تخصصی بر اساس میزان مصرف روزانه و توان مورد نیاز شما.</p>
+                </div>
+            </div>
+            <div class="bg-white border border-gray-100 rounded-2xl p-5 flex items-start gap-3.5 shadow-sm hover:border-[#22C7E8]/30 transition-colors">
+                <div class="w-10 h-10 rounded-xl bg-[#F0F9FF] border border-[#22C7E8]/20 text-[#22C7E8] flex items-center justify-center flex-shrink-0">
+                    <span class="material-symbols-outlined text-2xl">verified_user</span>
+                </div>
+                <div>
+                    <h4 class="font-bold text-xs text-gray-900 mb-1">مشخصات شفاف و قطعی</h4>
+                    <p class="text-[11px] text-gray-500 leading-relaxed">بررسی دقیق مشخصات فنی و اطمینان از سازگاری کویل و کارتریج.</p>
+                </div>
+            </div>
+            <div class="bg-white border border-gray-100 rounded-2xl p-5 flex items-start gap-3.5 shadow-sm hover:border-[#C9F45B]/30 transition-colors">
+                <div class="w-10 h-10 rounded-xl bg-[#17151F] text-[#C9F45B] flex items-center justify-center flex-shrink-0">
+                    <span class="material-symbols-outlined text-2xl">rocket_launch</span>
+                </div>
+                <div>
+                    <h4 class="font-bold text-xs text-gray-900 mb-1">روش‌های ارسال سریع</h4>
+                    <p class="text-[11px] text-gray-500 leading-relaxed">ارسال با پیک ویژه در تهران زیر ۳ ساعت و پست پیشتاز برای کل کشور.</p>
+                </div>
+            </div>
+            <div class="bg-white border border-gray-100 rounded-2xl p-5 flex items-start gap-3.5 shadow-sm hover:border-[#E83E9B]/30 transition-colors">
+                <div class="w-10 h-10 rounded-xl bg-[#FFF0F7] border border-[#E83E9B]/20 text-[#E83E9B] flex items-center justify-center flex-shrink-0">
+                    <span class="material-symbols-outlined text-2xl">support_agent</span>
+                </div>
+                <div>
+                    <h4 class="font-bold text-xs text-gray-900 mb-1">پشتیبانی و اصالت کالا</h4>
+                    <p class="text-[11px] text-gray-500 leading-relaxed">پاسخگویی سریع کارشناسان و ضمانت سلامت دستگاه‌ها.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock %}
+
+{% block extra_head %}
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .line-clamp-1 { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+    .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+</style>
+{% endblock %}

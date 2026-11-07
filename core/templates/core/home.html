@@ -1,0 +1,706 @@
+{% extends 'base.html' %}
+{% load static core_tags %}
+
+{% block content %}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+
+<!-- ================= 1. HERO SLIDER ================= -->
+<section class="relative overflow-hidden py-12 lg:py-20 gradient-hero text-white">
+    <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-vibrant-magenta/20 blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-24 -left-24 w-96 h-96 rounded-full bg-electric-cyan/20 blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
+        <div class="swiper hero-swiper" dir="rtl" data-slides="{{ hero_slides|length }}">
+            <div class="swiper-wrapper">
+                {% for slide in hero_slides %}
+                <div class="swiper-slide">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+                        <!-- Content -->
+                        <div class="lg:col-span-7 flex flex-col items-start space-y-6 text-right">
+                            {% if slide.badge_text %}
+                            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-inner">
+                                <span class="w-2.5 h-2.5 rounded-full bg-acid-lime shadow-sm shadow-acid-lime animate-ping"></span>
+                                <span class="text-xs font-bold text-acid-lime tracking-wide">{{ slide.badge_text }}</span>
+                            </div>
+                            {% endif %}
+
+                            {% if forloop.first %}<h1{% else %}<h2{% endif %} class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.25] text-white">
+                                {{ slide.title_line1 }}
+                                {% if slide.title_highlight %}
+                                <span class="bg-gradient-to-l from-acid-lime via-electric-cyan to-vibrant-magenta bg-clip-text text-transparent">{{ slide.title_highlight }}</span>
+                                {% endif %}
+                            {% if forloop.first %}</h1>{% else %}</h2>{% endif %}
+
+                            {% if slide.description %}
+                            <p class="text-sm sm:text-base lg:text-lg text-white/85 max-w-2xl leading-relaxed font-normal">{{ slide.description|linebreaksbr }}</p>
+                            {% endif %}
+
+                            <div class="flex flex-wrap items-center gap-4 pt-2 w-full sm:w-auto">
+                                {% if slide.primary_btn_text %}
+                                <a href="{{ slide.primary_btn_url }}"
+                                   class="inline-flex items-center justify-center gap-2 bg-acid-lime text-dark-base font-black px-8 py-3.5 rounded-full shadow-lg glow-lime hover:scale-105 active:scale-95 transition-all text-sm">
+                                    <span>{{ slide.primary_btn_text }}</span>
+                                    <span class="material-symbols-outlined text-[20px] transform rotate-180">arrow_forward</span>
+                                </a>
+                                {% endif %}
+                                {% if slide.secondary_btn_text and slide.secondary_btn_url %}
+                                <a href="{{ slide.secondary_btn_url }}"
+                                   class="inline-flex items-center justify-center gap-2 bg-white/10 backdrop-blur-md border border-white/25 hover:bg-white/20 text-white font-bold px-7 py-3.5 rounded-full active:scale-95 transition-all text-sm">
+                                    <span class="material-symbols-outlined text-[18px] text-electric-cyan">dashboard</span>
+                                    <span>{{ slide.secondary_btn_text }}</span>
+                                </a>
+                                {% endif %}
+                            </div>
+
+                            {% if slide.trust_badge_1 or slide.trust_badge_2 or slide.trust_badge_3 %}
+                            <div class="pt-6 w-full flex flex-wrap gap-3 border-t border-white/10 mt-6">
+                                {% if slide.trust_badge_1 %}
+                                <div class="flex items-center gap-2 bg-black/30 backdrop-blur-sm border border-white/15 px-3.5 py-1.5 rounded-full text-xs text-white/90">
+                                    <span class="material-symbols-outlined text-acid-lime text-[16px]">verified</span>
+                                    <span>{{ slide.trust_badge_1 }}</span>
+                                </div>
+                                {% endif %}
+                                {% if slide.trust_badge_2 %}
+                                <div class="flex items-center gap-2 bg-black/30 backdrop-blur-sm border border-white/15 px-3.5 py-1.5 rounded-full text-xs text-white/90">
+                                    <span class="material-symbols-outlined text-electric-cyan text-[16px]">rocket_launch</span>
+                                    <span>{{ slide.trust_badge_2 }}</span>
+                                </div>
+                                {% endif %}
+                                {% if slide.trust_badge_3 %}
+                                <div class="flex items-center gap-2 bg-black/30 backdrop-blur-sm border border-white/15 px-3.5 py-1.5 rounded-full text-xs text-white/90">
+                                    <span class="material-symbols-outlined text-vibrant-magenta text-[16px]">auto_awesome</span>
+                                    <span>{{ slide.trust_badge_3 }}</span>
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Image Card -->
+                        <div class="lg:col-span-5 relative flex justify-center">
+                            <div class="relative w-full max-w-md aspect-[4/5] rounded-3xl bg-gradient-to-b from-white/15 via-white/5 to-transparent p-6 border border-white/20 shadow-2xl backdrop-blur-sm flex flex-col justify-between overflow-hidden">
+                                <div class="flex items-center justify-between z-10">
+                                    {% if slide.top_left_badge %}
+                                    <span class="bg-vibrant-magenta text-white text-[11px] font-black px-3 py-1 rounded-full shadow-md">{{ slide.top_left_badge }}</span>
+                                    {% else %}<span></span>{% endif %}
+                                    {% if slide.top_right_badge %}
+                                    <span class="bg-black/50 backdrop-blur-md text-acid-lime border border-acid-lime/30 px-3 py-1 rounded-full text-xs font-mono font-bold">{{ slide.top_right_badge }}</span>
+                                    {% endif %}
+                                </div>
+
+                                <div class="relative w-full h-full flex items-center justify-center py-4">
+                                    <div class="absolute w-48 h-48 rounded-full bg-electric-purple/40 blur-2xl"></div>
+                                    {% if slide.image %}
+                                    <img src="{{ slide.image.url }}"
+                                         alt="{{ slide.image_alt|default:slide.title_line1 }}"
+                                         {% if not forloop.first %}loading="lazy"{% endif %}
+                                         class="w-full h-72 object-contain filter drop-shadow-[0_20px_35px_rgba(0,0,0,0.6)] hover:scale-105 transition-transform duration-300 relative z-10">
+                                    {% endif %}
+                                </div>
+
+                                {% if slide.feature_title or slide.price %}
+                                <div class="z-10 bg-black/60 backdrop-blur-md rounded-2xl p-4 border border-white/15 flex items-center justify-between shadow-xl">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-electric-purple to-electric-cyan flex items-center justify-center text-white">
+                                            <span class="material-symbols-outlined text-[20px]">electric_bolt</span>
+                                        </div>
+                                        <div>
+                                            <p class="text-[11px] text-white/70">{{ slide.feature_title }}</p>
+                                            <p class="text-xs sm:text-sm font-bold text-white">{{ slide.feature_subtitle }}</p>
+                                        </div>
+                                    </div>
+                                    {% if slide.price %}
+                                    <div class="text-left font-num">
+                                        <span class="text-xs text-acid-lime font-bold">{{ slide.price_label }}</span>
+                                        <p class="text-sm font-black text-white">
+                                            {{ slide.price|fa_num }}
+                                            <span class="text-[10px] font-normal text-white/70">تومان</span>
+                                        </p>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="swiper-slide">
+                    <div class="text-center py-20">
+                        <p class="text-white/70">هنوز اسلایدی ثبت نشده است.</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            {% if hero_slides|length > 1 %}
+            <div class="swiper-pagination !bottom-0 mt-10"></div>
+            <div class="swiper-button-prev !text-acid-lime after:!text-2xl"></div>
+            <div class="swiper-button-next !text-acid-lime after:!text-2xl"></div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- ================= 2. STORE FEATURES ================= -->
+{% if store_features %}
+<section class="max-w-7xl mx-auto px-4 md:px-8 -mt-6 relative z-20">
+    <div class="bg-white rounded-2xl border border-lavender-subtle p-5 md:p-6 shadow-xl shadow-electric-purple/5">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            {% for feature in store_features %}
+            <div class="flex items-center gap-3.5 p-2 rounded-xl hover:bg-lavender-bg transition-colors">
+                <div class="w-12 h-12 rounded-2xl flex-shrink-0 flex items-center justify-center shadow-md
+                    {% cycle 'bg-gradient-to-br from-electric-cyan to-blue-600 text-white shadow-electric-cyan/30' 'bg-gradient-to-br from-electric-purple to-indigo-700 text-white shadow-electric-purple/30' 'bg-gradient-to-br from-bright-orange to-red-500 text-white shadow-bright-orange/30' 'bg-gradient-to-br from-acid-lime to-emerald-600 text-dark-base shadow-acid-lime/30' %}">
+                    <span class="material-symbols-outlined text-[24px]">{{ feature.icon|default:"verified" }}</span>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-text-primary">{{ feature.title }}</h3>
+                    <p class="text-xs text-text-muted mt-0.5">{{ feature.description }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ================= 3. CATEGORY TILES ================= -->
+<section class="py-16 px-4 md:px-8 max-w-7xl mx-auto" id="categories">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+        <div>
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-lavender-subtle text-electric-purple font-bold text-xs mb-2">
+                <span class="material-symbols-outlined text-[15px]">category</span>
+                <span>دسته‌بندی‌ها</span>
+            </div>
+            <h2 class="text-2xl md:text-3xl font-black text-text-primary tracking-tight">دسته‌بندی محصولات واریان</h2>
+            <p class="text-sm text-text-muted mt-1">برای دسترسی مستقیم به کالکشن موردنظرتان انتخاب کنید</p>
+        </div>
+        <a class="text-xs font-bold text-electric-purple hover:text-vibrant-magenta inline-flex items-center gap-1 transition-colors group"
+           href="{% url 'products:product_list' %}">
+            <span>مشاهده کلیه کاتالوگ فروشگاه</span>
+            <span class="material-symbols-outlined text-[18px] transform rotate-180 group-hover:-translate-x-1 transition-transform">arrow_forward</span>
+        </a>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for category in categories %}
+        <a href="{{ category.get_absolute_url }}"
+           class="group relative rounded-2xl p-6 text-white overflow-hidden shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all flex items-center justify-between
+                  {% if category.gradient == 'charcoal' %}bg-gradient-to-br from-[#261E1A] to-[#120F0D] border border-bright-orange/20 hover:shadow-bright-orange/20
+                  {% elif category.gradient == 'magenta' %}bg-gradient-to-br from-[#D92A8E] to-[#7E1352] hover:shadow-vibrant-magenta/20
+                  {% elif category.gradient == 'cyan' %}bg-gradient-to-br from-[#0FAFCF] to-[#124974] hover:shadow-electric-cyan/20
+                  {% elif category.gradient == 'lime' %}bg-gradient-to-br from-[#93CA18] to-[#204907] hover:shadow-acid-lime/20
+                  {% elif category.gradient == 'orange' %}bg-gradient-to-br from-[#FF5B26] to-[#A41662] hover:shadow-bright-orange/20
+                  {% else %}bg-gradient-to-br from-[#6A1FE9] to-[#3B1187] hover:shadow-electric-purple/20{% endif %}">
+
+            <div class="space-y-2 z-10 max-w-[60%]">
+                {% if category.badge_text %}
+                <span class="inline-block backdrop-blur-sm text-[11px] font-bold px-2.5 py-0.5 rounded-full
+                    {% if category.gradient == 'charcoal' %}bg-bright-orange/20 border border-bright-orange/40 text-bright-orange{% else %}bg-white/20 text-white{% endif %}">
+                    {{ category.badge_text }}
+                </span>
+                {% endif %}
+
+                <h3 class="text-xl font-black text-white transition-colors
+                    {% if category.gradient == 'charcoal' %}group-hover:text-bright-orange
+                    {% elif category.gradient == 'lime' %}group-hover:text-dark-base
+                    {% else %}group-hover:text-acid-lime{% endif %}">
+                    {{ category.name }}
+                </h3>
+
+                {% if category.english_name %}
+                <p class="text-xs text-white/75 font-mono" dir="ltr">{{ category.english_name }}</p>
+                {% endif %}
+
+                <span class="inline-flex items-center gap-1 text-xs font-bold pt-2 group-hover:underline
+                    {% if category.gradient == 'lime' %}text-dark-base{% elif category.gradient == 'charcoal' %}text-bright-orange{% else %}text-acid-lime{% endif %}">
+                    <span>{{ category.link_text|default:"مشاهده مدل‌ها" }}</span>
+                    <span class="material-symbols-outlined text-[15px] transform rotate-180">arrow_forward</span>
+                </span>
+            </div>
+
+            <div class="w-32 h-32 relative flex items-center justify-center">
+                <div class="absolute w-24 h-24 rounded-full blur-xl
+                    {% if category.gradient == 'charcoal' %}bg-bright-orange/20{% elif category.gradient == 'lime' %}bg-white/20{% else %}bg-white/10{% endif %}"></div>
+                {% if category.image %}
+                <img src="{{ category.image.url }}" alt="{{ category.name }}" loading="lazy"
+                     class="w-full h-full object-contain filter drop-shadow-lg group-hover:scale-110 transition-transform duration-300 relative z-10
+                            {% cycle 'group-hover:rotate-3' 'group-hover:-rotate-3' 'group-hover:rotate-6' 'group-hover:-rotate-6' %}">
+                {% else %}
+                <div class="w-20 h-20 rounded-2xl bg-white/10 flex items-center justify-center relative z-10">
+                    <span class="material-symbols-outlined text-4xl text-white/50">category</span>
+                </div>
+                {% endif %}
+            </div>
+        </a>
+        {% empty %}
+        <div class="col-span-full text-center py-12 text-text-muted">هنوز دسته‌بندی فعالی ثبت نشده است.</div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- ================= 4. PRODUCT TABS ================= -->
+{% with tab_featured=featured_products|default:latest_products %}
+{% if tab_featured or popular_products or discounted_products %}
+<section class="py-16 px-4 md:px-8 max-w-7xl mx-auto border-t border-lavender-subtle" id="catalog" data-tabs>
+    <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-4">
+        <div>
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-vibrant-magenta/10 text-vibrant-magenta font-bold text-xs mb-2">
+                <span class="material-symbols-outlined text-[15px]">grade</span>
+                <span>برترین‌های فصل</span>
+            </div>
+            <h2 class="text-2xl md:text-3xl font-black text-text-primary tracking-tight">محصولات منتخب فروشگاه</h2>
+            <p class="text-sm text-text-muted mt-1">برترین سخت‌افزارهای سال بر اساس ارزیابی فنی و استقبال خریداران</p>
+        </div>
+
+        <div class="flex items-center bg-white p-1 rounded-full border border-lavender-subtle shadow-sm" role="tablist">
+            {% if tab_featured %}
+            <button type="button" role="tab" data-tab="featured" class="tab-btn px-5 py-2 rounded-full text-xs font-bold text-text-muted transition-all">منتخب‌ها</button>
+            {% endif %}
+            {% if popular_products %}
+            <button type="button" role="tab" data-tab="popular" class="tab-btn px-5 py-2 rounded-full text-xs font-bold text-text-muted transition-all">محبوب‌ترین‌ها</button>
+            {% endif %}
+            {% if discounted_products %}
+            <button type="button" role="tab" data-tab="discounted" class="tab-btn px-5 py-2 rounded-full text-xs font-bold text-text-muted transition-all">تخفیف‌های ویژه</button>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if tab_featured %}
+    <div role="tabpanel" data-panel="featured" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {% for product in tab_featured %}
+        {% cycle 'purple' 'orange' 'cyan' 'lime' as accent silent %}
+        {% include 'core/partials/_product_card.html' with product=product accent=accent %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if popular_products %}
+    <div role="tabpanel" data-panel="popular" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {% for product in popular_products %}
+        {% cycle 'purple' 'orange' 'cyan' 'lime' as accent silent %}
+        {% include 'core/partials/_product_card.html' with product=product accent=accent %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if discounted_products %}
+    <div role="tabpanel" data-panel="discounted" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {% for product in discounted_products %}
+        {% cycle 'purple' 'orange' 'cyan' 'lime' as accent silent %}
+        {% include 'core/partials/_product_card.html' with product=product accent=accent %}
+        {% endfor %}
+    </div>
+    {% endif %}
+</section>
+{% endif %}
+{% endwith %}
+
+<!-- ================= 5. WIDE BANNER ================= -->
+{% if wide_banner %}
+<section class="py-20 gradient-iqos text-white relative overflow-hidden border-y border-white/10" id="wide-banner">
+    <div class="absolute top-1/2 right-10 -translate-y-1/2 w-80 h-80 rounded-full bg-bright-orange/15 blur-3xl pointer-events-none"></div>
+    <div class="absolute bottom-5 left-10 w-96 h-96 rounded-full bg-vibrant-magenta/20 blur-3xl pointer-events-none"></div>
+    <div class="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div class="lg:col-span-7 space-y-6 text-right">
+                {% if wide_banner.eyebrow %}
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-bright-orange/30 text-bright-orange text-xs font-mono font-bold tracking-wider">
+                    <span class="material-symbols-outlined text-[16px]">flare</span>
+                    <span>{{ wide_banner.eyebrow }}</span>
+                </div>
+                {% endif %}
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight text-white">
+                    {{ wide_banner.heading|default:wide_banner.title }}
+                </h2>
+                {% if wide_banner.description %}
+                <p class="text-sm sm:text-base text-white/80 max-w-xl leading-relaxed">{{ wide_banner.description|linebreaksbr }}</p>
+                {% endif %}
+                {% if wide_banner.button_text and wide_banner.button_url %}
+                <div class="flex flex-wrap items-center gap-4 pt-4">
+                    <a class="bg-gradient-to-r from-bright-orange to-vibrant-magenta text-white px-8 py-3.5 rounded-full font-black text-sm shadow-lg glow-magenta hover:brightness-110 active:scale-95 transition-all inline-flex items-center gap-2"
+                       href="{{ wide_banner.button_url }}">
+                        <span>{{ wide_banner.button_text }}</span>
+                        <span class="material-symbols-outlined text-[18px] transform rotate-180">arrow_forward</span>
+                    </a>
+                    {% if home_faqs %}
+                    <a class="bg-white/10 border border-white/25 text-white px-7 py-3.5 rounded-full font-bold text-sm hover:bg-white/20 active:scale-95 transition-all" href="#faq">
+                        راهنمای استفاده و مقایسه
+                    </a>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+            <div class="lg:col-span-5 flex justify-center">
+                <div class="group relative w-full max-w-md aspect-square rounded-3xl bg-gradient-to-b from-white/15 to-transparent p-6 border border-white/15 shadow-2xl overflow-hidden flex items-center justify-center">
+                    <div class="absolute w-52 h-52 rounded-full bg-bright-orange/30 blur-2xl"></div>
+                    <picture class="relative z-10 w-full h-full">
+                        {% if wide_banner.mobile_image %}
+                        <source media="(max-width: 767px)" srcset="{{ wide_banner.mobile_image.url }}">
+                        {% endif %}
+                        <img src="{{ wide_banner.image.url }}" alt="{{ wide_banner.image_alt|default:wide_banner.title }}" loading="lazy"
+                             class="w-full h-full object-contain p-4 filter drop-shadow-[0_20px_30px_rgba(0,0,0,0.7)] group-hover:scale-105 transition-transform duration-300">
+                    </picture>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ================= 6. DUAL PROMO BANNERS ================= -->
+{% if promo_banners %}
+<section class="py-16 px-4 md:px-8 max-w-7xl mx-auto" id="promos">
+    <div class="grid grid-cols-1 {% if promo_banners|length > 1 %}md:grid-cols-2{% endif %} gap-8">
+        {% for banner in promo_banners %}
+        {% if forloop.first %}
+        <div class="relative rounded-3xl p-8 bg-gradient-to-br from-[#1C1530] via-[#2D164B] to-[#120F24] border border-electric-purple/30 text-white overflow-hidden shadow-xl flex flex-col sm:flex-row items-center gap-6">
+            <div class="absolute -top-10 -left-10 w-48 h-48 bg-electric-cyan/20 blur-3xl pointer-events-none"></div>
+            <div class="space-y-4 z-10 flex-1">
+                {% if banner.eyebrow %}
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-electric-purple/30 border border-electric-purple/50 text-electric-cyan text-xs font-bold">
+                    <span class="material-symbols-outlined text-[15px]">verified</span>
+                    <span>{{ banner.eyebrow }}</span>
+                </div>
+                {% endif %}
+                <h3 class="text-2xl sm:text-3xl font-black text-white leading-tight">{{ banner.heading|default:banner.title|linebreaksbr }}</h3>
+                {% if banner.description %}
+                <p class="text-xs sm:text-sm text-white/80 leading-relaxed">{{ banner.description }}</p>
+                {% endif %}
+                {% if banner.button_text and banner.button_url %}
+                <div class="pt-2">
+                    <a class="inline-flex items-center gap-2 bg-gradient-to-r from-electric-purple to-electric-cyan text-white px-6 py-2.5 rounded-full font-bold text-xs shadow-md glow-cyan hover:brightness-110 transition-all" href="{{ banner.button_url }}">
+                        <span>{{ banner.button_text }}</span>
+                        <span class="material-symbols-outlined text-[16px] transform rotate-180">arrow_forward</span>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+            <picture class="z-10 w-40 h-40 flex-shrink-0">
+                {% if banner.mobile_image %}<source media="(max-width: 767px)" srcset="{{ banner.mobile_image.url }}">{% endif %}
+                <img src="{{ banner.image.url }}" alt="{{ banner.image_alt|default:banner.title }}" loading="lazy" class="w-full h-full object-contain drop-shadow-lg">
+            </picture>
+        </div>
+        {% else %}
+        <div class="relative rounded-3xl p-8 bg-gradient-to-br from-lavender-subtle via-white to-lavender-card border border-electric-purple/20 text-text-primary overflow-hidden shadow-xl flex flex-col sm:flex-row items-center gap-6">
+            <div class="absolute -bottom-10 -right-10 w-48 h-48 bg-vibrant-magenta/15 blur-3xl pointer-events-none"></div>
+            <div class="space-y-4 z-10 flex-1">
+                {% if banner.eyebrow %}
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-lavender-subtle text-vibrant-magenta text-xs font-black shadow-sm">
+                    <span class="material-symbols-outlined text-[15px]">style</span>
+                    <span>{{ banner.eyebrow }}</span>
+                </div>
+                {% endif %}
+                <h3 class="text-2xl sm:text-3xl font-black text-text-primary leading-tight">{{ banner.heading|default:banner.title|linebreaksbr }}</h3>
+                {% if banner.description %}
+                <p class="text-xs sm:text-sm text-text-muted leading-relaxed">{{ banner.description }}</p>
+                {% endif %}
+                {% if banner.button_text and banner.button_url %}
+                <div class="pt-2">
+                    <a class="inline-flex items-center gap-2 bg-gradient-to-r from-vibrant-magenta to-bright-orange text-white px-6 py-2.5 rounded-full font-bold text-xs shadow-md glow-magenta hover:brightness-110 transition-all" href="{{ banner.button_url }}">
+                        <span>{{ banner.button_text }}</span>
+                        <span class="material-symbols-outlined text-[16px] transform rotate-180">arrow_forward</span>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+            <picture class="z-10 w-40 h-40 flex-shrink-0">
+                {% if banner.mobile_image %}<source media="(max-width: 767px)" srcset="{{ banner.mobile_image.url }}">{% endif %}
+                <img src="{{ banner.image.url }}" alt="{{ banner.image_alt|default:banner.title }}" loading="lazy" class="w-full h-full object-contain drop-shadow-lg">
+            </picture>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<!-- ================= 7. NEW ARRIVALS ================= -->
+{% if latest_products %}
+<section class="py-16 px-4 md:px-8 max-w-7xl mx-auto border-t border-lavender-subtle" id="new-arrivals">
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-electric-cyan/15 text-blue-700 font-bold text-xs mb-2">
+                <span class="material-symbols-outlined text-[15px]">bolt</span>
+                <span>تازه‌های فروشگاه</span>
+            </div>
+            <h2 class="text-2xl md:text-3xl font-black text-text-primary tracking-tight">جدیدترین تجهیزات اضافه شده</h2>
+            <p class="text-sm text-text-muted mt-1">به‌روزترین سخت‌افزارهای تحویل شده در پارت جدید فروشگاه</p>
+        </div>
+        <a class="text-xs font-bold text-electric-purple hover:text-vibrant-magenta inline-flex items-center gap-1" href="{% url 'products:product_list' %}">
+            <span>مشاهده همه</span>
+            <span class="material-symbols-outlined text-[18px] transform rotate-180">arrow_forward</span>
+        </a>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {% for product in latest_products|slice:":4" %}
+        {% cycle 'purple' 'orange' 'magenta' 'purple' as accent silent %}
+        <div class="bg-white rounded-2xl border border-lavender-subtle p-5 flex flex-col justify-between hover:shadow-lg transition-all group
+            {% if accent == 'orange' %}hover:border-bright-orange/40{% elif accent == 'magenta' %}hover:border-vibrant-magenta/40{% else %}hover:border-electric-purple/40{% endif %}">
+            <div class="flex justify-between items-center text-xs mb-2">
+                {% if product.stock <= 3 %}
+                <span class="bg-dark-base text-white px-2.5 py-0.5 rounded-full font-bold text-[11px]">موجودی محدود</span>
+                {% elif product.has_discount %}
+                <span class="bg-vibrant-magenta text-white px-2.5 py-0.5 rounded-full font-black text-[11px] font-num">{{ product.discount_percent|fa_num }}٪ تخفیف</span>
+                {% else %}
+                <span class="bg-acid-lime text-dark-base px-2.5 py-0.5 rounded-full font-black text-[11px]">جدید</span>
+                {% endif %}
+                <span class="text-text-muted font-mono font-bold uppercase">{{ product.brand|default:product.category.name }}</span>
+            </div>
+            <a href="{{ product.get_absolute_url }}" class="h-44 flex items-center justify-center my-2 relative">
+                {% with gallery=product.images.all %}
+                {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy" class="max-h-full object-contain group-hover:scale-105 transition-transform">
+                {% elif gallery %}
+                <img src="{{ gallery.0.image.url }}" alt="{{ gallery.0.alt|default:product.name }}" loading="lazy" class="max-h-full object-contain group-hover:scale-105 transition-transform">
+                {% else %}
+                <span class="material-symbols-outlined text-6xl text-text-muted/30">image</span>
+                {% endif %}
+                {% endwith %}
+            </a>
+            <div class="space-y-1.5 mt-2">
+                <h3 class="font-bold text-sm text-text-primary transition-colors
+                    {% if accent == 'orange' %}group-hover:text-bright-orange{% elif accent == 'magenta' %}group-hover:text-vibrant-magenta{% else %}group-hover:text-electric-purple{% endif %}">
+                    <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+                </h3>
+                {% if product.name_en %}
+                <p class="text-xs text-text-muted font-mono line-clamp-1" dir="ltr">{{ product.name_en }}</p>
+                {% endif %}
+                <div class="pt-3 border-t border-lavender-subtle flex items-center justify-between">
+                    <span class="font-black text-sm font-num text-text-primary">
+                        {{ product.final_price|toman }} <span class="text-[10px] text-text-muted font-normal">تومان</span>
+                    </span>
+                    <a href="{{ product.get_absolute_url }}" aria-label="مشاهده {{ product.name }}"
+                       class="w-8 h-8 rounded-full bg-lavender-subtle flex items-center justify-center hover:text-white transition-all active:scale-95
+                        {% if accent == 'orange' %}text-bright-orange hover:bg-bright-orange{% elif accent == 'magenta' %}text-vibrant-magenta hover:bg-vibrant-magenta{% else %}text-electric-purple hover:bg-electric-purple{% endif %}">
+                        <span class="material-symbols-outlined text-[18px]">add</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<!-- ================= 8. BRAND SHOWCASE ================= -->
+{% if brands %}
+<section class="py-14 px-4 md:px-8 max-w-7xl mx-auto border-t border-b border-lavender-subtle">
+    <div class="text-center mb-8">
+        <span class="text-xs font-bold text-electric-purple uppercase tracking-wider">OFFICIAL DISTRIBUTOR</span>
+        <h2 class="text-xl md:text-2xl font-black text-text-primary mt-1">برندهای معتبر جهانی</h2>
+        <p class="text-xs text-text-muted mt-1">تأمین مستقیم و تضمین اصالت از معتبرترین سازندگان دنیا</p>
+    </div>
+    {% url 'products:product_list' as product_list_url %}
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+        {% for item in brands %}
+        <a href="{{ product_list_url }}?brand={{ item.brand|urlencode }}"
+           class="bg-white border border-lavender-subtle rounded-xl py-5 px-3 flex flex-col items-center justify-center hover:shadow-md hover:-translate-y-1 transition-all group
+            {% cycle 'hover:border-electric-purple' 'hover:border-bright-orange' 'hover:border-blue-600' 'hover:border-dark-base' 'hover:border-bright-orange' 'hover:border-vibrant-magenta' %}">
+            <span class="font-mono text-lg font-black tracking-wider text-text-primary uppercase transition-colors
+                {% cycle 'group-hover:text-electric-purple' 'group-hover:text-bright-orange' 'group-hover:text-blue-600' 'group-hover:text-dark-base' 'group-hover:text-bright-orange' 'group-hover:text-vibrant-magenta' %}">{{ item.brand }}</span>
+            <span class="text-[10px] text-text-muted mt-1 font-semibold font-num">{{ item.products_count|fa_num }} محصول</span>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<!-- ================= 9. STATISTICS ================= -->
+{% if home_statistics %}
+<section class="py-12 px-4 md:px-8 max-w-7xl mx-auto">
+    <div class="rounded-3xl gradient-hero text-white p-6 md:p-10 grid grid-cols-2 lg:grid-cols-4 gap-6">
+        {% for stat in home_statistics %}
+        <div class="flex flex-col items-center text-center gap-2">
+            {% if stat.icon %}
+            <span class="material-symbols-outlined text-[28px] {% cycle 'text-acid-lime' 'text-electric-cyan' 'text-vibrant-magenta' 'text-bright-orange' %}">{{ stat.icon }}</span>
+            {% endif %}
+            <div class="text-2xl md:text-4xl font-black font-num">{{ stat.value|fa_num }}
+                {% if stat.suffix %}<span class="text-sm md:text-base font-bold text-white/70">{{ stat.suffix }}</span>{% endif %}
+            </div>
+            <p class="text-xs md:text-sm text-white/80">{{ stat.title }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<!-- ================= 10. ARTICLES ================= -->
+{% if latest_posts %}
+<section class="py-16 px-4 md:px-8 max-w-7xl mx-auto" id="articles">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+        <div>
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-electric-purple/10 text-electric-purple font-bold text-xs mb-2">
+                <span class="material-symbols-outlined text-[15px]">auto_stories</span>
+                <span>دانستنی‌ها و مقالات</span>
+            </div>
+            <h2 class="text-2xl md:text-3xl font-black text-text-primary tracking-tight">راهنمای خرید و دانستنی‌های فنی</h2>
+            <p class="text-sm text-text-muted mt-1">بررسی‌های تخصصی برای انتخاب دقیق‌تر و استفاده بهینه از دستگاه‌ها</p>
+        </div>
+        {% url 'blog:post_list' as blog_list_url %}
+        {% if blog_list_url %}
+        <a class="text-xs font-bold text-electric-purple hover:text-vibrant-magenta inline-flex items-center gap-1" href="{{ blog_list_url }}">
+            <span>مشاهده همه مقالات</span>
+            <span class="material-symbols-outlined text-[18px] transform rotate-180">arrow_forward</span>
+        </a>
+        {% endif %}
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {% for post in latest_posts %}
+        {% cycle 'purple' 'orange' 'magenta' as accent silent %}
+        <article class="bg-white rounded-2xl border border-lavender-subtle overflow-hidden flex flex-col justify-between group hover:shadow-xl transition-all duration-300
+            {% if accent == 'orange' %}hover:border-bright-orange/30{% elif accent == 'magenta' %}hover:border-vibrant-magenta/30{% else %}hover:border-electric-purple/30{% endif %}">
+            <div>
+                <a href="{{ post.get_absolute_url }}" class="block relative h-48 w-full overflow-hidden bg-lavender-subtle">
+                    {% if post.image %}
+                    <img src="{{ post.image.url }}" alt="{{ post.title }}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                    {% else %}
+                    <div class="w-full h-full flex items-center justify-center">
+                        <span class="material-symbols-outlined text-5xl text-electric-purple/30">article</span>
+                    </div>
+                    {% endif %}
+                    <span class="absolute top-3 right-3 bg-white/95 backdrop-blur-sm text-[11px] font-black px-3 py-1 rounded-full shadow-sm
+                        {% if accent == 'orange' %}text-bright-orange{% elif accent == 'magenta' %}text-vibrant-magenta{% else %}text-electric-purple{% endif %}">
+                        {{ post.category.name }}
+                    </span>
+                </a>
+                <div class="p-6">
+                    <span class="text-xs text-text-muted font-bold flex items-center gap-1 font-num">
+                        <span class="material-symbols-outlined text-[14px]">schedule</span>
+                        زمان مطالعه: {{ post.content|reading_time|fa_num }} دقیقه
+                    </span>
+                    <h3 class="font-black text-lg text-text-primary mt-2 transition-colors leading-snug
+                        {% if accent == 'orange' %}group-hover:text-bright-orange{% elif accent == 'magenta' %}group-hover:text-vibrant-magenta{% else %}group-hover:text-electric-purple{% endif %}">
+                        <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                    </h3>
+                    <p class="text-xs text-text-muted line-clamp-3 mt-2 leading-relaxed">
+                        {% if post.excerpt %}{{ post.excerpt }}{% else %}{{ post.content|striptags|truncatewords:30 }}{% endif %}
+                    </p>
+                </div>
+            </div>
+            <div class="p-6 pt-0">
+                <a class="text-xs font-bold hover:text-vibrant-magenta inline-flex items-center gap-1
+                    {% if accent == 'orange' %}text-bright-orange{% elif accent == 'magenta' %}text-vibrant-magenta hover:!text-electric-purple{% else %}text-electric-purple{% endif %}"
+                   href="{{ post.get_absolute_url }}">
+                    <span>مطالعه مقاله کامل</span>
+                    <span class="material-symbols-outlined text-[16px] transform rotate-180">arrow_forward</span>
+                </a>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<!-- ================= 11. BOTTOM BANNERS ================= -->
+{% if bottom_banners %}
+<section class="pb-16 px-4 md:px-8 max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 {% if bottom_banners|length > 1 %}md:grid-cols-2{% endif %} gap-6">
+        {% for banner in bottom_banners %}
+        {% if banner.button_url %}<a href="{{ banner.button_url }}"{% else %}<div{% endif %}
+            class="group relative block rounded-3xl overflow-hidden shadow-lg border border-lavender-subtle">
+            <picture>
+                {% if banner.mobile_image %}<source media="(max-width: 767px)" srcset="{{ banner.mobile_image.url }}">{% endif %}
+                <img src="{{ banner.image.url }}" alt="{{ banner.image_alt|default:banner.title }}" loading="lazy"
+                     class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300">
+            </picture>
+            {% if banner.heading or banner.button_text %}
+            <div class="absolute inset-0 bg-gradient-to-l from-black/70 via-black/30 to-transparent flex flex-col justify-center items-start gap-3 p-6 md:p-10 text-white">
+                {% if banner.eyebrow %}<span class="text-xs font-bold text-acid-lime">{{ banner.eyebrow }}</span>{% endif %}
+                {% if banner.heading %}<h3 class="text-xl md:text-3xl font-black leading-tight max-w-md">{{ banner.heading }}</h3>{% endif %}
+                {% if banner.button_text %}
+                <span class="inline-flex items-center gap-1 bg-acid-lime text-dark-base font-black px-5 py-2 rounded-full text-xs">
+                    {{ banner.button_text }}
+                    <span class="material-symbols-outlined text-[16px] transform rotate-180">arrow_forward</span>
+                </span>
+                {% endif %}
+            </div>
+            {% endif %}
+        {% if banner.button_url %}</a>{% else %}</div>{% endif %}
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<!-- ================= 12. FAQ ================= -->
+{% if home_faqs %}
+<section class="py-16 px-4 md:px-8 max-w-4xl mx-auto border-t border-lavender-subtle" id="faq">
+    <div class="text-center mb-10">
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-lavender-subtle text-electric-purple font-bold text-xs mb-2">
+            <span class="material-symbols-outlined text-[15px]">help</span>
+            <span>پرسش و پاسخ</span>
+        </div>
+        <h2 class="text-2xl md:text-3xl font-black text-text-primary tracking-tight">سؤالات متداول خریداران</h2>
+        <p class="text-sm text-text-muted mt-1">پاسخ سریع به پرتکرارترین پرسش‌ها پیرامون اصالت، ارسال و مشخصات فنی</p>
+    </div>
+    <div class="space-y-4">
+        {% for faq in home_faqs %}
+        <details class="group bg-white border border-lavender-subtle rounded-2xl overflow-hidden shadow-sm transition-all duration-200" {% if forloop.first %}open{% endif %}>
+            <summary class="flex items-center justify-between gap-4 p-5 cursor-pointer list-none font-bold text-text-primary text-sm sm:text-base select-none">
+                <span>{{ faq.question }}</span>
+                <span class="w-8 h-8 flex-shrink-0 rounded-full bg-lavender-subtle flex items-center justify-center text-electric-purple group-open:rotate-180 group-open:bg-electric-purple group-open:text-white transition-all">
+                    <span class="material-symbols-outlined text-[20px]">expand_more</span>
+                </span>
+            </summary>
+            <div class="px-5 pb-5 pt-3 text-xs sm:text-sm text-text-muted border-t border-lavender-subtle/60 leading-relaxed">
+                {{ faq.answer|linebreaksbr }}
+            </div>
+        </details>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // ---------- Hero slider ----------
+    const heroEl = document.querySelector(".hero-swiper");
+    if (heroEl && window.Swiper) {
+        const multi = parseInt(heroEl.dataset.slides || "0", 10) > 1;
+        new Swiper(heroEl, {
+            loop: multi,
+            speed: 800,
+            allowTouchMove: multi,
+            autoplay: multi ? { delay: 6000, disableOnInteraction: false } : false,
+            effect: "fade",
+            fadeEffect: { crossFade: true },
+            pagination: multi ? { el: ".hero-swiper .swiper-pagination", clickable: true } : false,
+            navigation: multi ? {
+                nextEl: ".hero-swiper .swiper-button-next",
+                prevEl: ".hero-swiper .swiper-button-prev",
+            } : false,
+        });
+    }
+
+    // ---------- Product tabs ----------
+    const ACTIVE = ["bg-gradient-to-r", "from-electric-purple", "to-vibrant-magenta", "text-white", "shadow-md", "shadow-electric-purple/20", "font-black"];
+    const INACTIVE = ["text-text-muted", "font-bold", "hover:text-electric-purple"];
+
+    document.querySelectorAll("[data-tabs]").forEach(function (root) {
+        const buttons = root.querySelectorAll("[data-tab]");
+        const panels = root.querySelectorAll("[data-panel]");
+
+        function activate(name) {
+            buttons.forEach(function (btn) {
+                const on = btn.dataset.tab === name;
+                btn.setAttribute("aria-selected", on ? "true" : "false");
+                ACTIVE.forEach(c => btn.classList.toggle(c, on));
+                INACTIVE.forEach(c => btn.classList.toggle(c, !on));
+            });
+            panels.forEach(function (panel) {
+                panel.classList.toggle("hidden", panel.dataset.panel !== name);
+            });
+        }
+
+        buttons.forEach(function (btn) {
+            btn.addEventListener("click", function () { activate(btn.dataset.tab); });
+        });
+        if (buttons.length) activate(buttons[0].dataset.tab);
+    });
+});
+</script>
+{% endblock content %}

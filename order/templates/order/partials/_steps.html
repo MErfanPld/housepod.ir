@@ -1,0 +1,22 @@
+{% comment %}نوار مراحل خرید — پارامتر: step (1 | 2 | 3){% endcomment %}
+<ol class="bg-white border border-lavender-subtle rounded-2xl p-4 sm:p-5 grid grid-cols-3 gap-2 text-xs sm:text-sm" aria-label="مراحل خرید">
+    <li class="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 text-center sm:text-right">
+        <span class="w-9 h-9 rounded-full flex items-center justify-center shrink-0 font-black
+            {% if step > 1 %}bg-dark-base text-acid-lime{% else %}bg-gradient-to-r from-electric-purple to-vibrant-magenta text-white ring-4 ring-electric-purple/15{% endif %}">
+            {% if step > 1 %}<span class="material-symbols-outlined text-[18px]">check</span>{% else %}۱{% endif %}
+        </span>
+        <span class="font-bold {% if step == 1 %}text-electric-purple{% else %}text-text-primary{% endif %}">سبد خرید</span>
+    </li>
+    <li class="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 text-center sm:text-right">
+        <span class="w-9 h-9 rounded-full flex items-center justify-center shrink-0 font-black
+            {% if step > 2 %}bg-dark-base text-acid-lime{% elif step == 2 %}bg-gradient-to-r from-electric-purple to-vibrant-magenta text-white ring-4 ring-electric-purple/15{% else %}bg-lavender-subtle text-text-muted{% endif %}">
+            {% if step > 2 %}<span class="material-symbols-outlined text-[18px]">check</span>{% else %}۲{% endif %}
+        </span>
+        <span class="font-bold {% if step == 2 %}text-electric-purple{% elif step > 2 %}text-text-primary{% else %}text-text-muted{% endif %}">اطلاعات ارسال</span>
+    </li>
+    <li class="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 text-center sm:text-right">
+        <span class="w-9 h-9 rounded-full flex items-center justify-center shrink-0 font-black
+            {% if step == 3 %}bg-gradient-to-r from-electric-purple to-vibrant-magenta text-white ring-4 ring-electric-purple/15{% else %}bg-lavender-subtle text-text-muted{% endif %}">۳</span>
+        <span class="font-bold {% if step == 3 %}text-electric-purple{% else %}text-text-muted{% endif %}">پرداخت و تأیید</span>
+    </li>
+</ol>

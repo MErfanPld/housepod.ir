@@ -1,0 +1,24 @@
+body {
+      font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #F7F7F5;
+      color: #171717;
+      direction: rtl;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-gradient-cta {
+      background: linear-gradient(135deg, #7628F5 0%, #B828C5 50%, #E83E9B 100%);
+    }
+    .custom-gradient-progress {
+      background: linear-gradient(90deg, #22C7E8 0%, #7628F5 50%, #E83E9B 100%);
+    }
+    .subtle-border {
+      border: 1px solid #ECECE8;
+    }
+    .soft-shadow {
+      box-shadow: 0 12px 32px -4px rgba(23, 23, 23, 0.04), 0 4px 12px -2px rgba(23, 23, 23, 0.02);
+    }

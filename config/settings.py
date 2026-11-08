@@ -1,4 +1,4 @@
-```python
+
 """
 Django settings for config project.
 Django 5.2.18

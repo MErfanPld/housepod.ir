@@ -197,8 +197,15 @@ USE_TZ = True
 # STATIC FILES
 # --------------------------------------------------
 
+# --------------------------------------------------
+# STATIC FILES
+# --------------------------------------------------
+
 PUBLIC_ROOT = Path(
-    os.getenv("PUBLIC_ROOT", str(BASE_DIR.parent / "public_html"))
+    os.getenv(
+        "PUBLIC_ROOT",
+        str(BASE_DIR.parent / "public_html")
+    )
 )
 
 STATIC_URL = "/static/"

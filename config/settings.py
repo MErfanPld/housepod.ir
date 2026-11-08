@@ -201,28 +201,13 @@ USE_TZ = True
 # STATIC FILES
 # --------------------------------------------------
 
-PUBLIC_ROOT = Path(
-    os.getenv(
-        "PUBLIC_ROOT",
-        str(BASE_DIR.parent / "public_html")
-    )
-)
+PUBLIC_ROOT = BASE_DIR.parent / "public_html"
 
 STATIC_URL = "/static/"
-
-STATICFILES_DIRS = [
-    BASE_DIR / "assets",
-]
-
+STATICFILES_DIRS = [BASE_DIR / "assets"]
 STATIC_ROOT = PUBLIC_ROOT / "static"
 
-
-# --------------------------------------------------
-# MEDIA FILES
-# --------------------------------------------------
-
 MEDIA_URL = "/media/"
-
 MEDIA_ROOT = PUBLIC_ROOT / "media"
 
 

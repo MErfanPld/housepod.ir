@@ -1,0 +1,195 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}روش‌های ارسال | هاوس پاد{% endblock %}
+
+{% block content %}
+<!-- ================= HERO ================= -->
+<section class="relative overflow-hidden py-14 lg:py-20 gradient-hero text-white">
+    <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-vibrant-magenta/20 blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-20 -left-20 w-72 h-72 rounded-full bg-electric-cyan/15 blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
+        <div class="max-w-3xl mx-auto text-center space-y-5">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20">
+                <span class="material-symbols-outlined text-[16px] text-acid-lime">local_shipping</span>
+                <span class="text-xs font-bold text-acid-lime tracking-wide">روش‌های ارسال</span>
+            </div>
+
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
+                روش‌های ارسال
+                <span class="bg-gradient-to-l from-acid-lime via-electric-cyan to-vibrant-magenta bg-clip-text text-transparent">
+                    سفارش‌های هاوس پاد
+                </span>
+            </h1>
+
+            <p class="text-sm sm:text-base text-white/80 leading-relaxed max-w-2xl mx-auto">
+                سفارش شما با بسته‌بندی استاندارد و ایمن از طریق معتبرترین روش‌های ارسال به دستتان می‌رسد.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ================= SHIPPING METHODS ================= -->
+<section class="py-14 lg:py-16 px-4 md:px-8 max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-14">
+
+        <!-- Method 1 -->
+        <div class="bg-white rounded-2xl border border-lavender-subtle p-6 shadow-sm hover:shadow-md hover:border-electric-purple/30 transition-all group">
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-electric-purple to-indigo-700 text-white flex items-center justify-center mb-5 shadow-md">
+                <span class="material-symbols-outlined text-[24px]">local_post_office</span>
+            </div>
+            <h3 class="font-black text-lg text-text-primary mb-2 group-hover:text-electric-purple transition-colors">پست پیشتاز</h3>
+            <p class="text-xs text-text-muted leading-6 mb-4">
+                ارسال به سراسر کشور از طریق پست پیشتاز. مناسب برای اکثر شهرها با هزینه اقتصادی.
+            </p>
+            <ul class="space-y-2 text-xs text-text-muted">
+                <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[16px] text-electric-purple">schedule</span>
+                    <span>۲ تا ۵ روز کاری</span>
+                </li>
+                <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[16px] text-electric-purple">payments</span>
+                    <span>هزینه بر اساس وزن و مقصد</span>
+                </li>
+                <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[16px] text-electric-purple">pin_drop</span>
+                    <span>قابل رهگیری</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Method 2 -->
+        <div class="bg-white rounded-2xl border border-lavender-subtle p-6 shadow-sm hover:shadow-md hover:border-vibrant-magenta/30 transition-all group">
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-vibrant-magenta to-pink-600 text-white flex items-center justify-center mb-5 shadow-md">
+                <span class="material-symbols-outlined text-[24px]">delivery_truck_speed</span>
+            </div>
+            <h3 class="font-black text-lg text-text-primary mb-2 group-hover:text-vibrant-magenta transition-colors">تیپاکس / پست اکسپرس</h3>
+            <p class="text-xs text-text-muted leading-6 mb-4">
+                ارسال سریع‌تر به مراکز استان و شهرهای اصلی. گزینه مناسب برای کسانی که عجله دارند.
+            </p>
+            <ul class="space-y-2 text-xs text-text-muted">
+                <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[16px] text-vibrant-magenta">schedule</span>
+                    <span>۱ تا ۳ روز کاری</span>
+                </li>
+                <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[16px] text-vibrant-magenta">payments</span>
+                    <span>هزینه بالاتر از پست عادی</span>
+                </li>
+                <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[16px] text-vibrant-magenta">pin_drop</span>
+                    <span>قابل رهگیری آنلاین</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Method 3 -->
+        <div class="bg-white rounded-2xl border border-lavender-subtle p-6 shadow-sm hover:shadow-md hover:border-electric-cyan/30 transition-all group">
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-electric-cyan to-blue-600 text-white flex items-center justify-center mb-5 shadow-md">
+                <span class="material-symbols-outlined text-[24px]">directions_bike</span>
+            </div>
+            <h3 class="font-black text-lg text-text-primary mb-2 group-hover:text-electric-cyan transition-colors">پیک موتوری (تهران)</h3>
+            <p class="text-xs text-text-muted leading-6 mb-4">
+                ارسال همان‌روز یا روز بعد در محدوده تهران. مناسب سفارش‌های فوری داخل پایتخت.
+            </p>
+            <ul class="space-y-2 text-xs text-text-muted">
+                <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[16px] text-electric-cyan">schedule</span>
+                    <span>همان روز / روز بعد</span>
+                </li>
+                <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[16px] text-electric-cyan">payments</span>
+                    <span>هزینه ثابت بر اساس محدوده</span>
+                </li>
+                <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[16px] text-electric-cyan">location_on</span>
+                    <span>فقط تهران</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Important Notes -->
+    <div class="max-w-4xl mx-auto space-y-6">
+        <div class="bg-white rounded-2xl border border-lavender-subtle p-6 md:p-8 shadow-sm">
+            <h2 class="text-lg font-black text-text-primary mb-5 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-electric-purple"></span>
+                نکات مهم ارسال
+            </h2>
+            <div class="space-y-4 text-sm text-text-muted leading-7">
+                <div class="flex gap-3">
+                    <span class="material-symbols-outlined text-electric-purple shrink-0 text-[20px]">inventory_2</span>
+                    <p>تمامی سفارش‌ها با بسته‌بندی استاندارد و ضدضربه ارسال می‌شوند تا از آسیب در مسیر جلوگیری شود.</p>
+                </div>
+                <div class="flex gap-3">
+                    <span class="material-symbols-outlined text-vibrant-magenta shrink-0 text-[20px]">schedule</span>
+                    <p>زمان آماده‌سازی سفارش معمولاً ۱ روز کاری است. در ایام پرترافیک یا تعطیلات ممکن است کمی بیشتر طول بکشد.</p>
+                </div>
+                <div class="flex gap-3">
+                    <span class="material-symbols-outlined text-electric-cyan shrink-0 text-[20px]">qr_code_2</span>
+                    <p>پس از ارسال، کد رهگیری از طریق پیامک یا پنل کاربری در اختیار شما قرار می‌گیرد.</p>
+                </div>
+                <div class="flex gap-3">
+                    <span class="material-symbols-outlined text-bright-orange shrink-0 text-[20px]">warning</span>
+                    <p>در صورت عدم حضور در آدرس، مرسوله به نزدیک‌ترین باجه پست یا انبار پیک برگشت داده می‌شود. هزینه ارسال مجدد بر عهده خریدار است.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Free Shipping Banner -->
+        <div class="rounded-2xl bg-gradient-to-l from-electric-purple/10 via-vibrant-magenta/5 to-bright-orange/10 border border-electric-purple/20 p-6 md:p-8 flex flex-col sm:flex-row items-center justify-between gap-5">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-electric-purple to-vibrant-magenta text-white flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-[24px]">local_shipping</span>
+                </div>
+                <div>
+                    <h3 class="font-black text-text-primary text-base">ارسال رایگان</h3>
+                    <p class="text-xs text-text-muted mt-0.5">برای سفارش‌های بالای مبلغ مشخص (در صفحه سبد خرید اعلام می‌شود)</p>
+                </div>
+            </div>
+            <a href="{% url 'products:product_list' %}"
+               class="inline-flex items-center gap-2 bg-gradient-to-r from-electric-purple to-vibrant-magenta text-white font-bold px-6 py-2.5 rounded-full text-xs shadow-md hover:brightness-110 transition-all shrink-0">
+                <span>شروع خرید</span>
+                <span class="material-symbols-outlined text-[16px] transform rotate-180">arrow_forward</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ================= FAQ SHORT ================= -->
+<section class="py-12 px-4 md:px-8 max-w-4xl mx-auto border-t border-lavender-subtle">
+    <h2 class="text-xl font-black text-text-primary text-center mb-8">سوالات پرتکرار ارسال</h2>
+    <div class="space-y-3">
+        <details class="group bg-white border border-lavender-subtle rounded-xl overflow-hidden">
+            <summary class="flex items-center justify-between gap-4 p-4 cursor-pointer list-none font-bold text-sm text-text-primary">
+                <span>چطور وضعیت مرسوله را پیگیری کنم؟</span>
+                <span class="material-symbols-outlined text-electric-purple group-open:rotate-180 transition-transform">expand_more</span>
+            </summary>
+            <div class="px-4 pb-4 text-xs text-text-muted leading-6 border-t border-lavender-subtle/60 pt-3">
+                پس از ارسال، کد رهگیری از طریق پیامک برای شما ارسال می‌شود. همچنین می‌توانید از پنل کاربری یا سایت شرکت حمل‌ونقل وضعیت را چک کنید.
+            </div>
+        </details>
+
+        <details class="group bg-white border border-lavender-subtle rounded-xl overflow-hidden">
+            <summary class="flex items-center justify-between gap-4 p-4 cursor-pointer list-none font-bold text-sm text-text-primary">
+                <span>آیا امکان تغییر آدرس بعد از ثبت سفارش وجود دارد؟</span>
+                <span class="material-symbols-outlined text-electric-purple group-open:rotate-180 transition-transform">expand_more</span>
+            </summary>
+            <div class="px-4 pb-4 text-xs text-text-muted leading-6 border-t border-lavender-subtle/60 pt-3">
+                تا قبل از ارسال مرسوله، با پشتیبانی تماس بگیرید تا آدرس را اصلاح کنیم. پس از تحویل به پست/پیک امکان تغییر وجود ندارد.
+            </div>
+        </details>
+
+        <details class="group bg-white border border-lavender-subtle rounded-xl overflow-hidden">
+            <summary class="flex items-center justify-between gap-4 p-4 cursor-pointer list-none font-bold text-sm text-text-primary">
+                <span>اگر بسته آسیب دیده باشد چه کنم؟</span>
+                <span class="material-symbols-outlined text-electric-purple group-open:rotate-180 transition-transform">expand_more</span>
+            </summary>
+            <div class="px-4 pb-4 text-xs text-text-muted leading-6 border-t border-lavender-subtle/60 pt-3">
+                در حضور مأمور پست/پیک بسته‌بندی را بررسی کنید. در صورت آسیب، از دریافت خودداری کرده و فوراً با پشتیبانی هاوس پاد تماس بگیرید.
+            </div>
+        </details>
+    </div>
+</section>
+{% endblock content %}‌

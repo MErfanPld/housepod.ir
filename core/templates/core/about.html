@@ -1,0 +1,365 @@
+{% extends 'base.html' %}
+{% load static core_tags %}
+
+{% block title %}درباره هاوس پاد | تماس با ما{% endblock %}
+
+{% block content %}
+<!-- ================= HERO ================= -->
+<section class="relative overflow-hidden py-16 lg:py-24 gradient-hero text-white">
+    <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-vibrant-magenta/20 blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-24 -left-24 w-96 h-96 rounded-full bg-electric-cyan/20 blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
+        <div class="max-w-3xl mx-auto text-center space-y-6">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20">
+                <span class="w-2.5 h-2.5 rounded-full bg-acid-lime animate-ping"></span>
+                <span class="text-xs font-bold text-acid-lime tracking-wide">درباره ما و تماس</span>
+            </div>
+
+            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.25]">
+                هاوس پاد
+                <span class="bg-gradient-to-l from-acid-lime via-electric-cyan to-vibrant-magenta bg-clip-text text-transparent">
+                    مرجع تخصصی پاد و ویپ
+                </span>
+            </h1>
+
+            <p class="text-sm sm:text-base lg:text-lg text-white/85 leading-relaxed max-w-2xl mx-auto">
+                ما با هدف ارائه اطلاعات دقیق، محصولات اصل و تجربه خریدی مطمئن برای علاقه‌مندان به پاد سیستم، ویپ و IQOS فعالیت می‌کنیم.
+            </p>
+
+            <div class="flex flex-wrap items-center justify-center gap-3 pt-4">
+                <a href="#about"
+                   class="inline-flex items-center gap-2 bg-acid-lime text-dark-base font-black px-7 py-3 rounded-full text-sm shadow-lg hover:scale-105 active:scale-95 transition-all">
+                    <span>داستان ما</span>
+                    <span class="material-symbols-outlined text-[18px] transform rotate-180">arrow_forward</span>
+                </a>
+                <a href="#contact"
+                   class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/25 hover:bg-white/20 text-white font-bold px-7 py-3 rounded-full text-sm active:scale-95 transition-all">
+                    <span class="material-symbols-outlined text-[18px]">support_agent</span>
+                    <span>تماس با ما</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section id="about" class="py-16 lg:py-20 px-4 md:px-8 max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+        <!-- Text -->
+        <div class="lg:col-span-7 space-y-6 text-right">
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-lavender-subtle text-electric-purple font-bold text-xs">
+                <span class="material-symbols-outlined text-[15px]">info</span>
+                <span>داستان هاوس پاد</span>
+            </div>
+
+            <h2 class="text-2xl md:text-3xl lg:text-4xl font-black text-text-primary tracking-tight leading-tight">
+                مرجع تخصصی معرفی و عرضه محصولات پاد سیستم و ویپ
+            </h2>
+
+            <div class="space-y-4 text-sm md:text-base text-text-muted leading-7">
+                <p>
+                    هاوس پاد با هدف ایجاد یک مرجع قابل‌اعتماد برای علاقه‌مندان به پاد سیستم، ویپ و محصولات IQOS شکل گرفته است.
+                    ما تلاش می‌کنیم اطلاعات دقیق، مقایسه شفاف و تجربه خریدی آگاهانه را در اختیار شما قرار دهیم.
+                </p>
+                <p>
+                    تمرکز ما روی اصالت کالا، پشتیبانی واقعی و ارائه راهنمایی تخصصی است تا شما با اطمینان کامل انتخاب کنید.
+                </p>
+            </div>
+
+            <!-- Values -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+                <div class="flex items-start gap-3 p-4 rounded-2xl bg-white border border-lavender-subtle hover:border-electric-purple/30 transition-colors">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-electric-purple to-indigo-700 text-white flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-[20px]">verified_user</span>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-sm text-text-primary">اصالت و شفافیت</h3>
+                        <p class="text-xs text-text-muted mt-1">اطلاعات دقیق محصولات و تضمین اصالت</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3 p-4 rounded-2xl bg-white border border-lavender-subtle hover:border-vibrant-magenta/30 transition-colors">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-vibrant-magenta to-pink-600 text-white flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-[20px]">support_agent</span>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-sm text-text-primary">پشتیبانی واقعی</h3>
+                        <p class="text-xs text-text-muted mt-1">همراهی قبل و بعد از خرید</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3 p-4 rounded-2xl bg-white border border-lavender-subtle hover:border-electric-cyan/30 transition-colors">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-electric-cyan to-blue-600 text-white flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-[20px]">science</span>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-sm text-text-primary">راهنمایی تخصصی</h3>
+                        <p class="text-xs text-text-muted mt-1">کمک به انتخاب درست بر اساس نیاز شما</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3 p-4 rounded-2xl bg-white border border-lavender-subtle hover:border-bright-orange/30 transition-colors">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-bright-orange to-red-500 text-white flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-[20px]">local_shipping</span>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-sm text-text-primary">ارسال مطمئن</h3>
+                        <p class="text-xs text-text-muted mt-1">بسته‌بندی استاندارد و ارسال سریع</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Visual Card -->
+        <div class="lg:col-span-5">
+            <div class="relative rounded-3xl bg-gradient-to-br from-[#1C1530] via-[#2D164B] to-[#120F24] border border-electric-purple/30 p-8 text-white overflow-hidden shadow-xl">
+                <div class="absolute -top-10 -left-10 w-48 h-48 bg-electric-cyan/20 blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-vibrant-magenta/20 blur-3xl pointer-events-none"></div>
+
+                <div class="relative z-10 space-y-6">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-electric-purple via-vibrant-magenta to-bright-orange flex items-center justify-center text-white font-black text-2xl shadow-lg">
+                        H
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-black">هاوس پاد</h3>
+                        <p class="text-sm text-white/70 mt-1 font-mono tracking-wider">HOUSEPOD</p>
+                    </div>
+
+                    <p class="text-sm text-white/80 leading-relaxed">
+                        مرجع تخصصی پاد سیستم، ویپ، IQOS و لوازم جانبی.
+                        ما برای خرید آگاهانه و مطمئن کنار شما هستیم.
+                    </p>
+
+                    <div class="flex flex-wrap gap-2 pt-2">
+                        <span class="inline-flex items-center gap-1.5 bg-white/10 border border-white/15 rounded-full px-3 py-1.5 text-[11px] font-bold">
+                            <span class="material-symbols-outlined text-sm text-acid-lime">verified</span>
+                            محصولات اصل
+                        </span>
+                        <span class="inline-flex items-center gap-1.5 bg-white/10 border border-white/15 rounded-full px-3 py-1.5 text-[11px] font-bold">
+                            <span class="material-symbols-outlined text-sm text-electric-cyan">support_agent</span>
+                            پشتیبانی تخصصی
+                        </span>
+                    </div>
+
+                    <div class="pt-4 border-t border-white/10">
+                        <p class="text-xs text-white/50 mb-1">محدودیت سنی</p>
+                        <p class="text-sm font-bold text-[#EFA0CE] flex items-center gap-2">
+                            <span class="material-symbols-outlined text-lg">18_up_rating</span>
+                            عرضه فقط برای افراد بالای ۱۸ سال
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact" class="py-16 lg:py-20 px-4 md:px-8 bg-lavender-bg/40 border-t border-lavender-subtle">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-vibrant-magenta/10 text-vibrant-magenta font-bold text-xs mb-3">
+                <span class="material-symbols-outlined text-[15px]">mail</span>
+                <span>تماس با ما</span>
+            </div>
+            <h2 class="text-2xl md:text-3xl font-black text-text-primary tracking-tight">با ما در ارتباط باشید</h2>
+            <p class="text-sm text-text-muted mt-2 max-w-xl mx-auto">
+                برای سوالات، پیگیری سفارش یا دریافت مشاوره تخصصی، از فرم زیر یا راه‌های ارتباطی استفاده کنید.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
+            <!-- Contact Info -->
+            <div class="lg:col-span-5 space-y-6">
+                <div class="bg-white rounded-2xl border border-lavender-subtle p-6 shadow-sm space-y-5">
+                    <h3 class="font-bold text-base text-text-primary flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-electric-purple"></span>
+                        راه‌های ارتباطی
+                    </h3>
+
+                    <div class="space-y-4 text-sm">
+                        {% if site_settings.phone %}
+                        <a href="tel:{{ site_settings.phone }}"
+                           class="flex items-center gap-3 p-3 rounded-xl hover:bg-lavender-bg transition-colors group">
+                            <div class="w-10 h-10 rounded-xl bg-electric-purple/10 text-electric-purple flex items-center justify-center group-hover:bg-electric-purple group-hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-[20px]">call</span>
+                            </div>
+                            <div>
+                                <p class="text-xs text-text-muted">تلفن پشتیبانی</p>
+                                <p class="font-bold text-text-primary font-num" dir="ltr">{{ site_settings.phone }}</p>
+                            </div>
+                        </a>
+                        {% endif %}
+
+                        {% if site_settings.email %}
+                        <a href="mailto:{{ site_settings.email }}"
+                           class="flex items-center gap-3 p-3 rounded-xl hover:bg-lavender-bg transition-colors group">
+                            <div class="w-10 h-10 rounded-xl bg-vibrant-magenta/10 text-vibrant-magenta flex items-center justify-center group-hover:bg-vibrant-magenta group-hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-[20px]">mail</span>
+                            </div>
+                            <div>
+                                <p class="text-xs text-text-muted">ایمیل</p>
+                                <p class="font-bold text-text-primary" dir="ltr">{{ site_settings.email }}</p>
+                            </div>
+                        </a>
+                        {% endif %}
+
+                        {% if site_settings.address %}
+                        <div class="flex items-start gap-3 p-3 rounded-xl">
+                            <div class="w-10 h-10 rounded-xl bg-bright-orange/10 text-bright-orange flex items-center justify-center shrink-0">
+                                <span class="material-symbols-outlined text-[20px]">location_on</span>
+                            </div>
+                            <div>
+                                <p class="text-xs text-text-muted">آدرس</p>
+                                <p class="font-bold text-text-primary text-sm leading-relaxed">{{ site_settings.address }}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Social -->
+                <div class="bg-white rounded-2xl border border-lavender-subtle p-6 shadow-sm">
+                    <h3 class="font-bold text-base text-text-primary mb-4 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-vibrant-magenta"></span>
+                        شبکه‌های اجتماعی
+                    </h3>
+                    <div class="flex items-center gap-3">
+                        {% if site_settings.instagram_url %}
+                        <a href="{{ site_settings.instagram_url }}"
+                           target="_blank" rel="noopener noreferrer"
+                           aria-label="اینستاگرام"
+                           class="w-11 h-11 rounded-xl bg-lavender-bg border border-lavender-subtle flex items-center justify-center text-text-muted hover:text-white hover:border-[#E43D9E] hover:bg-[#E43D9E] transition-all">
+                            <span class="material-symbols-outlined">photo_camera</span>
+                        </a>
+                        {% endif %}
+                        {% if site_settings.telegram_url %}
+                        <a href="{{ site_settings.telegram_url }}"
+                           target="_blank" rel="noopener noreferrer"
+                           aria-label="تلگرام"
+                           class="w-11 h-11 rounded-xl bg-lavender-bg border border-lavender-subtle flex items-center justify-center text-text-muted hover:text-white hover:border-[#7928CA] hover:bg-[#7928CA] transition-all">
+                            <span class="material-symbols-outlined">send</span>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Working Hours -->
+                <div class="bg-gradient-to-br from-electric-purple/5 to-vibrant-magenta/5 border border-electric-purple/20 rounded-2xl p-5">
+                    <div class="flex items-center gap-2 text-electric-purple font-bold text-sm mb-2">
+                        <span class="material-symbols-outlined text-[18px]">schedule</span>
+                        <span>ساعات پاسخگویی</span>
+                    </div>
+                    <p class="text-xs text-text-muted leading-relaxed">
+                        همه روزه از ساعت ۱۰ صبح تا ۱۰ شب<br>
+                        (به‌جز ایام تعطیل رسمی)
+                    </p>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="lg:col-span-7">
+                <div class="bg-white rounded-2xl border border-lavender-subtle p-6 md:p-8 shadow-sm">
+                    <h3 class="font-bold text-base text-text-primary mb-6 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-electric-cyan"></span>
+                        ارسال پیام
+                    </h3>
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="mb-5 p-4 rounded-xl text-sm font-bold
+                                {% if message.tags == 'success' %}bg-acid-lime/15 text-emerald-800 border border-acid-lime/30
+                                {% else %}bg-red-50 text-red-700 border border-red-200{% endif %}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="post" action="{% url 'core:about' %}" class="space-y-5" novalidate>
+                        {% csrf_token %}
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            <div>
+                                <label for="id_name" class="block text-xs font-bold text-text-primary mb-1.5">نام و نام خانوادگی</label>
+                                <input type="text" name="name" id="id_name" required
+                                       value="{{ form.name.value|default:'' }}"
+                                       class="w-full bg-lavender-bg border border-lavender-subtle rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-electric-purple focus:ring-0 transition-colors"
+                                       placeholder="نام شما">
+                                {% if form.name.errors %}
+                                    <p class="text-xs text-red-500 mt-1">{{ form.name.errors.0 }}</p>
+                                {% endif %}
+                            </div>
+
+                            <div>
+                                <label for="id_phone" class="block text-xs font-bold text-text-primary mb-1.5">شماره تماس</label>
+                                <input type="tel" name="phone" id="id_phone" required
+                                       value="{{ form.phone.value|default:'' }}"
+                                       class="w-full bg-lavender-bg border border-lavender-subtle rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-electric-purple focus:ring-0 transition-colors font-num"
+                                       placeholder="0912xxxxxxx" dir="ltr">
+                                {% if form.phone.errors %}
+                                    <p class="text-xs text-red-500 mt-1">{{ form.phone.errors.0 }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="id_email" class="block text-xs font-bold text-text-primary mb-1.5">ایمیل <span class="text-text-muted font-normal">(اختیاری)</span></label>
+                            <input type="email" name="email" id="id_email"
+                                   value="{{ form.email.value|default:'' }}"
+                                   class="w-full bg-lavender-bg border border-lavender-subtle rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-electric-purple focus:ring-0 transition-colors"
+                                   placeholder="email@example.com" dir="ltr">
+                            {% if form.email.errors %}
+                                <p class="text-xs text-red-500 mt-1">{{ form.email.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <label for="id_subject" class="block text-xs font-bold text-text-primary mb-1.5">موضوع</label>
+                            <select name="subject" id="id_subject"
+                                    class="w-full bg-lavender-bg border border-lavender-subtle rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-electric-purple focus:ring-0 transition-colors">
+                                <option value="support" {% if form.subject.value == 'support' %}selected{% endif %}>پشتیبانی و سوالات</option>
+                                <option value="order" {% if form.subject.value == 'order' %}selected{% endif %}>پیگیری سفارش</option>
+                                <option value="product" {% if form.subject.value == 'product' %}selected{% endif %}>مشاوره محصول</option>
+                                <option value="other" {% if form.subject.value == 'other' %}selected{% endif %}>سایر موارد</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="id_message" class="block text-xs font-bold text-text-primary mb-1.5">پیام شما</label>
+                            <textarea name="message" id="id_message" rows="5" required
+                                      class="w-full bg-lavender-bg border border-lavender-subtle rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-electric-purple focus:ring-0 transition-colors resize-none"
+                                      placeholder="پیام خود را بنویسید...">{{ form.message.value|default:'' }}</textarea>
+                            {% if form.message.errors %}
+                                <p class="text-xs text-red-500 mt-1">{{ form.message.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                        <button type="submit"
+                                class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-electric-purple to-vibrant-magenta text-white font-black px-8 py-3.5 rounded-full text-sm shadow-lg hover:brightness-110 active:scale-95 transition-all">
+                            <span class="material-symbols-outlined text-[18px]">send</span>
+                            <span>ارسال پیام</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= BOTTOM CTA ================= -->
+<section class="py-12 px-4 md:px-8 max-w-7xl mx-auto">
+    <div class="rounded-3xl gradient-hero text-white p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="text-center md:text-right space-y-2">
+            <h3 class="text-xl md:text-2xl font-black">آماده انتخاب محصول هستید؟</h3>
+            <p class="text-sm text-white/80">کاتالوگ کامل پاد سیستم، ویپ و IQOS را مشاهده کنید.</p>
+        </div>
+        <a href="{% url 'products:product_list' %}"
+           class="inline-flex items-center gap-2 bg-acid-lime text-dark-base font-black px-7 py-3.5 rounded-full text-sm shadow-lg hover:scale-105 active:scale-95 transition-all shrink-0">
+            <span>مشاهده محصولات</span>
+            <span class="material-symbols-outlined text-[18px] transform rotate-180">arrow_forward</span>
+        </a>
+    </div>
+</section>
+{% endblock content %}

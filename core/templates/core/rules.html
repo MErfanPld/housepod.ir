@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}قوانین و مقررات | هاوس پاد{% endblock %}
+
+{% block content %}
+<!-- ================= HERO ================= -->
+<section class="relative overflow-hidden py-14 lg:py-20 gradient-hero text-white">
+    <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-vibrant-magenta/20 blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-20 -left-20 w-72 h-72 rounded-full bg-electric-cyan/15 blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
+        <div class="max-w-3xl mx-auto text-center space-y-5">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20">
+                <span class="material-symbols-outlined text-[16px] text-acid-lime">gavel</span>
+                <span class="text-xs font-bold text-acid-lime tracking-wide">قوانین و مقررات</span>
+            </div>
+
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
+                قوانین و مقررات
+                <span class="bg-gradient-to-l from-acid-lime via-electric-cyan to-vibrant-magenta bg-clip-text text-transparent">
+                    هاوس پاد
+                </span>
+            </h1>
+
+            <p class="text-sm sm:text-base text-white/80 leading-relaxed max-w-2xl mx-auto">
+                لطفاً پیش از خرید، این قوانین را با دقت مطالعه کنید. استفاده از خدمات فروشگاه به منزله پذیرش کامل این مقررات است.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ================= CONTENT ================= -->
+<section class="py-14 lg:py-16 px-4 md:px-8 max-w-4xl mx-auto">
+    <div class="space-y-8">
+
+        <!-- 1 -->
+        <div class="bg-white rounded-2xl border border-lavender-subtle p-6 md:p-8 shadow-sm">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-9 h-9 rounded-xl bg-electric-purple/10 text-electric-purple flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-[20px]">info</span>
+                </div>
+                <h2 class="text-lg font-black text-text-primary">۱. شرایط سنی و استفاده</h2>
+            </div>
+            <div class="text-sm text-text-muted leading-7 space-y-3 pr-12">
+                <p>• فروش و عرضه تمامی محصولات حاوی نیکوتین <strong class="text-text-primary">فقط برای افراد بالای ۱۸ سال</strong> مجاز است.</p>
+                <p>• خریدار با ثبت سفارش، تأیید می‌کند که بالای ۱۸ سال سن دارد.</p>
+                <p>• هاوس پاد هیچ مسئولیتی در قبال استفاده افراد زیر ۱۸ سال از محصولات ندارد.</p>
+            </div>
+        </div>
+
+        <!-- 2 -->
+        <div class="bg-white rounded-2xl border border-lavender-subtle p-6 md:p-8 shadow-sm">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-9 h-9 rounded-xl bg-vibrant-magenta/10 text-vibrant-magenta flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-[20px]">shopping_cart</span>
+                </div>
+                <h2 class="text-lg font-black text-text-primary">۲. ثبت سفارش و پرداخت</h2>
+            </div>
+            <div class="text-sm text-text-muted leading-7 space-y-3 pr-12">
+                <p>• ثبت سفارش از طریق وب‌سایت به منزله درخواست خرید است و پس از تأیید پرداخت، نهایی می‌شود.</p>
+                <p>• قیمت‌های درج‌شده در سایت در لحظه ثبت سفارش معتبر هستند و ممکن است تغییر کنند.</p>
+                <p>• در صورت بروز هرگونه خطا در قیمت‌گذاری، فروشگاه حق لغو سفارش را برای خود محفوظ می‌دارد و مبلغ پرداختی عودت داده می‌شود.</p>
+                <p>• مسئولیت صحت اطلاعات وارد‌شده (آدرس، شماره تماس و ...) بر عهده خریدار است.</p>
+            </div>
+        </div>
+
+        <!-- 3 -->
+        <div class="bg-white rounded-2xl border border-lavender-subtle p-6 md:p-8 shadow-sm">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-9 h-9 rounded-xl bg-electric-cyan/10 text-electric-cyan flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-[20px]">local_shipping</span>
+                </div>
+                <h2 class="text-lg font-black text-text-primary">۳. ارسال و تحویل کالا</h2>
+            </div>
+            <div class="text-sm text-text-muted leading-7 space-y-3 pr-12">
+                <p>• زمان آماده‌سازی و ارسال سفارش‌ها معمولاً بین ۱ تا ۳ روز کاری است (به جز ایام تعطیل).</p>
+                <p>• هزینه ارسال بر اساس روش انتخابی و مقصد محاسبه و در صفحه پرداخت نمایش داده می‌شود.</p>
+                <p>• پس از تحویل مرسوله به شرکت پست یا پیک، مسئولیت تأخیر یا آسیب احتمالی در مسیر بر عهده شرکت حمل‌ونقل است.</p>
+                <p>• خریدار موظف است در زمان تحویل، بسته‌بندی را بررسی کند. در صورت آسیب ظاهری، از دریافت خودداری و مراتب را فوراً اطلاع دهد.</p>
+            </div>
+        </div>
+
+        <!-- 4 -->
+        <div class="bg-white rounded-2xl border border-lavender-subtle p-6 md:p-8 shadow-sm">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-9 h-9 rounded-xl bg-bright-orange/10 text-bright-orange flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-[20px]">autorenew</span>
+                </div>
+                <h2 class="text-lg font-black text-text-primary">۴. مرجوعی و تعویض</h2>
+            </div>
+            <div class="text-sm text-text-muted leading-7 space-y-3 pr-12">
+                <p>• کالاهایی که پلمب آن‌ها باز شده یا استفاده شده باشند، قابل مرجوعی نیستند.</p>
+                <p>• در صورت وجود ایراد فنی یا مغایرت با مشخصات درج‌شده، حداکثر تا ۷ روز پس از تحویل می‌توانید درخواست مرجوعی یا تعویض دهید.</p>
+                <p>• هزینه ارسال مرجوعی در صورت تأیید ایراد از سمت فروشگاه، بر عهده هاوس پاد است.</p>
+                <p>• محصولات مصرفی (کارتریج، کویل، مایع و ...) پس از باز شدن پلمب، قابل بازگشت نیستند.</p>
+            </div>
+        </div>
+
+        <!-- 5 -->
+        <div class="bg-white rounded-2xl border border-lavender-subtle p-6 md:p-8 shadow-sm">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-9 h-9 rounded-xl bg-acid-lime/15 text-emerald-700 flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-[20px]">verified_user</span>
+                </div>
+                <h2 class="text-lg font-black text-text-primary">۵. اصالت کالا و گارانتی</h2>
+            </div>
+            <div class="text-sm text-text-muted leading-7 space-y-3 pr-12">
+                <p>• تمامی محصولات عرضه‌شده در هاوس پاد اصل و از تأمین‌کنندگان معتبر تهیه می‌شوند.</p>
+                <p>• گارانتی محصولات طبق شرایط اعلام‌شده توسط برند یا فروشگاه اعمال می‌شود.</p>
+                <p>• آسیب‌های ناشی از استفاده نادرست، ضربه، نفوذ مایعات یا دستکاری دستگاه شامل گارانتی نمی‌شود.</p>
+            </div>
+        </div>
+
+        <!-- 6 -->
+        <div class="bg-white rounded-2xl border border-lavender-subtle p-6 md:p-8 shadow-sm">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-9 h-9 rounded-xl bg-electric-purple/10 text-electric-purple flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-[20px]">privacy_tip</span>
+                </div>
+                <h2 class="text-lg font-black text-text-primary">۶. حریم خصوصی و اطلاعات کاربران</h2>
+            </div>
+            <div class="text-sm text-text-muted leading-7 space-y-3 pr-12">
+                <p>• اطلاعات شخصی کاربران صرفاً برای پردازش سفارش و پشتیبانی استفاده می‌شود.</p>
+                <p>• هاوس پاد متعهد است اطلاعات کاربران را در اختیار شخص ثالث قرار ندهد مگر با حکم قانونی.</p>
+            </div>
+        </div>
+
+        <!-- 7 -->
+        <div class="bg-white rounded-2xl border border-lavender-subtle p-6 md:p-8 shadow-sm">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-9 h-9 rounded-xl bg-vibrant-magenta/10 text-vibrant-magenta flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-[20px]">warning</span>
+                </div>
+                <h2 class="text-lg font-black text-text-primary">۷. سلب مسئولیت</h2>
+            </div>
+            <div class="text-sm text-text-muted leading-7 space-y-3 pr-12">
+                <p>• محصولات حاوی نیکوتین اعتیادآور هستند و استفاده از آن‌ها برای افراد زیر ۱۸ سال و زنان باردار ممنوع است.</p>
+                <p>• هاوس پاد مسئولیتی در قبال عواقب ناشی از استفاده نادرست یا بیش از حد از محصولات ندارد.</p>
+                <p>• محتوای وب‌سایت صرفاً جنبه اطلاع‌رسانی دارد و جایگزین مشاوره پزشکی نیست.</p>
+            </div>
+        </div>
+
+        <!-- 8 -->
+        <div class="bg-white rounded-2xl border border-lavender-subtle p-6 md:p-8 shadow-sm">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-9 h-9 rounded-xl bg-bright-orange/10 text-bright-orange flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-[20px]">update</span>
+                </div>
+                <h2 class="text-lg font-black text-text-primary">۸. تغییرات در قوانین</h2>
+            </div>
+            <div class="text-sm text-text-muted leading-7 space-y-3 pr-12">
+                <p>• هاوس پاد حق تغییر این قوانین را در هر زمان برای خود محفوظ می‌دارد.</p>
+                <p>• نسخه به‌روز قوانین همیشه در همین صفحه در دسترس خواهد بود.</p>
+                <p>• ادامه استفاده از خدمات پس از تغییرات، به منزله پذیرش قوانین جدید است.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- CTA -->
+    <div class="mt-12 text-center">
+        <p class="text-sm text-text-muted mb-4">سوالی دارید؟ با پشتیبانی ما در ارتباط باشید.</p>
+        <a href="{% url 'core:contact' %}"
+           class="inline-flex items-center gap-2 bg-gradient-to-r from-electric-purple to-vibrant-magenta text-white font-black px-7 py-3 rounded-full text-sm shadow-lg hover:brightness-110 active:scale-95 transition-all">
+            <span class="material-symbols-outlined text-[18px]">support_agent</span>
+            <span>تماس با پشتیبانی</span>
+        </a>
+    </div>
+</section>
+{% endblock content %}

@@ -83,3 +83,49 @@ class HomeView(TemplateView):
         )
 
         return context
+
+
+from django.views.generic import FormView
+from django.urls import reverse_lazy
+from django.contrib import messages
+from django.shortcuts import redirect
+
+from .forms import ContactForm
+class AboutContactView(FormView):
+    template_name = "core/about.html"
+    form_class = ContactForm
+    success_url = reverse_lazy("core:about")
+
+    def form_valid(self, form):
+        # اینجا می‌توانید ایمیل بفرستید یا در دیتابیس ذخیره کنید
+        # form.cleaned_data → name, phone, email, subject, message
+        form.save()  # اگر مدل ContactMessage دارید
+        # یا:
+        # send_contact_email(form.cleaned_data)
+
+        messages.success(
+            self.request,
+            "پیام شما با موفقیت ارسال شد. به‌زودی با شما تماس می‌گیریم."
+        )
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, "لطفاً اطلاعات را به‌درستی وارد کنید.")
+        return super().form_invalid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # اگر site_settings را از context processor می‌فرستید، نیازی نیست
+        # در غیر این صورت اینجا اضافه کنید
+        return context
+
+
+from django.views.generic import TemplateView
+
+
+class RulesView(TemplateView):
+    template_name = "core/rules.html"
+
+
+class ShippingView(TemplateView):
+    template_name = "core/send.html"    

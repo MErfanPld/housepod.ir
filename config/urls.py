@@ -25,6 +25,10 @@ path('robots.txt', TemplateView.as_view(
         content_type='application/xml'
     )),
     
+path('googled755fb96396c7153.html', TemplateView.as_view(
+    template_name='googled755fb96396c7153.html',
+    content_type='text/html'
+)),
 ]
 
 if settings.DEBUG:

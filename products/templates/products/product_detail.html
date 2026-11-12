@@ -463,4 +463,29 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "{{ product.name }}",
+  "image": "{{ product.image.url }}",
+  "description": "{{ product.short_description|default:product.name }}",
+  "sku": "{{ product.sku|default:product.id }}",
+  "brand": {
+    "@type": "Brand",
+    "name": "{{ product.brand.name|default:'HousePod' }}"
+  },
+  "offers": {
+    "@type": "Offer",
+    "url": "https://housepod.ir{{ product.get_absolute_url }}",
+    "priceCurrency": "IRR",
+    "price": "{{ product.price }}",
+    "availability": "{% if product.is_available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
+    "seller": {
+      "@type": "Organization",
+      "name": "هاوس پاد"
+    }
+  }
+}
+</script>
 {% endblock %}

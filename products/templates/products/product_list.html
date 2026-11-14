@@ -1,8 +1,50 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static core_tags %}
 
 {% block title %}
-{% if current_category %}{{ current_category.name }} | {% endif %}فروشگاه و آرشیو محصولات | واریان تک
+{% if current_category %}{{ current_category.name }} | {% endif %}فروشگاه و آرشیو محصولات | HousePod
+{% endblock %}
+
+{% block seo_title %}
+{% if current_category %}{{ current_category.name }}{% else %}فروشگاه محصولات{% endif %} | هاوس پاد
+{% endblock %}
+
+{% block seo_description %}
+{% if current_category and current_category.description %}
+{{ current_category.description|striptags|truncatechars:155 }}
+{% else %}
+خرید انواع پاد سیستم، دستگاه IQOS، لوازم جانبی و محصولات اورجینال با ضمانت اصالت و ارسال سریع از فروشگاه هاوس پاد.
+{% endif %}
+{% endblock %}
+
+{% block seo_canonical %}
+{% if current_category %}
+https://housepod.ir{{ current_category.get_absolute_url }}
+{% else %}
+https://housepod.ir{% url 'products:product_list' %}
+{% endif %}
+{% endblock %}
+
+{% block og_type %}website{% endblock %}
+
+{% block og_title %}
+{% if current_category %}{{ current_category.name }} | HousePod{% else %}فروشگاه محصولات | HousePod{% endif %}
+{% endblock %}
+
+{% block og_description %}
+{% if current_category and current_category.description %}
+{{ current_category.description|striptags|truncatechars:155 }}
+{% else %}
+خرید انواع پاد سیستم، دستگاه IQOS و لوازم جانبی اورجینال با ضمانت اصالت.
+{% endif %}
+{% endblock %}
+
+{% block og_url %}
+{% if current_category %}
+https://housepod.ir{{ current_category.get_absolute_url }}
+{% else %}
+https://housepod.ir{% url 'products:product_list' %}
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -61,7 +103,7 @@
                         <div class="absolute inset-4 rounded-3xl bg-gradient-to-tr from-[#7628F5]/40 to-[#E83E9B]/30 border border-white/15 backdrop-blur-sm -rotate-2"></div>
                         <div class="relative z-10 text-center text-white/60 text-sm p-8">
                             <span class="material-symbols-outlined text-6xl text-[#C9F45B]/80">devices</span>
-                            <p class="mt-2 font-medium">فروشگاه واریان تک</p>
+                            <p class="mt-2 font-medium">فروشگاه هاوس پاد</p>
                         </div>
                     </div>
                 </div>
@@ -265,6 +307,7 @@
                             class="h-48 bg-gradient-to-b from-gray-50 to-white p-4 flex items-center justify-center relative overflow-hidden">
                             {% if product.image %}
                             <img src="{{ product.image.url }}" alt="{{ product.name }}"
+                                loading="lazy" width="240" height="240"
                                 class="h-full object-contain filter drop-shadow-md group-hover:scale-105 transition-transform" />
                             {% else %}
                             <span class="text-gray-300 text-xs">بدون تصویر</span>
@@ -313,12 +356,12 @@
                             <div class="pt-2 border-t border-gray-100 flex items-end justify-between">
                                 <div>
                                     {% if product.has_discount %}
-                                    <div class="text-xs text-gray-400 line-through">{{ product.price|floatformat:0 }}</div>
+                                    <div class="text-xs text-gray-400 line-through">{{ product.price|toman }}</div>
                                     {% else %}
                                     <div class="text-xs text-transparent select-none">-</div>
                                     {% endif %}
                                     <div class="text-sm font-extrabold text-gray-900">
-                                        {{ product.final_price|floatformat:0 }}
+                                        {{ product.final_price|toman }}
                                         <span class="text-[10px] font-normal text-gray-500">تومان</span>
                                     </div>
                                 </div>

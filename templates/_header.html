@@ -1,41 +1,48 @@
+
 {% load static %}
 <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-<title>هاوس پاد | HousePod - مرجع تخصصی پاد، ویپ و محصولات IQOS</title>    <!-- Google Fonts: Plus Jakarta Sans & Vazirmatn -->
-    <link href="https://fonts.googleapis.com" rel="preconnect" />
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Vazirmatn:wght@300;400;500;600;700;800;900&amp;display=swap"
-        rel="stylesheet" />
-    <!-- Material Symbols Outlined -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-        rel="stylesheet" />
-    <!-- Tailwind CSS v3 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block seo_title %}هاوس پاد | HousePod{% endblock %}</title>
+
+    <meta name="description" content="{% block seo_description %}هاوس پاد؛ معرفی محصولات و اطلاعات تخصصی فروشگاه HousePod.{% endblock %}">
+
+    <meta name="robots" content="{% block seo_robots %}index, follow{% endblock %}">
+
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="canonical" href="{% block seo_canonical %}https://housepod.ir{{ request.path }}{% endblock %}">
+
+    <meta property="og:locale" content="fa_IR">
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:site_name" content="هاوس پاد | HousePod">
+    <meta property="og:title" content="{% block og_title %}هاوس پاد | HousePod{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}معرفی محصولات و اطلاعات فروشگاه HousePod{% endblock %}">
+    <meta property="og:url" content="{% block og_url %}https://housepod.ir{{ request.path }}{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}https://housepod.ir/static/logo.png{% endblock %}">
+    <meta property="og:image:alt" content="{% block og_image_alt %}هاوس پاد{% endblock %}">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{% block twitter_title %}هاوس پاد | HousePod{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}معرفی محصولات و اطلاعات فروشگاه HousePod{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}https://housepod.ir/static/logo.png{% endblock %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script id="tailwind-config" src="{% static 'js/tailwind-config.js' %}"></script>
-    <script id="tailwind-config" src="{% static 'js/main.js' %}"></script>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <script src="{% static 'js/tailwind-config.js' %}"></script>
+    <script src="{% static 'js/main.js' %}" defer></script>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
     <link rel="icon" type="image/png" href="{% static 'logo.png' %}">
-<link rel="apple-touch-icon" href="{% static 'logo.png' %}">
-<!-- Meta Description -->
-<meta name="description" content="هاوس پاد | HousePod مرجع تخصصی فروش پادسیستم، ویپ و محصولات IQOS اورجینال با ضمانت اصالت و ارسال سریع به سراسر کشور">
+    <link rel="apple-touch-icon" href="{% static 'logo.png' %}">
 
-<!-- Open Graph (برای شبکه‌های اجتماعی) -->
-<meta property="og:title" content="هاوس پاد | HousePod - مرجع تخصصی پاد، ویپ و محصولات IQOS">
-<meta property="og:description" content="فروش تخصصی پادسیستم، ویپ و محصولات IQOS اورجینال با ضمانت اصالت">
-<meta property="og:url" content="https://housepod.ir/">
-<meta property="og:type" content="website">
-<meta property="og:image" content="https://housepod.ir/static/logo.png">
-<meta property="og:locale" content="fa_IR">
-<meta property="og:site_name" content="هاوس پاد">
-
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="هاوس پاد | HousePod">
-<meta name="twitter:description" content="مرجع تخصصی پاد، ویپ و محصولات IQOS">
-
-<!-- Canonical -->
-<link rel="canonical" href="https://housepod.ir/">
+    {% block extra_head %}{% endblock %}
 </head>

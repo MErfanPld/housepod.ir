@@ -1,7 +1,47 @@
 {% extends "base.html" %}
 {% load core_tags %}
 
-{% block title %}{{ product.name }} | واریان تک{% endblock %}
+{% block title %}{{ product.name }} | HousePod{% endblock %}
+
+{% block seo_title %}{{ product.name }}{% if product.brand %} از برند {{ product.brand }}{% endif %} | هاوس پاد{% endblock %}
+
+{% block seo_description %}{{ product.short_description|default:product.name|striptags|truncatechars:155 }}{% endblock %}
+
+{% block seo_canonical %}https://housepod.ir{{ product.get_absolute_url }}{% endblock %}
+
+{% block og_type %}product{% endblock %}
+
+{% block og_title %}{{ product.name }} | HousePod{% endblock %}
+
+{% block og_description %}{{ product.short_description|default:product.name|striptags|truncatechars:155 }}{% endblock %}
+
+{% block og_url %}https://housepod.ir{{ product.get_absolute_url }}{% endblock %}
+
+{% block og_image %}
+{% if product.image %}
+https://housepod.ir{{ product.image.url }}
+{% elif product.images.all %}
+https://housepod.ir{{ product.images.first.image.url }}
+{% else %}
+https://housepod.ir/static/logo.png
+{% endif %}
+{% endblock %}
+
+{% block og_image_alt %}{{ product.name }}{% endblock %}
+
+{% block twitter_title %}{{ product.name }} | HousePod{% endblock %}
+
+{% block twitter_description %}{{ product.short_description|default:product.name|striptags|truncatechars:155 }}{% endblock %}
+
+{% block twitter_image %}
+{% if product.image %}
+https://housepod.ir{{ product.image.url }}
+{% elif product.images.all %}
+https://housepod.ir{{ product.images.first.image.url }}
+{% else %}
+https://housepod.ir/static/logo.png
+{% endif %}
+{% endblock %}
 
 {% block content %}
 {% with gallery=product.images.all %}
@@ -35,7 +75,6 @@
         <!-- Gallery -->
         <section aria-label="گالری تصاویر کالا" class="lg:col-span-6 lg:sticky lg:top-24 bg-white rounded-3xl p-5 sm:p-6 border border-lavender-subtle shadow-sm relative">
 
-            <!-- Actions -->
             <div class="absolute top-5 left-5 z-10 flex flex-col gap-2">
                 <button type="button" id="wishlist-btn" data-product-id="{{ product.pk }}" aria-pressed="false" title="افزودن به علاقه‌مندی‌ها"
                         class="w-10 h-10 rounded-full bg-white/90 backdrop-blur-md border border-lavender-subtle text-text-muted hover:text-vibrant-magenta shadow-sm flex items-center justify-center transition-all hover:scale-105 active:scale-95">
@@ -47,7 +86,6 @@
                 </button>
             </div>
 
-            <!-- Spec badges -->
             {% if product.badge_1 or product.badge_2 or product.badge_3 %}
             <div class="absolute top-5 right-5 z-10 flex flex-col items-start gap-1.5 pointer-events-none">
                 {% if product.badge_1 %}
@@ -64,15 +102,16 @@
             </div>
             {% endif %}
 
-            <!-- Main image -->
             <div class="relative w-full aspect-square rounded-2xl bg-gradient-to-b from-lavender-card to-white flex items-center justify-center overflow-hidden my-2">
                 <div class="absolute w-2/3 h-2/3 rounded-full bg-electric-purple/10 blur-3xl"></div>
                 {% if product.image %}
                 <img id="main-product-image" src="{{ product.image.url }}" alt="{{ product.name }}"
-                     class="relative z-10 object-contain w-4/5 h-4/5 drop-shadow-2xl transition-opacity duration-200">
+                     class="relative z-10 object-contain w-4/5 h-4/5 drop-shadow-2xl transition-opacity duration-200"
+                     width="500" height="500">
                 {% elif gallery %}
                 <img id="main-product-image" src="{{ gallery.0.image.url }}" alt="{{ gallery.0.alt|default:product.name }}"
-                     class="relative z-10 object-contain w-4/5 h-4/5 drop-shadow-2xl transition-opacity duration-200">
+                     class="relative z-10 object-contain w-4/5 h-4/5 drop-shadow-2xl transition-opacity duration-200"
+                     width="500" height="500">
                 {% else %}
                 <div class="relative z-10 flex flex-col items-center gap-2 text-text-muted/40">
                     <span class="material-symbols-outlined text-7xl">image</span>
@@ -81,13 +120,12 @@
                 {% endif %}
             </div>
 
-            <!-- Thumbnails -->
             {% if gallery and product.image or gallery|length > 1 %}
             <div class="mt-4 flex items-center justify-center gap-3 overflow-x-auto py-2" role="list">
                 {% if product.image %}
                 <button type="button" role="listitem" data-thumb data-src="{{ product.image.url }}" data-alt="{{ product.name }}" aria-current="true"
                         class="thumb w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-lavender-card border-2 border-electric-purple p-1.5 flex items-center justify-center transition-all shrink-0">
-                    <img src="{{ product.image.url }}" alt="" class="w-full h-full object-contain">
+                    <img src="{{ product.image.url }}" alt="" class="w-full h-full object-contain" loading="lazy" width="80" height="80">
                 </button>
                 {% endif %}
                 {% for img in gallery %}
@@ -95,7 +133,7 @@
                         {% if not product.image and forloop.first %}aria-current="true"{% endif %}
                         class="thumb w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-lavender-card border-2 p-1.5 flex items-center justify-center transition-all shrink-0
                         {% if not product.image and forloop.first %}border-electric-purple{% else %}border-transparent hover:border-lavender-subtle{% endif %}">
-                    <img src="{{ img.image.url }}" alt="" loading="lazy" class="w-full h-full object-contain">
+                    <img src="{{ img.image.url }}" alt="" loading="lazy" class="w-full h-full object-contain" width="80" height="80">
                 </button>
                 {% endfor %}
             </div>
@@ -106,7 +144,6 @@
         <section aria-label="مشخصات و خرید محصول" class="lg:col-span-6">
             <div class="bg-white rounded-3xl p-6 sm:p-8 border border-lavender-subtle shadow-sm flex flex-col gap-6">
 
-                <!-- Brand / SKU -->
                 <div class="flex items-center justify-between flex-wrap gap-2 pb-4 border-b border-lavender-subtle">
                     <div class="flex items-center gap-2 flex-wrap">
                         {% if product.brand %}
@@ -121,7 +158,6 @@
                     <span class="text-xs text-text-muted font-mono" dir="ltr">SKU: {{ product.sku }}</span>
                 </div>
 
-                <!-- Title -->
                 <div class="flex flex-col gap-1.5">
                     <h1 class="text-2xl md:text-3xl font-black text-text-primary leading-snug">{{ product.name }}</h1>
                     {% if product.name_en %}
@@ -129,7 +165,6 @@
                     {% endif %}
                 </div>
 
-                <!-- Rating & stock -->
                 <div class="flex items-center gap-x-4 gap-y-2 text-xs flex-wrap">
                     {% if product.reviews_count %}
                     <div class="flex items-center gap-1">
@@ -159,7 +194,6 @@
                     {% endif %}
                 </div>
 
-                <!-- Price -->
                 <div class="bg-lavender-card p-5 rounded-2xl border border-lavender-subtle flex items-center justify-between gap-4">
                     <div>
                         <span class="text-xs text-text-muted block mb-1">قیمت نهایی</span>
@@ -180,7 +214,6 @@
                 <p class="text-sm text-text-muted leading-relaxed">{{ product.short_description }}</p>
                 {% endif %}
 
-                <!-- Quick facts -->
                 {% if product.flavor or product.compatibility %}
                 <div class="flex flex-wrap gap-2">
                     {% if product.flavor %}
@@ -198,7 +231,6 @@
                 </div>
                 {% endif %}
 
-                <!-- Add to cart -->
                 {% if product.is_in_stock %}
                 <form id="add-to-cart-form" method="post" action="{% url 'order:add_to_cart' slug=product.slug %}"
                       class="flex flex-col sm:flex-row items-stretch gap-3 pt-1">
@@ -229,7 +261,6 @@
                 </button>
                 {% endif %}
 
-                <!-- Assurance -->
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-5 border-t border-lavender-subtle">
                     <div class="flex flex-col items-center text-center p-2.5 rounded-xl bg-lavender-card">
                         <span class="material-symbols-outlined text-xl text-electric-purple mb-1">local_shipping</span>
@@ -257,7 +288,7 @@
     </div>
 </main>
 
-<!-- ================= TABS: description / specs / guide ================= -->
+<!-- ================= TABS ================= -->
 {% with specs=product.get_specs_list %}
 <section class="max-w-7xl mx-auto w-full px-4 md:px-8 pb-16" data-tabs>
     <div class="bg-white rounded-3xl border border-lavender-subtle shadow-sm overflow-hidden">
@@ -384,7 +415,6 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    // ---------- Gallery ----------
     const mainImg = document.getElementById("main-product-image");
     document.querySelectorAll("[data-thumb]").forEach(function (thumb, _, all) {
         thumb.addEventListener("click", function () {
@@ -404,7 +434,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // ---------- Quantity ----------
     const qty = document.getElementById("qty-input");
     if (qty) {
         const max = parseInt(qty.max, 10) || 99;
@@ -417,7 +446,6 @@ document.addEventListener("DOMContentLoaded", function () {
         qty.addEventListener("change", function () { qty.value = clamp(parseInt(qty.value, 10)); });
     }
 
-    // ---------- Wishlist (UI only) ----------
     const wish = document.getElementById("wishlist-btn");
     if (wish) {
         wish.addEventListener("click", function () {
@@ -428,7 +456,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // ---------- Share ----------
     const share = document.getElementById("share-btn");
     if (share) {
         share.addEventListener("click", async function () {
@@ -439,11 +466,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     await navigator.clipboard.writeText(data.url);
                     share.title = "لینک کپی شد";
                 }
-            } catch (e) { /* کاربر لغو کرد */ }
+            } catch (e) {}
         });
     }
 
-    // ---------- Tabs ----------
     const ACTIVE = ["text-electric-purple", "border-electric-purple", "font-black"];
     const INACTIVE = ["text-text-muted", "border-transparent", "font-bold", "hover:text-text-primary"];
     document.querySelectorAll("[data-tabs]").forEach(function (root) {
@@ -463,29 +489,55 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 </script>
+
+{# ================= STRUCTURED DATA (JSON-LD) ================= #}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Product",
-  "name": "{{ product.name }}",
-  "image": "{{ product.image.url }}",
-  "description": "{{ product.short_description|default:product.name }}",
-  "sku": "{{ product.sku|default:product.id }}",
+  "name": "{{ product.name|escapejs }}",
+  "description": "{{ product.short_description|default:product.name|escapejs }}",
+  "sku": "{{ product.sku|escapejs }}",
   "brand": {
     "@type": "Brand",
-    "name": "{{ product.brand.name|default:'HousePod' }}"
+    "name": "{% if product.brand %}{{ product.brand|escapejs }}{% else %}HousePod{% endif %}"
   },
+  "image": [
+    {% if product.image %}
+    "https://housepod.ir{{ product.image.url }}"
+    {% for img in product.images.all %},
+    "https://housepod.ir{{ img.image.url }}"
+    {% endfor %}
+    {% elif product.images.all %}
+    {% for img in product.images.all %}
+    {% if not forloop.first %},{% endif %}
+    "https://housepod.ir{{ img.image.url }}"
+    {% endfor %}
+    {% else %}
+    "https://housepod.ir/static/logo.png"
+    {% endif %}
+  ],
   "offers": {
     "@type": "Offer",
     "url": "https://housepod.ir{{ product.get_absolute_url }}",
     "priceCurrency": "IRR",
-    "price": "{{ product.price }}",
-    "availability": "{% if product.is_available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
+    "price": "{{ product.final_price|floatformat:0 }}0",
+    "availability": "{% if product.is_in_stock %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
+    "itemCondition": "https://schema.org/NewCondition",
     "seller": {
       "@type": "Organization",
-      "name": "هاوس پاد"
+      "name": "هاوس پاد",
+      "url": "https://housepod.ir/"
     }
+  }{% if product.reviews_count > 0 and product.rating > 0 %},
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "{{ product.rating }}",
+    "reviewCount": "{{ product.reviews_count }}",
+    "bestRating": "5",
+    "worstRating": "1"
   }
+  {% endif %}
 }
 </script>
 {% endblock %}

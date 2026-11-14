@@ -275,30 +275,10 @@
         openBtn.addEventListener("click", open);
         menu.querySelectorAll("[data-menu-close]").forEach(el => el.addEventListener("click", close));
         document.addEventListener("keydown", e => { if (e.key === "Escape" && openBtn.getAttribute("aria-expanded") === "true") close(); });
-        // اگر صفحه به دسکتاپ بزرگ شد، منو بسته شود
         window.matchMedia("(min-width: 1024px)").addEventListener("change", e => { if (e.matches && openBtn.getAttribute("aria-expanded") === "true") close(); });
     })();
     </script>
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "هاوس پاد | HousePod",
-  "alternateName": "HousePod",
-  "url": "https://housepod.ir",
-  "logo": "https://housepod.ir/static/logo.png",
-  "description": "مرجع تخصصی فروش پادسیستم، ویپ و محصولات IQOS اورجینال با ضمانت اصالت",
-  "address": {
-    "@type": "PostalAddress",
-    "addressCountry": "IR"
-  },
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "contactType": "customer service",
-    "availableLanguage": ["Persian", "fa"]
-  },
-  "sameAs": []
-}
-</script>
+
+    {# هیچ Schema محصولی در base.html نباید باشد #}
 </body>
 </html>

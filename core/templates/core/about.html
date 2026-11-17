@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static core_tags %}
 
-{% block title %}درباره هاوس پاد | تماس با ما{% endblock %}
+{% block title %}درباره {{ site_settings.site_name|default:"هاوس پاد" }} | تماس با ما{% endblock %}
 
 {% block content %}
 <!-- ================= HERO ================= -->
@@ -17,7 +17,7 @@
             </div>
 
             <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.25]">
-                هاوس پاد
+                {{ site_settings.site_name|default:"هاوس پاد" }}
                 <span class="bg-gradient-to-l from-acid-lime via-electric-cyan to-vibrant-magenta bg-clip-text text-transparent">
                     مرجع تخصصی پاد و ویپ
                 </span>
@@ -50,7 +50,7 @@
         <div class="lg:col-span-7 space-y-6 text-right">
             <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-lavender-subtle text-electric-purple font-bold text-xs">
                 <span class="material-symbols-outlined text-[15px]">info</span>
-                <span>داستان هاوس پاد</span>
+                <span>داستان {{ site_settings.site_name|default:"هاوس پاد" }}</span>
             </div>
 
             <h2 class="text-2xl md:text-3xl lg:text-4xl font-black text-text-primary tracking-tight leading-tight">
@@ -59,7 +59,7 @@
 
             <div class="space-y-4 text-sm md:text-base text-text-muted leading-7">
                 <p>
-                    هاوس پاد با هدف ایجاد یک مرجع قابل‌اعتماد برای علاقه‌مندان به پاد سیستم، ویپ و محصولات IQOS شکل گرفته است.
+                    {{ site_settings.site_name|default:"هاوس پاد" }} با هدف ایجاد یک مرجع قابل‌اعتماد برای علاقه‌مندان به پاد سیستم، ویپ و محصولات IQOS شکل گرفته است.
                     ما تلاش می‌کنیم اطلاعات دقیق، مقایسه شفاف و تجربه خریدی آگاهانه را در اختیار شما قرار دهیم.
                 </p>
                 <p>
@@ -123,8 +123,8 @@
                     </div>
 
                     <div>
-                        <h3 class="text-xl font-black">هاوس پاد</h3>
-                        <p class="text-sm text-white/70 mt-1 font-mono tracking-wider">HOUSEPOD</p>
+                        <h3 class="text-xl font-black">{{ site_settings.site_name|default:"هاوس پاد" }}</h3>
+                        <p class="text-sm text-white/70 mt-1 font-mono tracking-wider">{{ site_settings.site_name_en|default:"HOUSEPOD" }}</p>
                     </div>
 
                     <p class="text-sm text-white/80 leading-relaxed">
@@ -172,118 +172,67 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
             <!-- Contact Info -->
-            <!-- Contact Info -->
-<div class="lg:col-span-5 space-y-6">
-    <div class="bg-white rounded-2xl border border-lavender-subtle p-6 shadow-sm space-y-5">
-        <h3 class="font-bold text-base text-text-primary flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-electric-purple"></span>
-            راه‌های ارتباطی
-        </h3>
+            <div class="lg:col-span-5 space-y-6">
+                <div class="bg-white rounded-2xl border border-lavender-subtle p-6 shadow-sm space-y-5">
+                    <h3 class="font-bold text-base text-text-primary flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-electric-purple"></span>
+                        راه‌های ارتباطی
+                    </h3>
 
-        <div class="space-y-4 text-sm">
-            {% if site_settings.phone %}
-            <a href="tel:{{ site_settings.phone }}"
-               class="flex items-center gap-3 p-3 rounded-xl hover:bg-lavender-bg transition-colors group">
-                <div class="w-10 h-10 rounded-xl bg-electric-purple/10 text-electric-purple flex items-center justify-center group-hover:bg-electric-purple group-hover:text-white transition-colors">
-                    <span class="material-symbols-outlined text-[20px]">call</span>
-                </div>
-                <div>
-                    <p class="text-xs text-text-muted">تلفن پشتیبانی</p>
-                    <p class="font-bold text-text-primary font-num" dir="ltr">{{ site_settings.phone }}</p>
-                </div>
-            </a>
-            {% endif %}
+                    <div class="space-y-4 text-sm">
+                        {% if site_settings.phone %}
+                        <a href="tel:{{ site_settings.phone }}"
+                           class="flex items-center gap-3 p-3 rounded-xl hover:bg-lavender-bg transition-colors group">
+                            <div class="w-10 h-10 rounded-xl bg-electric-purple/10 text-electric-purple flex items-center justify-center group-hover:bg-electric-purple group-hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-[20px]">call</span>
+                            </div>
+                            <div>
+                                <p class="text-xs text-text-muted">تلفن پشتیبانی</p>
+                                <p class="font-bold text-text-primary font-num" dir="ltr">{{ site_settings.phone }}</p>
+                            </div>
+                        </a>
+                        {% endif %}
 
-            {% if site_settings.phone_secondary %}
-            <a href="tel:{{ site_settings.phone_secondary }}"
-               class="flex items-center gap-3 p-3 rounded-xl hover:bg-lavender-bg transition-colors group">
-                <div class="w-10 h-10 rounded-xl bg-electric-purple/10 text-electric-purple flex items-center justify-center group-hover:bg-electric-purple group-hover:text-white transition-colors">
-                    <span class="material-symbols-outlined text-[20px]">phone_iphone</span>
-                </div>
-                <div>
-                    <p class="text-xs text-text-muted">شماره دوم</p>
-                    <p class="font-bold text-text-primary font-num" dir="ltr">{{ site_settings.phone_secondary }}</p>
-                </div>
-            </a>
-            {% endif %}
+                        {% if site_settings.phone_secondary %}
+                        <a href="tel:{{ site_settings.phone_secondary }}"
+                           class="flex items-center gap-3 p-3 rounded-xl hover:bg-lavender-bg transition-colors group">
+                            <div class="w-10 h-10 rounded-xl bg-electric-purple/10 text-electric-purple flex items-center justify-center group-hover:bg-electric-purple group-hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-[20px]">phone_iphone</span>
+                            </div>
+                            <div>
+                                <p class="text-xs text-text-muted">شماره دوم</p>
+                                <p class="font-bold text-text-primary font-num" dir="ltr">{{ site_settings.phone_secondary }}</p>
+                            </div>
+                        </a>
+                        {% endif %}
 
-            {% if site_settings.email %}
-            <a href="mailto:{{ site_settings.email }}"
-               class="flex items-center gap-3 p-3 rounded-xl hover:bg-lavender-bg transition-colors group">
-                <div class="w-10 h-10 rounded-xl bg-vibrant-magenta/10 text-vibrant-magenta flex items-center justify-center group-hover:bg-vibrant-magenta group-hover:text-white transition-colors">
-                    <span class="material-symbols-outlined text-[20px]">mail</span>
-                </div>
-                <div>
-                    <p class="text-xs text-text-muted">ایمیل</p>
-                    <p class="font-bold text-text-primary" dir="ltr">{{ site_settings.email }}</p>
-                </div>
-            </a>
-            {% endif %}
+                        {% if site_settings.email %}
+                        <a href="mailto:{{ site_settings.email }}"
+                           class="flex items-center gap-3 p-3 rounded-xl hover:bg-lavender-bg transition-colors group">
+                            <div class="w-10 h-10 rounded-xl bg-vibrant-magenta/10 text-vibrant-magenta flex items-center justify-center group-hover:bg-vibrant-magenta group-hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-[20px]">mail</span>
+                            </div>
+                            <div>
+                                <p class="text-xs text-text-muted">ایمیل</p>
+                                <p class="font-bold text-text-primary" dir="ltr">{{ site_settings.email }}</p>
+                            </div>
+                        </a>
+                        {% endif %}
 
-            {% if site_settings.address %}
-            <div class="flex items-start gap-3 p-3 rounded-xl">
-                <div class="w-10 h-10 rounded-xl bg-bright-orange/10 text-bright-orange flex items-center justify-center shrink-0">
-                    <span class="material-symbols-outlined text-[20px]">location_on</span>
+                        {% if site_settings.address %}
+                        <div class="flex items-start gap-3 p-3 rounded-xl">
+                            <div class="w-10 h-10 rounded-xl bg-bright-orange/10 text-bright-orange flex items-center justify-center shrink-0">
+                                <span class="material-symbols-outlined text-[20px]">location_on</span>
+                            </div>
+                            <div>
+                                <p class="text-xs text-text-muted">آدرس</p>
+                                <p class="font-bold text-text-primary text-sm leading-relaxed">{{ site_settings.address }}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
                 </div>
-                <div>
-                    <p class="text-xs text-text-muted">آدرس</p>
-                    <p class="font-bold text-text-primary text-sm leading-relaxed">{{ site_settings.address }}</p>
-                </div>
-            </div>
-            {% endif %}
-        </div>
-    </div>
 
-    <!-- Social -->
-    <div class="bg-white rounded-2xl border border-lavender-subtle p-6 shadow-sm">
-        <h3 class="font-bold text-base text-text-primary mb-4 flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-vibrant-magenta"></span>
-            شبکه‌های اجتماعی
-        </h3>
-        <div class="flex items-center gap-3">
-            {% if site_settings.instagram_url %}
-            <a href="{{ site_settings.instagram_url }}"
-               target="_blank" rel="noopener noreferrer"
-               aria-label="اینستاگرام"
-               class="w-11 h-11 rounded-xl bg-lavender-bg border border-lavender-subtle flex items-center justify-center text-text-muted hover:text-white hover:border-[#E43D9E] hover:bg-[#E43D9E] transition-all">
-                <span class="material-symbols-outlined">photo_camera</span>
-            </a>
-            {% endif %}
-            {% if site_settings.telegram_url %}
-            <a href="{{ site_settings.telegram_url }}"
-               target="_blank" rel="noopener noreferrer"
-               aria-label="تلگرام"
-               class="w-11 h-11 rounded-xl bg-lavender-bg border border-lavender-subtle flex items-center justify-center text-text-muted hover:text-white hover:border-[#7928CA] hover:bg-[#7928CA] transition-all">
-                <span class="material-symbols-outlined">send</span>
-            </a>
-            {% endif %}
-            {% if site_settings.whatsapp_url %}
-            <a href="{{ site_settings.whatsapp_url }}"
-               target="_blank" rel="noopener noreferrer"
-               aria-label="واتساپ"
-               class="w-11 h-11 rounded-xl bg-lavender-bg border border-lavender-subtle flex items-center justify-center text-text-muted hover:text-white hover:border-[#25D366] hover:bg-[#25D366] transition-all">
-                <span class="material-symbols-outlined">chat</span>
-            </a>
-            {% endif %}
-        </div>
-    </div>
-
-    <!-- Working Hours -->
-    <div class="bg-gradient-to-br from-electric-purple/5 to-vibrant-magenta/5 border border-electric-purple/20 rounded-2xl p-5">
-        <div class="flex items-center gap-2 text-electric-purple font-bold text-sm mb-2">
-            <span class="material-symbols-outlined text-[18px]">schedule</span>
-            <span>ساعات پاسخگویی</span>
-        </div>
-        <p class="text-xs text-text-muted leading-relaxed">
-            {% if site_settings.working_hours %}
-                {{ site_settings.working_hours }}
-            {% else %}
-                همه روزه از ساعت ۱۰ صبح تا ۱۰ شب<br>
-                (به‌جز ایام تعطیل رسمی)
-            {% endif %}
-        </p>
-    </div>
-</div>
                 <!-- Social -->
                 <div class="bg-white rounded-2xl border border-lavender-subtle p-6 shadow-sm">
                     <h3 class="font-bold text-base text-text-primary mb-4 flex items-center gap-2">
@@ -307,6 +256,14 @@
                             <span class="material-symbols-outlined">send</span>
                         </a>
                         {% endif %}
+                        {% if site_settings.whatsapp_url %}
+                        <a href="{{ site_settings.whatsapp_url }}"
+                           target="_blank" rel="noopener noreferrer"
+                           aria-label="واتساپ"
+                           class="w-11 h-11 rounded-xl bg-lavender-bg border border-lavender-subtle flex items-center justify-center text-text-muted hover:text-white hover:border-[#25D366] hover:bg-[#25D366] transition-all">
+                            <span class="material-symbols-outlined">chat</span>
+                        </a>
+                        {% endif %}
                     </div>
                 </div>
 
@@ -317,8 +274,12 @@
                         <span>ساعات پاسخگویی</span>
                     </div>
                     <p class="text-xs text-text-muted leading-relaxed">
-                        همه روزه از ساعت ۱۰ صبح تا ۱۰ شب<br>
-                        (به‌جز ایام تعطیل رسمی)
+                        {% if site_settings.working_hours %}
+                            {{ site_settings.working_hours }}
+                        {% else %}
+                            همه روزه از ساعت ۱۰ صبح تا ۱۰ شب<br>
+                            (به‌جز ایام تعطیل رسمی)
+                        {% endif %}
                     </p>
                 </div>
             </div>

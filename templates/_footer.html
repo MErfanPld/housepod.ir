@@ -11,24 +11,28 @@
                 <a href="{% url 'core:home' %}" class="flex items-center gap-3 group">
                     <img
                         src="{% static 'logo.png' %}"
-                        alt="لوگوی هاوس پاد"
+                        alt="لوگوی {{ site_settings.site_name|default:'هاوس پاد' }}"
                         class="w-12 h-12 object-contain"
                     />
                     <div class="flex flex-col">
                         <span class="text-xl font-black text-white tracking-tight group-hover:text-[#E43D9E] transition-colors">
-                            هاوس پاد
+                            {{ site_settings.site_name|default:"هاوس پاد" }}
                         </span>
                         <span class="text-xs font-bold tracking-widest bg-gradient-to-r from-[#E43D9E] to-[#FF8A24] bg-clip-text text-transparent">
-                            HOUSEPOD
+                            {{ site_settings.site_name_en|default:"HOUSEPOD" }}
                         </span>
                     </div>
                 </a>
 
                 <p class="text-xs text-white/65 leading-7 text-justify">
-                    هاوس پاد، مرجع معرفی و عرضه محصولات پاد سیستم، ویپ،
-                    دستگاه‌های IQOS و لوازم جانبی مرتبط است.
-                    هدف ما ارائه اطلاعات دقیق محصولات و فراهم کردن
-                    تجربه خریدی آگاهانه و مطمئن است.
+                    {% if site_settings.footer_about %}
+                        {{ site_settings.footer_about }}
+                    {% else %}
+                        هاوس پاد، مرجع معرفی و عرضه محصولات پاد سیستم، ویپ،
+                        دستگاه‌های IQOS و لوازم جانبی مرتبط است.
+                        هدف ما ارائه اطلاعات دقیق محصولات و فراهم کردن
+                        تجربه خریدی آگاهانه و مطمئن است.
+                    {% endif %}
                 </p>
 
                 <!-- Age Notice -->
@@ -47,7 +51,7 @@
                 <ul class="space-y-3 text-xs text-white/65">
                     <li>
                         <a href="{% url 'core:about' %}" class="hover:text-[#E43D9E] transition-colors">
-                            درباره هاوس پاد
+                            درباره {{ site_settings.site_name|default:"هاوس پاد" }}
                         </a>
                     </li>
                     <li>
@@ -97,11 +101,11 @@
                 </ul>
             </div>
 
-            <!-- Col 4: Social & Trust -->
+            <!-- Col 4: Contact & Social -->
             <div class="lg:col-span-4 space-y-5">
                 <h4 class="font-bold text-sm text-white border-b border-white/10 pb-3 flex items-center gap-2">
                     <span class="w-2 h-2 rounded-full bg-[#7928CA]"></span>
-                    ارتباط با هاوس پاد
+                    ارتباط با {{ site_settings.site_name|default:"هاوس پاد" }}
                 </h4>
 
                 <p class="text-xs text-white/65 leading-7">
@@ -109,13 +113,45 @@
                     می‌توانید از راه‌های ارتباطی زیر استفاده کنید.
                 </p>
 
-                <!-- Contact Links -->
+                <!-- Contact Info -->
                 <div class="flex flex-col gap-3 text-xs text-white/70">
-                    <a href="{% url 'core:contact' %}"
-                       class="flex items-center gap-2 hover:text-[#E43D9E] transition-colors">
-                        <span class="material-symbols-outlined text-lg text-[#E43D9E]">support_agent</span>
-                        ارتباط با پشتیبانی
+                    {% if site_settings.phone %}
+                    <a href="tel:{{ site_settings.phone }}"
+                       class="flex items-center gap-2 hover:text-[#E43D9E] transition-colors" dir="ltr">
+                        <span class="material-symbols-outlined text-lg text-[#E43D9E]">call</span>
+                        {{ site_settings.phone }}
                     </a>
+                    {% endif %}
+
+                    {% if site_settings.phone_secondary %}
+                    <a href="tel:{{ site_settings.phone_secondary }}"
+                       class="flex items-center gap-2 hover:text-[#E43D9E] transition-colors" dir="ltr">
+                        <span class="material-symbols-outlined text-lg text-[#E43D9E]">phone_iphone</span>
+                        {{ site_settings.phone_secondary }}
+                    </a>
+                    {% endif %}
+
+                    {% if site_settings.email %}
+                    <a href="mailto:{{ site_settings.email }}"
+                       class="flex items-center gap-2 hover:text-[#E43D9E] transition-colors" dir="ltr">
+                        <span class="material-symbols-outlined text-lg text-[#E43D9E]">mail</span>
+                        {{ site_settings.email }}
+                    </a>
+                    {% endif %}
+
+                    {% if site_settings.address %}
+                    <div class="flex items-start gap-2">
+                        <span class="material-symbols-outlined text-lg text-[#E43D9E] shrink-0">location_on</span>
+                        <span class="leading-6">{{ site_settings.address }}</span>
+                    </div>
+                    {% endif %}
+
+                    {% if site_settings.working_hours %}
+                    <div class="flex items-start gap-2">
+                        <span class="material-symbols-outlined text-lg text-[#E43D9E] shrink-0">schedule</span>
+                        <span class="leading-6">{{ site_settings.working_hours }}</span>
+                    </div>
+                    {% endif %}
                 </div>
 
                 <!-- Social Networks -->
@@ -128,7 +164,7 @@
                         <a href="{{ site_settings.instagram_url }}"
                            target="_blank"
                            rel="noopener noreferrer"
-                           aria-label="اینستاگرام هاوس پاد"
+                           aria-label="اینستاگرام {{ site_settings.site_name|default:'هاوس پاد' }}"
                            class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:border-[#E43D9E] hover:bg-[#E43D9E]/10 transition-all">
                             <span class="material-symbols-outlined">photo_camera</span>
                         </a>
@@ -138,9 +174,19 @@
                         <a href="{{ site_settings.telegram_url }}"
                            target="_blank"
                            rel="noopener noreferrer"
-                           aria-label="تلگرام هاوس پاد"
+                           aria-label="تلگرام {{ site_settings.site_name|default:'هاوس پاد' }}"
                            class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:border-[#7928CA] hover:bg-[#7928CA]/10 transition-all">
                             <span class="material-symbols-outlined">send</span>
+                        </a>
+                        {% endif %}
+
+                        {% if site_settings.whatsapp_url %}
+                        <a href="{{ site_settings.whatsapp_url }}"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           aria-label="واتساپ {{ site_settings.site_name|default:'هاوس پاد' }}"
+                           class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:border-[#25D366] hover:bg-[#25D366]/10 transition-all">
+                            <span class="material-symbols-outlined">chat</span>
                         </a>
                         {% endif %}
                     </div>
@@ -163,12 +209,16 @@
         <!-- Bottom Bar -->
         <div class="pt-7 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-white/50">
             <p class="text-center md:text-right leading-7">
-                تمامی حقوق مادی و معنوی این وبسایت متعلق به هاوس پاد است.
-                استفاده از محصولات حاوی نیکوتین تنها برای افراد بالای ۱۸ سال مجاز است.
+                {% if site_settings.copyright_text %}
+                    {{ site_settings.copyright_text }}
+                {% else %}
+                    تمامی حقوق مادی و معنوی این وبسایت متعلق به هاوس پاد است.
+                    استفاده از محصولات حاوی نیکوتین تنها برای افراد بالای ۱۸ سال مجاز است.
+                {% endif %}
                 © {% now "Y" %}
             </p>
             <div class="flex items-center gap-2 font-mono text-[10px] tracking-wider">
-                <span>HOUSEPOD</span>
+                <span>{{ site_settings.site_name_en|default:"HOUSEPOD" }}</span>
                 <span class="text-[#E43D9E]">•</span>
                 <a href="{% url 'core:home' %}"
                    class="bg-gradient-to-r from-[#E43D9E] to-[#FF8A24] bg-clip-text text-transparent font-bold hover:opacity-80 transition-opacity">

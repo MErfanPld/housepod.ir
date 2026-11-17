@@ -262,3 +262,117 @@ class HomeFAQ(models.Model):
     def __str__(self):
         return self.question
     
+
+from django.db import models
+from django.core.cache import cache
+
+
+class SiteSettings(models.Model):
+    """
+    تنظیمات عمومی سایت (فقط یک رکورد باید وجود داشته باشد)
+    """
+
+    # اطلاعات تماس
+    phone = models.CharField(
+        max_length=20,
+        blank=True,
+        verbose_name="شماره تلفن",
+        help_text="مثال: 02191000000 یا 09121234567",
+    )
+    phone_secondary = models.CharField(
+        max_length=20,
+        blank=True,
+        verbose_name="شماره دوم (اختیاری)",
+    )
+    email = models.EmailField(
+        blank=True,
+        verbose_name="ایمیل",
+    )
+    address = models.TextField(
+        blank=True,
+        verbose_name="آدرس",
+    )
+    working_hours = models.CharField(
+        max_length=200,
+        blank=True,
+        default="همه روزه ۱۰ صبح تا ۱۰ شب (به‌جز تعطیلات رسمی)",
+        verbose_name="ساعات کاری",
+    )
+
+    # شبکه‌های اجتماعی
+    instagram_url = models.URLField(
+        blank=True,
+        verbose_name="لینک اینستاگرام",
+        help_text="مثال: https://instagram.com/housepod",
+    )
+    telegram_url = models.URLField(
+        blank=True,
+        verbose_name="لینک تلگرام / کانال",
+        help_text="مثال: https://t.me/housepod",
+    )
+    whatsapp_url = models.URLField(
+        blank=True,
+        verbose_name="لینک واتساپ",
+        help_text="مثال: https://wa.me/989121234567",
+    )
+    aparat_url = models.URLField(
+        blank=True,
+        verbose_name="لینک آپارات (اختیاری)",
+    )
+
+    # متن‌های عمومی
+    site_name = models.CharField(
+        max_length=100,
+        default="هاوس پاد",
+        verbose_name="نام سایت",
+    )
+    site_name_en = models.CharField(
+        max_length=100,
+        default="HousePod",
+        verbose_name="نام انگلیسی سایت",
+    )
+    footer_about = models.TextField(
+        blank=True,
+        verbose_name="متن کوتاه فوتر / درباره ما",
+        help_text="متن کوتاهی که در فوتر نمایش داده می‌شود",
+    )
+    copyright_text = models.CharField(
+        max_length=255,
+        blank=True,
+        default="© تمامی حقوق برای هاوس پاد محفوظ است.",
+        verbose_name="متن کپی‌رایت",
+    )
+
+    # SEO / متا پیش‌فرض
+    default_meta_description = models.CharField(
+        max_length=160,
+        blank=True,
+        verbose_name="توضیحات متا پیش‌فرض",
+    )
+
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="آخرین بروزرسانی")
+
+    class Meta:
+        verbose_name = "تنظیمات سایت"
+        verbose_name_plural = "تنظیمات سایت"
+
+    def __str__(self):
+        return "تنظیمات سایت"
+
+    def save(self, *args, **kwargs):
+        # فقط یک رکورد مجاز است
+        self.pk = 1
+        super().save(*args, **kwargs)
+        cache.delete("site_settings")
+
+    def delete(self, *args, **kwargs):
+        pass  # جلوگیری از حذف
+
+    @classmethod
+    def load(cls):
+        """دریافت تنظیمات با کش"""
+        obj = cache.get("site_settings")
+        if obj is None:
+            obj, _ = cls.objects.get_or_create(pk=1)
+            cache.set("site_settings", obj, 60 * 60 * 24)  # ۲۴ ساعت
+        return obj    

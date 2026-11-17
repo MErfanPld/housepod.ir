@@ -10,8 +10,8 @@ from .models import HeroSlide, HomeBanner, HomeFAQ, HomeStatistic, StoreFeature
 # ---------------------------------------------------------------------- #
 # عنوان‌های پنل مدیریت
 # ---------------------------------------------------------------------- #
-admin.site.site_header = "پنل مدیریت واریان"
-admin.site.site_title = "مدیریت واریان"
+admin.site.site_header = "پنل مدیریت "
+admin.site.site_title = "مدیریت "
 admin.site.index_title = "مدیریت محتوای فروشگاه"
 
 MATERIAL_ICONS_CSS = (
@@ -284,3 +284,33 @@ class HomeFAQAdmin(BaseContentAdmin):
     def answer_preview(self, obj):
         text = obj.answer or ""
         return text[:90] + ("…" if len(text) > 90 else "")
+
+
+from django.contrib import admin
+from .models import SiteSettings
+
+
+@admin.register(SiteSettings)
+class SiteSettingsAdmin(admin.ModelAdmin):
+    fieldsets = (
+        ("اطلاعات تماس", {
+            "fields": ("phone", "phone_secondary", "email", "address", "working_hours"),
+        }),
+        ("شبکه‌های اجتماعی", {
+            "fields": ("instagram_url", "telegram_url", "whatsapp_url", "aparat_url"),
+        }),
+        ("متن‌های عمومی", {
+            "fields": ("site_name", "site_name_en", "footer_about", "copyright_text"),
+        }),
+        ("SEO", {
+            "fields": ("default_meta_description",),
+            "classes": ("collapse",),
+        }),
+    )
+
+    def has_add_permission(self, request):
+        # فقط یک رکورد
+        return not SiteSettings.objects.exists()
+
+    def has_delete_permission(self, request, obj=None):
+        return False    
